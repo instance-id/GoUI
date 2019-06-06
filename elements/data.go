@@ -19,7 +19,8 @@ type DataDiscord struct {
 }
 
 var (
-	Log           LogLevels
+	Log LogLevels
+
 	DiscordToken  string
 	CommandPrefix string
 	AssetData     DataAssets
