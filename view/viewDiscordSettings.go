@@ -7,53 +7,73 @@ import (
 	. "github.com/instance-id/GoUI/utils"
 )
 
-func CreateViewAssetSettings() {
+func CreateViewDiscordSettings() {
 
-	var tmpGuidId =
+	var discordData = DataDiscord{
+		GuildId:  "123123123123",
+		BotUsers: []string{"12312312344444", "32132132188888"},
+		Roles:    map[string]string{"ABC": "44444444444444", "BCD": "55555555555555"},
+	}
+
+	var assetData = DataAssets{
+		AssetCodes:    []string{"ABC", "BCD"},
+		AssetPackages: map[string]string{"ABC": "ABC - Best Asset", "BCD": "BCD : Also Best Asset"},
+		AssetApiKeys:  map[string]string{"ABC": "1231232123123123", "BCD": "3453453453453645"},
+	}
+
+	var tmpGuidId = discordData.GuildId
+	var tmpBotUsers = discordData.BotUsers
+	var tmpRoles = discordData.Roles
+	var tmpAssetCodes = assetData.AssetCodes
 
 	// --- Discord Settings Frame ------------------------------------------
-	FrmDiscordSettings = ui.CreateFrame(WindowMain, ui.AutoSize, ui.AutoSize, ui.BorderNone, ui.AutoSize)
+	FrmDiscordSettings = ui.CreateFrame(FrameContent, ui.AutoSize, ui.AutoSize, ui.BorderNone, ui.Fixed)
 	FrmDiscordSettings.SetTitle("FrameTop")
 	FrmDiscordSettings.SetPack(ui.Horizontal)
 
 	// --- Discord Settings Content ----------------------------------------
-	settingsFrame := ui.CreateFrame(FrmDiscordSettings, ui.AutoSize, ui.AutoSize, ui.BorderThin, ui.AutoSize)
+	settingsFrame := ui.CreateFrame(FrmDiscordSettings, 100, ui.AutoSize, ui.BorderThin, ui.Fixed)
 	settingsFrame.SetPaddings(2, 2)
-	settingsFrame.SetTitle(TxtMainSettings)
+	settingsFrame.SetTitle(TxtDiscordSettings)
 	settingsFrame.SetPack(ui.Vertical)
 
-	// --- Discord Token -------------------------------------------------
-	tokenFrame := NewFramedInput(settingsFrame, TxtDiscordToken, nil)
-	ui.CreateEditField(tokenFrame, 70, tmpDiscordToken, ui.Fixed)
-	ui.CreateLabel(tokenFrame, ui.AutoSize, ui.AutoSize, TxtDiscordTokenDesc, ui.Fixed)
+	// --- GuildId -------------------------------------------------------
+	guildIdFrame := NewFramedInput(settingsFrame, TxtGuildId, nil)
+	ui.CreateEditField(guildIdFrame, 70, tmpGuidId, ui.Fixed)
+	ui.CreateLabel(guildIdFrame, ui.AutoSize, ui.AutoSize, TxtGuildIdDesc, ui.Fixed)
 
-	// --- Command Prefix ------------------------------------------------
-	cmdPrefixFrame := NewFramedInput(settingsFrame, TxtCmdPrefix, nil)
-	ui.CreateEditField(cmdPrefixFrame, 10, tmpCommandPrefix, ui.Fixed)
-	ui.CreateLabel(cmdPrefixFrame, ui.AutoSize, ui.AutoSize, TxtCmdPrefixDesc, ui.Fixed)
+	// --- Bot Users -----------------------------------------------------
+	botUsersFrame := NewFramedInput(settingsFrame, TxtBotUsers, nil)
+	ui.CreateEditField(botUsersFrame, 50, discordData.BotUsers[0], ui.Fixed)
+	ui.CreateLabel(botUsersFrame, ui.AutoSize, ui.AutoSize, TxtBotUsersDesc, ui.Fixed)
 
-	// --- Require Email -------------------------------------------------
-	requireEmail := NewFramedInput(settingsFrame, TxtRequireEmail, nil)
-	ui.CreateLabel(requireEmail, ui.AutoSize, ui.AutoSize, TxtRequireEmailDesc, ui.Fixed)
-	ui.CreateCheckBox(requireEmail, 10, " Check for Yes, unchecked for No ", ui.Fixed)
+	// --- Asset Codes ---------------------------------------------------
+	assetCodesFrame := NewFramedInput(settingsFrame, TxtAssetCodes, nil)
+	BtnAssetCodes = ui.CreateButton(assetCodesFrame, ui.AutoSize, ui.AutoSize, TxtAssetCodesBtn, ui.Fixed)
+	BtnAssetCodes.OnClick(func(ev ui.Event) {
+		BtnAssetCodes.SetEnabled(false)
+		ChangeAssetCodes(BtnAssetCodes)
+	})
+	ui.CreateLabel(assetCodesFrame, ui.AutoSize, ui.AutoSize, TxtAssetCodesDesc, ui.Fixed)
 
 	// --- Select Log Level ----------------------------------------------
-	logLevel := NewFramedInput(settingsFrame, TxtLogLevel, nil)
-	BtnLogLevel := ui.CreateButton(logLevel, ui.AutoSize, ui.AutoSize, TxtLogLevel, 1)
+	logLevelFrame := NewFramedInput(settingsFrame, TxtLogLevel, nil)
+	BtnLogLevel := ui.CreateButton(logLevelFrame, ui.AutoSize, ui.AutoSize, TxtLogLevel, ui.Fixed)
 	BtnLogLevel.OnClick(func(ev ui.Event) {
 		BtnLogLevel.SetEnabled(false)
 		SelectLogLevel(BtnLogLevel)
 	})
-	ui.CreateLabel(logLevel, ui.AutoSize, ui.AutoSize, TxtLogLevelDesc, ui.Fixed)
+	ui.CreateLabel(logLevelFrame, ui.AutoSize, ui.AutoSize, TxtLogLevelDesc, ui.Fixed)
 
 	// --- Save Settings ------------------------------------------------
 	var params = FramedInputParams{Orientation: ui.Vertical, Width: 4, Height: 4}
 	saveSettings := NewFramedInput(settingsFrame, TxtSaveDesc, &params)
-	BtnSave = ui.CreateButton(saveSettings, 4, ui.AutoSize, TxtSave, ui.Fixed)
-	BtnSave.OnClick(func(ev ui.Event) {
-		DiscordToken = tmpDiscordToken
-		CommandPrefix = tmpCommandPrefix
+	BtnMainSettingsSave = ui.CreateButton(saveSettings, ui.AutoSize, ui.AutoSize, TxtSave, ui.Fixed)
+	BtnMainSettingsSave.OnClick(func(ev ui.Event) {
+		discordData.GuildId = tmpGuidId
+		discordData.BotUsers = tmpBotUsers
+		discordData.Roles = tmpRoles
+		assetData.AssetCodes = tmpAssetCodes
 	})
-	//ui.CreateLabel(saveSettings, ui.AutoSize, ui.AutoSize, TxtSaveDesc, ui.Fixed)
-
+	FrmDiscordSettings.SetVisible(false)
 }

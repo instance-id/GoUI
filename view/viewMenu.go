@@ -9,13 +9,16 @@ import (
 
 func CreateViewMenu() {
 
-	FrameMenu = ui.CreateFrame(WindowMain, 16, 8, ui.BorderThin, ui.Fixed)
+	FrameMenu = ui.CreateFrame(WindowMain, 25, 5, ui.BorderNone, ui.Fixed)
 	FrameMenu.SetPack(ui.Vertical)
-	FrameMenu.SetTitle(TxtMainMenu)
-	FrameMenu.SetPaddings(2, 2)
+
+	FrameMain = ui.CreateFrame(FrameMenu, 5, 5, ui.BorderThin, ui.AutoSize)
+	FrameMain.SetPack(ui.Vertical)
+	FrameMain.SetTitle(TxtMainMenu)
+	FrameMain.SetPaddings(2, 2)
 
 	// --- Run Verifier --------------------------------------------------
-	BtnRunVerifier = ui.CreateButton(FrameMenu, ui.AutoSize, ui.AutoSize, TxtRunVerifier, 1)
+	BtnRunVerifier = ui.CreateButton(FrameMain, ui.AutoSize, ui.AutoSize, TxtRunVerifier, ui.Fixed)
 	BtnRunVerifier.OnClick(func(ev ui.Event) {
 		if !FrmMainSettings.Visible() {
 			CommandMainSettings()
@@ -23,7 +26,7 @@ func CreateViewMenu() {
 	})
 
 	// --- Main Settings -------------------------------------------------
-	BtnMainSettings = ui.CreateButton(FrameMenu, ui.AutoSize, ui.AutoSize, TxtMainSettings+TxtActive, 1)
+	BtnMainSettings = ui.CreateButton(FrameMain, ui.AutoSize, ui.AutoSize, TxtMainSettings+TxtActive, ui.Fixed)
 	BtnMainSettings.OnClick(func(ev ui.Event) {
 		if !FrmMainSettings.Visible() {
 			CommandMainSettings()
@@ -31,7 +34,7 @@ func CreateViewMenu() {
 	})
 
 	// --- Asset Settings ------------------------------------------------
-	BtnDiscordSettings = ui.CreateButton(FrameMenu, ui.AutoSize, ui.AutoSize, TxtDiscordSettings, 1)
+	BtnDiscordSettings = ui.CreateButton(FrameMain, ui.AutoSize, ui.AutoSize, TxtDiscordSettings, ui.Fixed)
 	BtnDiscordSettings.OnClick(func(ev ui.Event) {
 		if !FrmDiscordSettings.Visible() {
 			CommandDiscordSettings()
@@ -39,7 +42,7 @@ func CreateViewMenu() {
 	})
 
 	// --- Plugins -------------------------------------------------------
-	BtnPlugins = ui.CreateButton(FrameMenu, ui.AutoSize, ui.AutoSize, TxtPlugins, 1)
+	BtnPlugins = ui.CreateButton(FrameMain, ui.AutoSize, ui.AutoSize, TxtPlugins, ui.Fixed)
 	BtnPlugins.OnClick(func(ev ui.Event) {
 		if !FrmPlugins.Visible() {
 			CommandPlugins()
@@ -47,14 +50,14 @@ func CreateViewMenu() {
 	})
 
 	// --- Select Theme --------------------------------------------------
-	BtnTheme = ui.CreateButton(FrameMenu, ui.AutoSize, ui.AutoSize, TxtSelectTheme, 1)
+	BtnTheme = ui.CreateButton(FrameMain, ui.AutoSize, ui.AutoSize, TxtSelectTheme, ui.Fixed)
 	BtnTheme.OnClick(func(ev ui.Event) {
 		BtnTheme.SetEnabled(false)
 		ChangeTheme(BtnTheme)
 	})
 
 	// --- Quit ----------------------------------------------------------
-	BtnQuit = ui.CreateButton(FrameMenu, ui.AutoSize, 3, TxtQuit, 1)
+	BtnQuit = ui.CreateButton(FrameMain, ui.AutoSize, ui.AutoSize, TxtQuit, ui.Fixed)
 	BtnQuit.OnClick(func(ev ui.Event) {
 		go ui.Stop()
 	})

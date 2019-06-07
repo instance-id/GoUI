@@ -8,6 +8,8 @@ import (
 func CreateViewLogLevel() {
 	frmLogLevel := ui.CreateFrame(FrameMenu, 8, 1, ui.BorderNone, ui.Fixed)
 	frmLogLevel.SetGaps(1, ui.KeepValue)
+	frmLogLevel.SetVisible(false)
+	frmLogLevel.SetActive(false)
 }
 
 func SelectLogLevel(btn *ui.Button) {
@@ -36,4 +38,5 @@ func SelectLogLevel(btn *ui.Button) {
 		// ask the composer to repaint all windows
 		ui.PutEvent(ui.Event{Type: ui.EventRedraw})
 	})
+
 }

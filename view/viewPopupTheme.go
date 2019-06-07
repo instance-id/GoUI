@@ -8,6 +8,8 @@ import (
 func CreateViewPopupTheme() {
 	frmTheme := ui.CreateFrame(FrameMenu, 8, 1, ui.BorderNone, ui.Fixed)
 	frmTheme.SetGaps(1, ui.KeepValue)
+	frmTheme.SetVisible(false)
+	frmTheme.SetActive(false)
 }
 
 func ChangeTheme(btn *ui.Button) {

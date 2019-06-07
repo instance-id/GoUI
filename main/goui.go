@@ -1,4 +1,4 @@
-package GoUI
+package main
 
 import (
 	ui "github.com/VladimirMarkelov/clui"
@@ -17,27 +17,32 @@ func InitData() {
 
 func MainInitialSettings() {
 	FrmMainSettings.SetVisible(true)
-	FrmDiscordSettings.SetVisible(false)
-	FrmPlugins.SetVisible(false)
+	FrmDiscordSettings.SetActive(false)
+	FrmPlugins.SetActive(false)
 }
 
 func createView() {
 	InitData()
 	// --- Main Window ---------------------------------------------------
-	WindowMain = ui.AddWindow(0, 0, ui.AutoSize, ui.AutoSize, TxtApplication)
+	WindowMain = ui.AddWindow(0, 0, 10, 7, TxtApplication)
 	WindowMain.SetPack(ui.Horizontal)
+	WindowMain.SetMaximized(true)
 
 	// --- Main Menu Frame -----------------------------------------------
 	view.CreateViewMenu()
 
-	// --- Content Frames ------------------------------------------------
+	// --- Content Frame -------------------------------------------------
+	view.CreateViewContent()
+
+	// --- Settings Frames -----------------------------------------------
 	view.CreateViewMainSettings()
-	view.CreateViewAssetSettings()
+	view.CreateViewDiscordSettings()
 	view.CreateViewPlugins()
 
 	// --- Popup Menu Frames ---------------------------------------------
 	view.CreateViewPopupTheme()
 	view.CreateViewLogLevel()
+	//view.CreateViewPopupAssetCodes()
 
 	MainInitialSettings()
 
@@ -48,7 +53,7 @@ func mainLoop() {
 	ui.InitLibrary()
 	defer ui.DeinitLibrary()
 
-	ui.SetThemePath("themes")
+	ui.SetThemePath("../themes")
 
 	createView()
 

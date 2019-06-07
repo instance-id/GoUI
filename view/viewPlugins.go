@@ -9,10 +9,16 @@ import (
 func CreateViewPlugins() {
 
 	// --- Plugins Frame -------------------------------------------------
-	FrmPlugins = ui.CreateFrame(WindowMain, ui.AutoSize, ui.AutoSize, ui.BorderNone, ui.AutoSize)
+	FrmPlugins = ui.CreateFrame(FrameContent, ui.AutoSize, ui.AutoSize, ui.BorderNone, ui.Fixed)
 	FrmPlugins.SetTitle("FrameTop")
 	FrmPlugins.SetPack(ui.Horizontal)
 
 	// --- Plugins Content -----------------------------------------------
-	Btn3 = ui.CreateButton(FrmPlugins, ui.AutoSize, ui.AutoSize, TxtPlugins, 1)
+	pluginsFrame := ui.CreateFrame(FrmPlugins, 100, ui.AutoSize, ui.BorderThin, ui.AutoSize)
+	pluginsFrame.SetPaddings(2, 2)
+	pluginsFrame.SetTitle(TxtPlugins)
+	pluginsFrame.SetPack(ui.Vertical)
+
+	// --- Setup Complete ------------------------------------------------
+	FrmPlugins.SetVisible(false)
 }

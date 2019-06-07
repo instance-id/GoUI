@@ -1,7 +1,6 @@
 package cmd
 
 import (
-	ui "github.com/VladimirMarkelov/clui"
 	. "github.com/instance-id/GoUI/elements"
 	. "github.com/instance-id/GoUI/text"
 )
@@ -10,10 +9,13 @@ func CommandDiscordSettings() {
 
 	// --- Disable ---------------------------------------------
 	FrmMainSettings.SetVisible(false)
+	FrmMainSettings.SetActive(false)
 	FrmPlugins.SetVisible(false)
+	FrmPlugins.SetActive(false)
 
 	// --- Enable ----------------------------------------------
 	FrmDiscordSettings.SetVisible(true)
+	//FrmDiscordSettings.SetActive(true)
 
 	// --- Modify ----------------------------------------------
 	BtnMainSettings.SetTitle(TxtMainSettings)
@@ -21,6 +23,6 @@ func CommandDiscordSettings() {
 	BtnPlugins.SetTitle(TxtPlugins)
 
 	// --- Activate --------------------------------------------
-	ui.ActivateControl(WindowMain, Btn2)
-	//Btn2.SetVisible(true)
+	//FrmDiscordSettings.SetActive(true)
+
 }

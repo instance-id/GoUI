@@ -13,24 +13,23 @@ func CreateViewMainSettings() {
 	var tmpCommandPrefix = CommandPrefix
 
 	// --- Main Settings Frame -------------------------------------------
-	FrmMainSettings = ui.CreateFrame(WindowMain, ui.AutoSize, ui.AutoSize, ui.BorderNone, ui.AutoSize)
-	FrmMainSettings.SetTitle("FrameTop")
+	FrmMainSettings = ui.CreateFrame(FrameContent, ui.AutoSize, ui.AutoSize, ui.BorderNone, ui.Fixed)
 	FrmMainSettings.SetPack(ui.Vertical)
 
 	// --- Main Settings Content -----------------------------------------
-	settingsFrame := ui.CreateFrame(FrmMainSettings, ui.AutoSize, ui.AutoSize, ui.BorderThin, ui.AutoSize)
+	settingsFrame := ui.CreateFrame(FrmMainSettings, 100, ui.AutoSize, ui.BorderThin, ui.AutoSize)
 	settingsFrame.SetPaddings(2, 2)
 	settingsFrame.SetTitle(TxtMainSettings)
 	settingsFrame.SetPack(ui.Vertical)
 
 	// --- Discord Token -------------------------------------------------
 	tokenFrame := NewFramedInput(settingsFrame, TxtDiscordToken, nil)
-	ui.CreateEditField(tokenFrame, 70, tmpDiscordToken, ui.Fixed)
+	ui.CreateEditField(tokenFrame, ui.AutoSize, tmpDiscordToken, ui.Fixed)
 	ui.CreateLabel(tokenFrame, ui.AutoSize, ui.AutoSize, TxtDiscordTokenDesc, ui.Fixed)
 
 	// --- Command Prefix ------------------------------------------------
 	cmdPrefixFrame := NewFramedInput(settingsFrame, TxtCmdPrefix, nil)
-	ui.CreateEditField(cmdPrefixFrame, 10, tmpCommandPrefix, ui.Fixed)
+	ui.CreateEditField(cmdPrefixFrame, ui.AutoSize, tmpCommandPrefix, ui.Fixed)
 	ui.CreateLabel(cmdPrefixFrame, ui.AutoSize, ui.AutoSize, TxtCmdPrefixDesc, ui.Fixed)
 
 	// --- Require Email -------------------------------------------------
@@ -50,11 +49,11 @@ func CreateViewMainSettings() {
 	// --- Save Settings ------------------------------------------------
 	var params = FramedInputParams{Orientation: ui.Vertical, Width: 4, Height: 4}
 	saveSettings := NewFramedInput(settingsFrame, TxtSaveDesc, &params)
-	BtnSave = ui.CreateButton(saveSettings, 4, ui.AutoSize, TxtSave, ui.Fixed)
-	BtnSave.OnClick(func(ev ui.Event) {
+	BtnMainSettingsSave = ui.CreateButton(saveSettings, 4, ui.AutoSize, TxtSave, ui.Fixed)
+	BtnMainSettings.SetSize(5, ui.AutoSize)
+	BtnMainSettingsSave.OnClick(func(ev ui.Event) {
 		DiscordToken = tmpDiscordToken
 		CommandPrefix = tmpCommandPrefix
 	})
-	//ui.CreateLabel(saveSettings, ui.AutoSize, ui.AutoSize, TxtSaveDesc, ui.Fixed)
-
+	FrmMainSettings.SetVisible(false)
 }
