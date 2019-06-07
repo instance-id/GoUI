@@ -45,6 +45,10 @@ const TxtAssetCodes = " Asset Codes "
 const TxtAssetCodesBtn = " Manage Asset Codes "
 const TxtAssetCodesDesc = "Shorthand abbreviations/identifiers for your asset(s). Ex `Best Asset Ever 7` = BAE7 "
 
+const TxtAssetDetails = " Asset Details "
+const TxtAssetDetailsBtn = " Manage Asset Details "
+const TxtAssetDetailsDesc = "Asset details, such as full name, api key, Discord role association"
+
 const TxtAssetRoles = " Bot Users "
 const TxtAssetRolesDesc = "The role(s) which have permission to perform administrative bot functions"
 

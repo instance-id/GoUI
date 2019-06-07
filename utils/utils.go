@@ -37,6 +37,19 @@ func NewFramedInput(parent *ui.Frame, title string, params *FramedInputParams) *
 	return frameReturn
 }
 
+func NewFramedWindowInput(parent *ui.Window, title string, params *FramedInputParams) *ui.Frame {
+
+	if params != nil {
+		SetValues(params)
+	}
+
+	frameWindowReturn := ui.CreateFrame(parent, defaultWidth, defaultHeight, defaultBorder, defaultScale)
+	frameWindowReturn.SetPaddings(defaultPadX, defaultPadY)
+	frameWindowReturn.SetPack(defaultOrientation)
+	frameWindowReturn.SetTitle(title)
+	return frameWindowReturn
+}
+
 func SetValues(params *FramedInputParams) {
 	if params.Orientation != 1 {
 		defaultOrientation = params.Orientation

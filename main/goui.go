@@ -40,8 +40,8 @@ func createView() {
 	view.CreateViewPlugins()
 
 	// --- Popup Menu Frames ---------------------------------------------
-	view.CreateViewPopupTheme()
-	view.CreateViewLogLevel()
+	//view.CreateViewPopupTheme()
+	//view.CreateViewLogLevel()
 	//view.CreateViewPopupAssetCodes()
 
 	MainInitialSettings()

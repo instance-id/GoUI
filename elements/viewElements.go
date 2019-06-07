@@ -8,6 +8,7 @@ import (
 var (
 	WindowMain       *ui.Window
 	WindowAssetCodes *ui.Window
+	WindowAssetData  *ui.Window
 
 	FrameMenu          *ui.Frame
 	FrameMain          *ui.Frame
@@ -30,4 +31,8 @@ var (
 
 	// --- Discord settings buttons -------------
 	BtnAssetCodes *ui.Button
+
+	// --- Arbitrary ------------------------------------------------
+	WindowListDialog *ui.Window
+	FrameListDialog  *ui.Frame
 )
