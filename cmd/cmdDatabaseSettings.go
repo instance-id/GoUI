@@ -5,24 +5,24 @@ import (
 	. "github.com/instance-id/GoUI/text"
 )
 
-func CommandDiscordSettings() {
+func CommandDatabaseSettings() {
 
 	// --- Disable ---------------------------------------------
 	FrmMainSettings.SetVisible(false)
 	FrmMainSettings.SetActive(false)
-	FrmDatabaseSettings.SetVisible(false)
-	FrmDatabaseSettings.SetActive(false)
+	FrmDiscordSettings.SetVisible(false)
+	FrmDiscordSettings.SetActive(false)
 	FrmPlugins.SetVisible(false)
 	FrmPlugins.SetActive(false)
 
 	// --- Enable ----------------------------------------------
-	FrmDiscordSettings.SetVisible(true)
-	FrmDiscordSettings.SetActive(true)
+	FrmDatabaseSettings.SetVisible(true)
+	FrmDatabaseSettings.SetActive(true)
 
 	// --- Modify ----------------------------------------------
 	BtnMainSettings.SetTitle(TxtMainSettings)
-	BtnDiscordSettings.SetTitle(TxtDiscordSettings + TxtActive)
-	BtnDatabaseSettings.SetTitle(TxtDatabaseSettings)
+	BtnDiscordSettings.SetTitle(TxtDiscordSettings)
+	BtnDatabaseSettings.SetTitle(TxtDatabaseSettings + TxtActive)
 	BtnPlugins.SetTitle(TxtPlugins)
 
 	// --- Activate --------------------------------------------

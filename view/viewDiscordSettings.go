@@ -19,7 +19,7 @@ func CreateViewDiscordSettings() {
 	FrmDiscordSettings.SetPack(ui.Horizontal)
 
 	// --- Discord Settings Content ----------------------------------------
-	settingsFrame := ui.CreateFrame(FrmDiscordSettings, 100, ui.AutoSize, ui.BorderThin, ui.Fixed)
+	settingsFrame := ui.CreateFrame(FrmDiscordSettings, 130, ui.AutoSize, ui.BorderThin, ui.Fixed)
 	settingsFrame.SetPaddings(2, 2)
 	settingsFrame.SetTitle(TxtDiscordSettings)
 	settingsFrame.SetPack(ui.Vertical)
@@ -54,7 +54,7 @@ func CreateViewDiscordSettings() {
 	BtnLogLevel := ui.CreateButton(logLevelFrame, ui.AutoSize, ui.AutoSize, TxtAssetDetailsBtn, ui.Fixed)
 	BtnLogLevel.OnClick(func(ev ui.Event) {
 		FrmDiscordSettings.SetActive(false)
-		SelectLogLevel(BtnLogLevel)
+		CreateTableDialog(BtnLogLevel, TxtAssetDetails)
 	})
 	ui.CreateLabel(logLevelFrame, ui.AutoSize, ui.AutoSize, TxtAssetDetailsDesc, ui.Fixed)
 

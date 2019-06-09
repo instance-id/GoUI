@@ -12,15 +12,18 @@ func CommandPlugins() {
 	FrmMainSettings.SetActive(false)
 	FrmDiscordSettings.SetVisible(false)
 	FrmDiscordSettings.SetActive(false)
+	FrmDatabaseSettings.SetVisible(false)
+	FrmDatabaseSettings.SetActive(false)
 
 	// --- Enable ----------------------------------------------
 	FrmPlugins.SetVisible(true)
+	FrmPlugins.SetActive(true)
 
 	// --- Modify ----------------------------------------------
 	BtnMainSettings.SetTitle(TxtMainSettings)
 	BtnDiscordSettings.SetTitle(TxtDiscordSettings)
+	BtnDatabaseSettings.SetTitle(TxtDatabaseSettings)
 	BtnPlugins.SetTitle(TxtPlugins + TxtActive)
 
 	// --- Activate --------------------------------------------
-	FrmPlugins.SetActive(true)
 }

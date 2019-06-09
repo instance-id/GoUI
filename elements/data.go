@@ -1,9 +1,30 @@
 package elements
 
+import (
+	ui "github.com/VladimirMarkelov/clui"
+)
+
 type LogLevels struct {
 	LogLevel        []string
 	CurrentLogLevel string
 	DefaultLogLevel string
+}
+
+type TableEdit struct {
+	Row    int
+	Col    int
+	OldVal string
+	NewVal string
+}
+
+type AssetDetails struct {
+	AssetCode     string
+	AssetName     string
+	AssetApiKey   string
+	AssetRole     string
+	AssetVersion  string
+	AssetReplaced string
+	ReplaceDate   string
 }
 
 type DataAssets struct {
@@ -18,11 +39,58 @@ type DataDiscord struct {
 	Roles    map[string]string
 }
 
+type DatabaseDetails struct {
+	Provider    int
+	Address     string
+	Username    string
+	Password    string
+	Database    string
+	TablePrefix string
+}
+
+type TableDialog struct {
+	View       *ui.Window
+	Frame      *ui.Frame
+	result     int
+	value      int
+	edtResult  string
+	table      *ui.TableView
+	edit       *ui.EditField
+	editDialog *ui.SelectDialog
+	confirm    *ui.ConfirmationDialog
+	onClose    func()
+}
+
+type ListDialog struct {
+	View       *ui.Window
+	Frame      *ui.Frame
+	result     int
+	value      int
+	edtResult  string
+	list       *ui.ListBox
+	edit       *ui.EditField
+	editDialog *ui.SelectDialog
+	confirm    *ui.ConfirmationDialog
+	onClose    func()
+}
+
 var (
 	Log           LogLevels
 	DiscordToken  string
 	CommandPrefix string
 )
+
+var AssetDetail = []*AssetDetails{{AssetCode: "SCT", AssetName: "SCT - Scriptable Text", AssetApiKey: "123123112312312323123123123", AssetRole: "123123123123123123", AssetReplaced: "No", AssetVersion: "1", ReplaceDate: ""},
+	{AssetCode: "UFPS1", AssetName: "UFPS : Ultimate FPS", AssetApiKey: "123123112312312323123123123", AssetRole: "123123123123123123", AssetReplaced: "Yes", AssetVersion: "1", ReplaceDate: "2018-06-06"},
+	{AssetCode: "UCC", AssetName: "Ultimate Character Controller", AssetApiKey: "123123112312312323123123123", AssetRole: "123123123123123123", AssetReplaced: "Yes", AssetVersion: "1", ReplaceDate: "2018-06-06"},
+	{AssetCode: "TPC", AssetName: "Third Person Controller", AssetApiKey: "123123112312312323123123123", AssetRole: "123123123123123123", AssetReplaced: "Yes", AssetVersion: "1", ReplaceDate: "2018-06-06"},
+	{AssetCode: "UTPS", AssetName: "UTPS: Ultimate Third Person Shooter", AssetApiKey: "123123112312312323123123123", AssetRole: "123123123123123123", AssetReplaced: "Yes", AssetVersion: "1", ReplaceDate: "2018-06-06"},
+	{AssetCode: "UTPM", AssetName: "UTPM: Ultimate Third Person Melee", AssetApiKey: "123123112312312323123123123", AssetRole: "123123123123123123", AssetReplaced: "Yes", AssetVersion: "1", ReplaceDate: "2018-06-06"},
+	{AssetCode: "TPC1", AssetName: "Third Person Controller", AssetApiKey: "123123112312312323123123123", AssetRole: "123123123123123123", AssetReplaced: "Yes", AssetVersion: "1", ReplaceDate: "2018-06-06"},
+	{AssetCode: "FPC", AssetName: "First Person Controller", AssetApiKey: "123123112312312323123123123", AssetRole: "123123123123123123", AssetReplaced: "Yes", AssetVersion: "1", ReplaceDate: "2018-06-06"},
+	{AssetCode: "BD", AssetName: "Behavior Designer - Behavior Trees for Everyone", AssetApiKey: "123123112312312323123123123", AssetRole: "123123123123123123", AssetReplaced: "No", AssetVersion: "1", ReplaceDate: "2018-06-06"},
+	{AssetCode: "UFPS", AssetName: "UFPS : Ultimate FPS", AssetApiKey: "123123112312312323123123123", AssetRole: "123123123123123123", AssetReplaced: "Yes", AssetVersion: "1", ReplaceDate: "2018-06-06"},
+	{AssetCode: "UFPM", AssetName: "UFPM: Ultimate First Person Melee", AssetApiKey: "123123112312312323123123123", AssetRole: "123123123123123123", AssetReplaced: "Yes", AssetVersion: "1", ReplaceDate: "2018-06-06"}}
 
 var DiscordData = DataDiscord{
 	GuildId:  "123123123123",
@@ -30,9 +98,18 @@ var DiscordData = DataDiscord{
 	Roles:    map[string]string{"ABC": "44444444444444", "BCD": "55555555555555"},
 }
 
+var DatabaseData = DatabaseDetails{
+	Address:     "instance.id",
+	Username:    "Username",
+	Password:    "Password",
+	Database:    "Verifier",
+	TablePrefix: "verifier_",
+	Provider:    0, // 0=MySQL, 1=Postgres, 2=MSSQL, 3=SqLite
+}
+
 var AssetData = DataAssets{
 	AssetCodes:    []string{"ABC", "BCD"},
-	AssetPackages: map[string]string{"ABC": "ABC - Best Asset", "BCD": "BCD : Also Best Asset"},
+	AssetPackages: map[string]string{"ABC": "ABC - Best Asset", "BCD": "BCD : Also Best Asset", AssetDetail[0].AssetCode: AssetDetail[0].AssetName},
 	AssetApiKeys:  map[string]string{"ABC": "1231232123123123", "BCD": "3453453453453645"},
 }
 

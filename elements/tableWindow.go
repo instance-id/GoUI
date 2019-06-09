@@ -103,7 +103,7 @@ package elements
 //
 //	frm1 := CreateFrame(dlg.View, 16, 4, BorderNone, Fixed)
 //	CreateFrame(frm1, 1, 1, BorderNone, 1)
-//	btn1 := CreateButton(frm1, AutoSize, AutoSize, "OK", Fixed)
+//	btn1 := NewCreateButton(frm1, AutoSize, AutoSize, "OK", Fixed)
 //	btn1.OnClick(func(ev Event) {
 //		dlg.result = DialogButton1
 //		if dlg.typ == SelectDialogList {
@@ -121,7 +121,7 @@ package elements
 //	})
 //
 //	CreateFrame(frm1, 1, 1, BorderNone, 1)
-//	btn2 := CreateButton(frm1, AutoSize, AutoSize, "Cancel", Fixed)
+//	btn2 := NewCreateButton(frm1, AutoSize, AutoSize, "Cancel", Fixed)
 //	btn2.OnClick(func(ev Event) {
 //		dlg.result = DialogButton2
 //		dlg.edtResult = ""

@@ -12,6 +12,7 @@ const TxtRunVerifier = " Run " + TxtApplication
 const TxtMainSettings = " Main Settings "
 const TxtAssetSettings = " Asset Settings "
 const TxtDiscordSettings = " Discord Settings "
+const TxtDatabaseSettings = " Database Settings "
 const TxtPlugins = " Plugins "
 const TxtSave = " Save "
 const TxtQuit = " Quit "
@@ -51,5 +52,21 @@ const TxtAssetDetailsDesc = "Asset details, such as full name, api key, Discord 
 
 const TxtAssetRoles = " Bot Users "
 const TxtAssetRolesDesc = "The role(s) which have permission to perform administrative bot functions"
+
+// --- Database Settings -------------------------------------------------
+const TxtDatabase = " Database Settings "
+const TxtDatabaseDesc = "Configure your database connection to store verification data"
+
+const TxtMysql = "MySQL"
+const TxtPostgres = "Postgres"
+const TxtMSSQL = "MSSQL"
+const TxtSqlite = "Sqlite"
+
+const TxtDbProvider = "Configure your database connection to store verification data"
+const TxtDbAddress = "Connection address to your database"
+const TxtDbUsername = "Database Username"
+const TxtDbPassword = "Database Password"
+const TxtDbDatabase = "The database name in which to store data"
+const TxtDbTablePrefix = "Prefix for table names (Ex: Database -> Prefix_Database)"
 
 // --- Asset Settings ----------------------------------------------------

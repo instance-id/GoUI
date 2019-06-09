@@ -1,22 +1,24 @@
-﻿// --- Theme properties -------------------------
-title=verifier
-author=instance.id
-version=1.0 (06/05/2019)
+
+//----------------- Theme properties -----------------
+title=TurboVision
+author=Vladimir Markelov
+version=1.0 (2016-01-04)
 parent=default
 
 
-// --- Colors -----------------------------------
-// --- View colors - internal area and border
-ViewBack = black
+//----------------- Colors -----------------
+
+// View colors - internal area and border
+ViewBack = white
 ViewText = white bold
 
-// --- general colors
-Back         = black
+// general colors
+Back         = white
 Text         = black
 DisabledText = white
 DisabledBack = black bold
 
-// --- editable & listbox-like controls (interactive ones)
+// editable & listbox-like controls (interactive ones)
 EditBack       = blue
 EditText       = yellow
 EditActiveBack = blue bold
@@ -24,13 +26,13 @@ EditActiveText = yellow bold
 SelectionText  = yellow bold
 SelectionBack  = cyan bold
 
-// --- scroll control
+// scroll control
 ScrollText = white bold
 ScrollBack = white
 ThumbText  = white bold
 ThumbBack  = white
 
-// --- window-like controls (checkbox, radiogroup...)
+// window-like controls (checkbox, radiogroup...)
 ControlText         = black
 ControlBack         = cyan bold
 ControlActiveBack   = cyan bold
@@ -39,26 +41,26 @@ ControlDisabledBack = cyan bold
 ControlDisabledText = black bold
 ControlShadow       = black
 
-// --- progressbar control
+// progressbar control
 ProgressBack       = blue
 ProgressText       = yellow
 ProgressActiveBack = blue bold
 ProgressActiveText = yellow bold
 
-// --- button control
-ButtonBack=black bold
-ButtonText=white
+// button control
+ButtonBack=green bold
+ButtonText=black
 ButtonActiveBack=green bold
 ButtonActiveText=white bold
 ButtonShadowBack=black
 ButtonDisabledText=black bold
 ButtonDisabledBack=white
 
-// --- bar chart control
+// bar chart control
 BarChartBack=black
 BarChartText=white
 
-// --- spark chart
+// spark chart
 SparkChartBack=black
 SparkChartText=white
 SparkChartBarBack=black
@@ -66,7 +68,7 @@ SparkChartBarText=cyan
 SparkChartMaxBack=black
 SparkChartMaxText=cyan bold
 
-// --- table view
+// table view
 TableText=white
 TableBack=black
 TableSelectedText=white
@@ -77,7 +79,7 @@ TableLineText=white
 TableHeaderText=white
 TableHeaderBack=black
 
-// --- Objects ----------------------------------
+//----------------- Objects -----------------
 SingleBorder=─│┌┐└┘
 DoubleBorder=═║╔╗╚╝
 Edit=←→V*

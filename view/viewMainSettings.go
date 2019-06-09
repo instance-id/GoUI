@@ -17,23 +17,26 @@ func CreateViewMainSettings() {
 	FrmMainSettings.SetPack(ui.Vertical)
 
 	// --- Main Settings Content -----------------------------------------
-	settingsFrame := ui.CreateFrame(FrmMainSettings, 100, ui.AutoSize, ui.BorderThin, ui.AutoSize)
+	settingsFrame := ui.CreateFrame(FrmMainSettings, 130, ui.AutoSize, ui.BorderThin, ui.AutoSize)
 	settingsFrame.SetPaddings(2, 2)
 	settingsFrame.SetTitle(TxtMainSettings)
 	settingsFrame.SetPack(ui.Vertical)
 
 	// --- Discord Token -------------------------------------------------
 	tokenFrame := NewFramedInput(settingsFrame, TxtDiscordToken, nil)
+	tokenFrame.SetPaddings(2, 2)
 	ui.CreateEditField(tokenFrame, ui.AutoSize, tmpDiscordToken, ui.Fixed)
 	ui.CreateLabel(tokenFrame, ui.AutoSize, ui.AutoSize, TxtDiscordTokenDesc, ui.Fixed)
 
 	// --- Command Prefix ------------------------------------------------
 	cmdPrefixFrame := NewFramedInput(settingsFrame, TxtCmdPrefix, nil)
+	cmdPrefixFrame.SetPaddings(2, 2)
 	ui.CreateEditField(cmdPrefixFrame, ui.AutoSize, tmpCommandPrefix, ui.Fixed)
 	ui.CreateLabel(cmdPrefixFrame, ui.AutoSize, ui.AutoSize, TxtCmdPrefixDesc, ui.Fixed)
 
 	// --- Require Email -------------------------------------------------
 	requireEmail := NewFramedInput(settingsFrame, TxtRequireEmail, nil)
+	requireEmail.SetPaddings(2, 2)
 	ui.CreateLabel(requireEmail, ui.AutoSize, ui.AutoSize, TxtRequireEmailDesc, ui.Fixed)
 	ui.CreateCheckBox(requireEmail, 10, " Check for Yes, unchecked for No ", ui.Fixed)
 

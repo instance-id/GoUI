@@ -1,0 +1,91 @@
+﻿// --- Theme properties -------------------------
+title=verifier
+author=instance.id
+version=1.0 (2019-06-05)
+parent=default
+
+
+// --- Colors -----------------------------------
+// --- View colors - internal area and border
+ViewBack = black
+ViewText = white 
+
+// --- general colors
+Back         = black
+Text         = white
+DisabledText = white
+DisabledBack = black 
+
+// --- editable & listbox-like controls (interactive ones)
+EditBack       = white
+EditText       = black
+EditActiveBack = white
+EditActiveText = blue
+SelectionText  = yellow 
+SelectionBack  = cyan 
+
+// --- scroll control
+ScrollText = white 
+ScrollBack = black
+ThumbText  = white 
+ThumbBack  = black
+
+// --- window-like controls (checkbox, radiogroup...)
+ControlText         = white
+ControlBack         = black
+ControlActiveBack   = white
+ControlActiveText   = black
+ControlDisabledBack = cyan 
+ControlDisabledText = black 
+ControlShadow       = black
+
+// --- progressbar control
+ProgressBack       = blue
+ProgressText       = yellow
+ProgressActiveBack = blue 
+ProgressActiveText = yellow 
+
+// --- button control
+ButtonBack=black
+ButtonText=white
+ButtonActiveBack=white
+ButtonActiveText=black
+ButtonShadowBack=black
+ButtonDisabledText=black 
+ButtonDisabledBack=red
+
+// --- bar chart control
+BarChartBack=black
+BarChartText=white
+
+// --- spark chart
+SparkChartBack=black
+SparkChartText=white
+SparkChartBarBack=black
+SparkChartBarText=cyan
+SparkChartMaxBack=black
+SparkChartMaxText=cyan 
+
+// --- table view
+TableText=white
+TableBack=black
+TableSelectedText=blue
+TableSelectedBack=white
+TableActiveCellText=black
+TableActiveCellBack=white
+TableLineText=white
+TableHeaderText=white
+TableHeaderBack=black
+
+// --- Objects ----------------------------------
+SingleBorder=─│┌┐└┘
+DoubleBorder=═║╔╗╚╝
+Edit=←→V*
+ScrollBar=░■▲▼◄►
+ViewButtons=^_■[]
+CheckBox=[] X?
+Radio=() *
+ProgressBar=░▒
+BarChart=█─│┌┐└┘┬┴├┤┼
+SparkChart=█
+TableView=─│┼▼▲

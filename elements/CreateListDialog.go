@@ -8,19 +8,6 @@ import (
 	term "github.com/nsf/termbox-go"
 )
 
-type ListDialog struct {
-	View       *ui.Window
-	Frame      *ui.Frame
-	result     int
-	value      int
-	edtResult  string
-	list       *ui.ListBox
-	edit       *ui.EditField
-	editDialog *ui.SelectDialog
-	confirm    *ui.ConfirmationDialog
-	onClose    func()
-}
-
 // --- Populate list ------------------------------------------------
 func RefreshAssetList(list *ListDialog) {
 	list.list.Clear()
@@ -37,14 +24,16 @@ func CreateListDialog(listTitle string) *ListDialog {
 
 	cw, ch := term.Size()
 
-	listDialog.View = ui.AddWindow(cw/2-24, ch/2-16, 40, 15, TxtAssetCodes)
-	//ui.WindowManager().BeginUpdate()
-	//defer ui.WindowManager().EndUpdate()
+	listDialog.View = ui.AddWindow(cw/2-24, ch/2-16, ui.AutoSize, ui.AutoSize, TxtAssetCodes)
+	ui.WindowManager().BeginUpdate()
+	defer ui.WindowManager().EndUpdate()
+	listDialog.View.SetGaps(1, ui.KeepValue)
 	listDialog.View.SetModal(true)
 	listDialog.View.SetPack(ui.Vertical)
 
 	listDialog.Frame = NewFramedWindowInput(listDialog.View, listTitle, nil)
 	listDialog.list = ui.CreateListBox(listDialog.Frame, 25, 12, 1)
+	ui.ActivateControl(listDialog.Frame, listDialog.list)
 	RefreshAssetList(listDialog)
 
 	// --- Buttons -------------------------------------------------------
