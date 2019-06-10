@@ -1,7 +1,7 @@
 package utils
 
 import (
-	ui "github.com/VladimirMarkelov/clui"
+	ui "github.com/instance-id/clui"
 )
 
 type FramedInputParams struct {

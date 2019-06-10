@@ -23,9 +23,9 @@ func CommandDatabaseSettings() {
 	BtnMainSettings.SetTitle(TxtMainSettings)
 	BtnDiscordSettings.SetTitle(TxtDiscordSettings)
 	BtnDatabaseSettings.SetTitle(TxtDatabaseSettings + TxtActive)
+	BtnDatabaseSettings.SetActive(true)
 	BtnPlugins.SetTitle(TxtPlugins)
 
 	// --- Activate --------------------------------------------
-	//FrmDiscordSettings.SetActive(true)
 
 }

@@ -1,11 +1,24 @@
 package view
 
 import (
-	ui "github.com/VladimirMarkelov/clui"
 	. "github.com/instance-id/GoUI/elements"
 	. "github.com/instance-id/GoUI/text"
 	. "github.com/instance-id/GoUI/utils"
+	ui "github.com/instance-id/clui"
 )
+
+type ProviderGroup struct {
+	Group      *ui.RadioGroup
+	RadioGroup *ui.Radio
+}
+
+func GetProvider(db *DatabaseDetails, group *ProviderGroup) {
+	switch db.Provider {
+	case 0:
+		//group.Group.SetSelected(group.RadioGroup[0])
+	}
+
+}
 
 func CreateViewDatabaseSettings() {
 
@@ -24,7 +37,7 @@ func CreateViewDatabaseSettings() {
 	// --- Database Settings Content -------------------------------------
 	settingsFrame := ui.CreateFrame(FrmDatabaseSettings, 130, ui.AutoSize, ui.BorderThin, ui.Fixed)
 	settingsFrame.SetPaddings(2, 2)
-	settingsFrame.SetTitle(TxtDatabaseSettings)
+	settingsFrame.SetTitle(TxtDatabase)
 	settingsFrame.SetPack(ui.Vertical)
 
 	// --- Database Provider ---------------------------------------------
@@ -43,21 +56,53 @@ func CreateViewDatabaseSettings() {
 	providerGroup.AddItem(mssqlRadio)
 	providerGroup.AddItem(sqliteRadio)
 
-	ui.CreateLabel(providerFrame, ui.AutoSize, ui.AutoSize, TxtGuildIdDesc, ui.Fixed)
+	//var group = [mySQLRadio, postgresRadio, mssqlRadio, sqliteRadio]
 
-	// --- Bot Users -----------------------------------------------------
-	botUsersFrame := NewFramedInput(settingsFrame, TxtBotUsers, nil)
-	botUsersFrame.SetPaddings(2, 2)
-	ui.CreateEditField(botUsersFrame, ui.AutoSize, DatabaseData.TablePrefix, ui.Fixed)
-	ui.CreateLabel(botUsersFrame, ui.AutoSize, ui.AutoSize, TxtBotUsersDesc, ui.Fixed)
+	//GetProvider(DatabaseData, providerGroup)
+
+	providerGroup.SelectItem(mySQLRadio)
+	tmpProvider = providerGroup.Selected()
+
+	// --- Database Details -----------------------------------------------------
+	dbDetailsFrame := NewFramedInput(settingsFrame, TxtDbDetails, nil)
+	dbDetailsFrame.SetPaddings(2, 2)
+	dbDetailsFrame.SetGaps(0, 0)
+
+	addressFrame := ui.CreateFrame(dbDetailsFrame, ui.AutoSize, ui.AutoSize, ui.BorderNone, ui.Fixed)
+	addressFrame.SetPack(ui.Horizontal)
+	addressFrame.SetPaddings(0, 0)
+	addressFrame.SetGaps(0, 0)
+	ui.CreateLabel(addressFrame, ui.AutoSize, ui.AutoSize, TxtDbAddress, ui.Fixed)
+	ui.CreateEditField(addressFrame, 50, tmpAddress, ui.Fixed)
+
+	usernameFrame := ui.CreateFrame(dbDetailsFrame, ui.AutoSize, ui.AutoSize, ui.BorderNone, ui.Fixed)
+	usernameFrame.SetPack(ui.Horizontal)
+	ui.CreateLabel(usernameFrame, ui.AutoSize, ui.AutoSize, TxtDbUsername, ui.Fixed)
+	ui.CreateEditField(usernameFrame, 50, tmpUsername, ui.Fixed)
+
+	passwordFrame := ui.CreateFrame(dbDetailsFrame, ui.AutoSize, ui.AutoSize, ui.BorderNone, ui.Fixed)
+	passwordFrame.SetPack(ui.Horizontal)
+	ui.CreateLabel(passwordFrame, ui.AutoSize, ui.AutoSize, TxtDbPassword, ui.Fixed)
+	ui.CreateEditField(passwordFrame, 50, tmpPassword, ui.Fixed)
+
+	databaseFrame := ui.CreateFrame(dbDetailsFrame, ui.AutoSize, ui.AutoSize, ui.BorderNone, ui.Fixed)
+	databaseFrame.SetPack(ui.Horizontal)
+	ui.CreateLabel(databaseFrame, ui.AutoSize, ui.AutoSize, TxtDbDatabase, ui.Fixed)
+	ui.CreateEditField(databaseFrame, 50, tmpDatabase, ui.Fixed)
+
+	prefixFrame := ui.CreateFrame(dbDetailsFrame, ui.AutoSize, ui.AutoSize, ui.BorderNone, ui.Fixed)
+	prefixFrame.SetPack(ui.Horizontal)
+	ui.CreateLabel(prefixFrame, ui.AutoSize, ui.AutoSize, TxtDbTablePrefix, ui.Fixed)
+	ui.CreateEditField(prefixFrame, 50, tmpTablePrefix, ui.Fixed)
 
 	// --- Window Control ------------------------------------------------
-	btnFrame := ui.CreateFrame(settingsFrame, 1, 1, ui.BorderNone, ui.Fixed)
-	btnFrame.SetPaddings(1, 1)
+	btnFrame := ui.CreateFrame(settingsFrame, 10, 1, ui.BorderNone, ui.Fixed)
+	btnFrame.SetPaddings(2, 2)
 
-	var params = FramedInputParams{Orientation: ui.Vertical, Width: 4, Height: 4}
+	var params = FramedInputParams{Orientation: ui.Vertical, Width: 10, Height: 4, Scale: ui.Fixed}
 	saveSettings := NewFramedInput(btnFrame, TxtSaveDesc, &params)
-	BtnMainSettingsSave = ui.CreateButton(saveSettings, ui.AutoSize, ui.AutoSize, TxtSave, ui.Fixed)
+	BtnMainSettingsSave = ui.CreateButton_NoShadow(saveSettings, ui.AutoSize, ui.AutoSize, TxtSave, ui.Fixed)
+	BtnMainSettingsSave.SetAlign(ui.AlignLeft)
 	BtnMainSettingsSave.OnClick(func(ev ui.Event) {
 		DatabaseData.Provider = tmpProvider
 		DatabaseData.Address = tmpAddress
@@ -66,5 +111,7 @@ func CreateViewDatabaseSettings() {
 		DatabaseData.Database = tmpDatabase
 		DatabaseData.TablePrefix = tmpTablePrefix
 	})
+
+	BtnMainSettingsSave.SetActive(false)
 	FrmDatabaseSettings.SetVisible(false)
 }

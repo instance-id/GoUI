@@ -1,7 +1,7 @@
 package elements
 
 import (
-	ui "github.com/VladimirMarkelov/clui"
+	ui "github.com/instance-id/clui"
 )
 
 // --- Application Elements ----------------------------------------------
@@ -11,7 +11,7 @@ var (
 	WindowAssetData  *ui.Window
 
 	FrameMenu           *ui.Frame
-	FrameMain           *ui.Frame
+	FrameMainMenu       *ui.Frame
 	FrameContent        *ui.Frame
 	FrmMainSettings     *ui.Frame
 	FrmDiscordSettings  *ui.Frame
@@ -19,20 +19,21 @@ var (
 	FrmPlugins          *ui.Frame
 
 	// --- Menu buttons -------------------------
-	BtnRunVerifier      *Button
-	BtnMainSettings     *ui.Button
-	BtnDiscordSettings  *ui.Button
-	BtnDatabaseSettings *ui.Button
-	BtnPlugins          *ui.Button
-	BtnTheme            *ui.Button
-	BtnQuit             *ui.Button
+	BtnRunVerifier      *ui.ButtonNoShadow
+	BtnMainSettings     *ui.ButtonNoShadow
+	BtnDiscordSettings  *ui.ButtonNoShadow
+	BtnDatabaseSettings *ui.ButtonNoShadow
+	BtnPlugins          *ui.ButtonNoShadow
+	BtnTheme            *ui.ButtonNoShadow
+	BtnQuit             *ui.ButtonNoShadow
 
 	// --- Main Settings buttons ----------------
-	BtnMainSettingsSave *ui.Button
-	BtnLogLevel         *ui.Button
+	BtnMainSettingsSave *ui.ButtonNoShadow
+	BtnLogLevel         *ui.ButtonNoShadow
 
 	// --- Discord settings buttons -------------
-	BtnAssetCodes *ui.Button
+	BtnAssetCodes   *ui.ButtonNoShadow
+	BtnAssetDetails *ui.ButtonNoShadow
 
 	// --- Arbitrary ------------------------------------------------
 	WindowListDialog *ui.Window

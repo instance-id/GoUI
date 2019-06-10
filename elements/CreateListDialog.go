@@ -2,9 +2,9 @@ package elements
 
 import (
 	"fmt"
-	ui "github.com/VladimirMarkelov/clui"
 	. "github.com/instance-id/GoUI/text"
 	. "github.com/instance-id/GoUI/utils"
+	ui "github.com/instance-id/clui"
 	term "github.com/nsf/termbox-go"
 )
 

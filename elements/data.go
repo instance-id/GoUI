@@ -1,7 +1,7 @@
 package elements
 
 import (
-	ui "github.com/VladimirMarkelov/clui"
+	ui "github.com/instance-id/clui"
 )
 
 type LogLevels struct {
@@ -40,6 +40,7 @@ type DataDiscord struct {
 }
 
 type DatabaseDetails struct {
+	Providers   []string
 	Provider    int
 	Address     string
 	Username    string
@@ -104,7 +105,8 @@ var DatabaseData = DatabaseDetails{
 	Password:    "Password",
 	Database:    "Verifier",
 	TablePrefix: "verifier_",
-	Provider:    0, // 0=MySQL, 1=Postgres, 2=MSSQL, 3=SqLite
+	Providers:   []string{"MySQL", "Postgres", "MSSQL", "SqLite"}, // 0=MySQL, 1=Postgres, 2=MSSQL, 3=SqLite
+	Provider:    0,                                                // 0=MySQL, 1=Postgres, 2=MSSQL, 3=SqLite
 }
 
 var AssetData = DataAssets{

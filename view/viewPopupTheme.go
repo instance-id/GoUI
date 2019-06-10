@@ -1,8 +1,8 @@
 package view
 
 import (
-	ui "github.com/VladimirMarkelov/clui"
 	. "github.com/instance-id/GoUI/elements"
+	ui "github.com/instance-id/clui"
 )
 
 func CreateViewPopupTheme() {
@@ -12,7 +12,7 @@ func CreateViewPopupTheme() {
 	frmTheme.SetActive(false)
 }
 
-func ChangeTheme(btn *ui.Button) {
+func ChangeTheme(btn *ui.ButtonNoShadow) {
 	items := ui.ThemeNames()
 	dlgType := ui.SelectDialogRadio
 

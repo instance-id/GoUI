@@ -1,11 +1,11 @@
 package main
 
 import (
-	ui "github.com/VladimirMarkelov/clui"
 	"github.com/chzyer/readline"
 	. "github.com/instance-id/GoUI/elements"
 	. "github.com/instance-id/GoUI/text"
 	"github.com/instance-id/GoUI/view"
+	ui "github.com/instance-id/clui"
 	"os"
 )
 
@@ -23,6 +23,14 @@ func MainInitialSettings() {
 	FrmDiscordSettings.SetActive(false)
 	FrmDatabaseSettings.SetActive(false)
 	FrmPlugins.SetActive(false)
+
+	BtnRunVerifier.SetActive(false)
+	BtnMainSettings.SetActive(false)
+	BtnDiscordSettings.SetActive(false)
+	BtnDatabaseSettings.SetActive(false)
+	BtnPlugins.SetActive(false)
+	BtnTheme.SetActive(false)
+	BtnQuit.SetActive(false)
 }
 
 func createView() {

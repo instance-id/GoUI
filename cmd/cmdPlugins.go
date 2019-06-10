@@ -26,4 +26,5 @@ func CommandPlugins() {
 	BtnPlugins.SetTitle(TxtPlugins + TxtActive)
 
 	// --- Activate --------------------------------------------
+
 }

@@ -48,8 +48,8 @@ ProgressActiveText = yellow
 // --- button control
 ButtonBack=black
 ButtonText=white
-ButtonActiveBack=white
-ButtonActiveText=black
+ButtonActiveBack=black
+ButtonActiveText=white
 ButtonShadowBack=black
 ButtonDisabledText=black 
 ButtonDisabledBack=red

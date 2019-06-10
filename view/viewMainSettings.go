@@ -1,10 +1,10 @@
 package view
 
 import (
-	ui "github.com/VladimirMarkelov/clui"
 	. "github.com/instance-id/GoUI/elements"
 	. "github.com/instance-id/GoUI/text"
 	. "github.com/instance-id/GoUI/utils"
+	ui "github.com/instance-id/clui"
 )
 
 func CreateViewMainSettings() {
@@ -42,7 +42,8 @@ func CreateViewMainSettings() {
 
 	// --- Select Log Level ----------------------------------------------
 	logLevel := NewFramedInput(settingsFrame, TxtLogLevel, nil)
-	BtnLogLevel = ui.CreateButton(logLevel, ui.AutoSize, ui.AutoSize, TxtLogLevel, 1)
+	BtnLogLevel = ui.CreateButton_NoShadow(logLevel, ui.AutoSize, ui.AutoSize, TxtLogLevelBtn, 1)
+	BtnLogLevel.SetAlign(ui.AlignLeft)
 	BtnLogLevel.OnClick(func(ev ui.Event) {
 		BtnLogLevel.SetEnabled(false)
 		SelectLogLevel(BtnLogLevel)
@@ -50,13 +51,16 @@ func CreateViewMainSettings() {
 	ui.CreateLabel(logLevel, ui.AutoSize, ui.AutoSize, TxtLogLevelDesc, ui.Fixed)
 
 	// --- Save Settings ------------------------------------------------
-	var params = FramedInputParams{Orientation: ui.Vertical, Width: 4, Height: 4}
+	var params = FramedInputParams{Orientation: ui.Vertical, Width: 10, Height: 4, Scale: ui.Fixed}
 	saveSettings := NewFramedInput(settingsFrame, TxtSaveDesc, &params)
-	BtnMainSettingsSave = ui.CreateButton(saveSettings, 4, ui.AutoSize, TxtSave, ui.Fixed)
-	BtnMainSettings.SetSize(5, ui.AutoSize)
+	BtnMainSettingsSave = ui.CreateButton_NoShadow(saveSettings, 9, ui.AutoSize, TxtSave, ui.Fixed)
+	BtnMainSettings.SetSize(10, ui.AutoSize)
+	BtnMainSettingsSave.SetAlign(ui.AlignLeft)
 	BtnMainSettingsSave.OnClick(func(ev ui.Event) {
 		DiscordToken = tmpDiscordToken
 		CommandPrefix = tmpCommandPrefix
 	})
 	FrmMainSettings.SetVisible(false)
+	BtnLogLevel.SetActive(false)
+	BtnMainSettingsSave.SetActive(false)
 }

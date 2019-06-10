@@ -1,10 +1,11 @@
 package view
 
 import (
-	ui "github.com/VladimirMarkelov/clui"
+	"fmt"
 	. "github.com/instance-id/GoUI/elements"
 	. "github.com/instance-id/GoUI/text"
 	. "github.com/instance-id/GoUI/utils"
+	ui "github.com/instance-id/clui"
 )
 
 func CreateViewDiscordSettings() {
@@ -38,8 +39,9 @@ func CreateViewDiscordSettings() {
 	ui.CreateLabel(botUsersFrame, ui.AutoSize, ui.AutoSize, TxtBotUsersDesc, ui.Fixed)
 
 	// --- Asset Codes ---------------------------------------------------
-	assetCodesFrame := NewFramedInput(settingsFrame, TxtAssetCodes, nil)
-	BtnAssetCodes = ui.CreateButton(assetCodesFrame, ui.AutoSize, ui.AutoSize, TxtAssetCodesBtn, ui.Fixed)
+	assetCodesFrame := NewFramedInput(settingsFrame, fmt.Sprintf("%s - %s", TxtAssetCodes, TxtAssetCodesDesc), nil)
+	BtnAssetCodes = ui.CreateButton_NoShadow(assetCodesFrame, 22, ui.AutoSize, TxtAssetCodesBtn, ui.Fixed)
+	BtnAssetCodes.SetAlign(ui.AlignLeft)
 	BtnAssetCodes.OnClick(func(ev ui.Event) {
 		BtnAssetCodes.SetEnabled(false)
 		assetCodes := CreateListDialog(TxtAssetCodes)
@@ -47,21 +49,22 @@ func CreateViewDiscordSettings() {
 			BtnAssetCodes.SetEnabled(true)
 		})
 	})
-	ui.CreateLabel(assetCodesFrame, ui.AutoSize, ui.AutoSize, TxtAssetCodesDesc, ui.Fixed)
 
 	// --- Asset Details -------------------------------------------------
 	logLevelFrame := NewFramedInput(settingsFrame, TxtAssetDetails, nil)
-	BtnLogLevel := ui.CreateButton(logLevelFrame, ui.AutoSize, ui.AutoSize, TxtAssetDetailsBtn, ui.Fixed)
-	BtnLogLevel.OnClick(func(ev ui.Event) {
+	BtnAssetDetails = ui.CreateButton_NoShadow(logLevelFrame, ui.AutoSize, ui.AutoSize, TxtAssetDetailsBtn, ui.Fixed)
+	BtnAssetDetails.SetAlign(ui.AlignLeft)
+	BtnAssetDetails.OnClick(func(ev ui.Event) {
 		FrmDiscordSettings.SetActive(false)
-		CreateTableDialog(BtnLogLevel, TxtAssetDetails)
+		CreateTableDialog(BtnAssetDetails, TxtAssetDetails)
 	})
 	ui.CreateLabel(logLevelFrame, ui.AutoSize, ui.AutoSize, TxtAssetDetailsDesc, ui.Fixed)
 
 	// --- Save Settings -------------------------------------------------
 	var params = FramedInputParams{Orientation: ui.Vertical, Width: 4, Height: 4}
 	saveSettings := NewFramedInput(settingsFrame, TxtSaveDesc, &params)
-	BtnMainSettingsSave = ui.CreateButton(saveSettings, ui.AutoSize, ui.AutoSize, TxtSave, ui.Fixed)
+	BtnMainSettingsSave = ui.CreateButton_NoShadow(saveSettings, ui.AutoSize, ui.AutoSize, TxtSave, ui.Fixed)
+	BtnMainSettingsSave.SetAlign(ui.AlignLeft)
 	BtnMainSettingsSave.OnClick(func(ev ui.Event) {
 		DiscordData.GuildId = tmpGuidId
 		DiscordData.BotUsers = tmpBotUsers

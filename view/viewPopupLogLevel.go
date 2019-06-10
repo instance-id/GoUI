@@ -1,8 +1,8 @@
 package view
 
 import (
-	ui "github.com/VladimirMarkelov/clui"
 	. "github.com/instance-id/GoUI/elements"
+	ui "github.com/instance-id/clui"
 )
 
 //func CreateViewLogLevel() {
@@ -12,7 +12,7 @@ import (
 //	frmLogLevel.SetActive(false)
 //}
 
-func SelectLogLevel(btn *ui.Button) {
+func SelectLogLevel(btn *ui.ButtonNoShadow) {
 
 	dlgType := ui.SelectDialogRadio
 

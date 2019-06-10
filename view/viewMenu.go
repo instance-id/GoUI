@@ -1,10 +1,10 @@
 package view
 
 import (
-	ui "github.com/VladimirMarkelov/clui"
 	. "github.com/instance-id/GoUI/cmd"
 	. "github.com/instance-id/GoUI/elements"
 	. "github.com/instance-id/GoUI/text"
+	ui "github.com/instance-id/clui"
 )
 
 func CreateViewMenu() {
@@ -12,15 +12,14 @@ func CreateViewMenu() {
 	FrameMenu = ui.CreateFrame(WindowMain, 25, 5, ui.BorderNone, ui.Fixed)
 	FrameMenu.SetPack(ui.Vertical)
 
-	FrameMain = ui.CreateFrame(FrameMenu, 5, 5, ui.BorderThin, ui.AutoSize)
-	FrameMain.SetPack(ui.Vertical)
-	FrameMain.SetTitle(TxtMainMenu)
-	FrameMain.SetPaddings(2, 2)
+	FrameMainMenu = ui.CreateFrame(FrameMenu, 5, 5, ui.BorderThin, ui.AutoSize)
+	FrameMainMenu.SetPack(ui.Vertical)
+	FrameMainMenu.SetTitle(TxtMainMenu)
+	FrameMainMenu.SetPaddings(2, 2)
 
 	// --- Run Verifier --------------------------------------------------
-	btnFrame := ui.CreateFrame(FrameMenu, ui.AutoSize, ui.AutoSize, ui.BorderThin, ui.Fixed)
-	btnFrame.SetPaddings(1, 1)
-	BtnRunVerifier = NewCreateButton(btnFrame, ui.AutoSize, ui.AutoSize, TxtRunVerifier, ui.Fixed)
+	BtnRunVerifier = ui.CreateButton_NoShadow(FrameMainMenu, 22, ui.AutoSize, TxtRunVerifier, ui.Fixed)
+	BtnRunVerifier.SetAlign(ui.AlignLeft)
 	BtnRunVerifier.OnClick(func(ev ui.Event) {
 		if !FrmMainSettings.Visible() {
 			CommandMainSettings()
@@ -28,7 +27,8 @@ func CreateViewMenu() {
 	})
 
 	// --- Main Settings -------------------------------------------------
-	BtnMainSettings = ui.CreateButton(FrameMenu, ui.AutoSize, ui.AutoSize, TxtMainSettings+TxtActive, ui.Fixed)
+	BtnMainSettings = ui.CreateButton_NoShadow(FrameMainMenu, 22, ui.AutoSize, TxtMainSettings+TxtActive, ui.Fixed)
+	BtnMainSettings.SetAlign(ui.AlignLeft)
 	BtnMainSettings.OnClick(func(ev ui.Event) {
 		if !FrmMainSettings.Visible() {
 			CommandMainSettings()
@@ -36,7 +36,8 @@ func CreateViewMenu() {
 	})
 
 	// --- Discord Settings ----------------------------------------------
-	BtnDiscordSettings = ui.CreateButton(FrameMenu, ui.AutoSize, ui.AutoSize, TxtDiscordSettings, ui.Fixed)
+	BtnDiscordSettings = ui.CreateButton_NoShadow(FrameMainMenu, 22, ui.AutoSize, TxtDiscordSettings, ui.AutoSize)
+	BtnDiscordSettings.SetAlign(ui.AlignLeft)
 	BtnDiscordSettings.OnClick(func(ev ui.Event) {
 		if !FrmDiscordSettings.Visible() {
 			CommandDiscordSettings()
@@ -44,7 +45,8 @@ func CreateViewMenu() {
 	})
 
 	// --- Database Settings ----------------------------------------------
-	BtnDatabaseSettings = ui.CreateButton(FrameMenu, ui.AutoSize, ui.AutoSize, TxtDatabaseSettings, ui.Fixed)
+	BtnDatabaseSettings = ui.CreateButton_NoShadow(FrameMainMenu, 22, ui.AutoSize, TxtDatabaseSettings, ui.Fixed)
+	BtnDatabaseSettings.SetAlign(ui.AlignLeft)
 	BtnDatabaseSettings.OnClick(func(ev ui.Event) {
 		if !FrmDatabaseSettings.Visible() {
 			CommandDatabaseSettings()
@@ -52,7 +54,8 @@ func CreateViewMenu() {
 	})
 
 	// --- Plugins -------------------------------------------------------
-	BtnPlugins = ui.CreateButton(FrameMenu, ui.AutoSize, ui.AutoSize, TxtPlugins, ui.Fixed)
+	BtnPlugins = ui.CreateButton_NoShadow(FrameMainMenu, 22, ui.AutoSize, TxtPlugins, ui.Fixed)
+	BtnPlugins.SetAlign(ui.AlignLeft)
 	BtnPlugins.OnClick(func(ev ui.Event) {
 		if !FrmPlugins.Visible() {
 			CommandPlugins()
@@ -60,19 +63,17 @@ func CreateViewMenu() {
 	})
 
 	// --- Select Theme --------------------------------------------------
-	BtnTheme = ui.CreateButton(FrameMenu, ui.AutoSize, ui.AutoSize, TxtSelectTheme, ui.Fixed)
+	BtnTheme = ui.CreateButton_NoShadow(FrameMainMenu, 22, ui.AutoSize, TxtSelectTheme, ui.AutoSize)
+	BtnTheme.SetAlign(ui.AlignLeft)
 	BtnTheme.OnClick(func(ev ui.Event) {
 		BtnTheme.SetEnabled(false)
 		ChangeTheme(BtnTheme)
 	})
 
 	// --- Quit ----------------------------------------------------------
-	BtnQuit = ui.CreateButton(FrameMenu, ui.AutoSize, ui.AutoSize, TxtQuit, ui.Fixed)
+	BtnQuit = ui.CreateButton_NoShadow(FrameMainMenu, 22, ui.AutoSize, TxtQuit, ui.Fixed)
+	BtnQuit.SetAlign(ui.AlignLeft)
 	BtnQuit.OnClick(func(ev ui.Event) {
 		go ui.Stop()
 	})
-
-	FrameMenu.SetActive(true)
-	FrameMain.SetActive(true)
-	BtnRunVerifier.SetActive(true)
 }

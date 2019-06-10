@@ -2,9 +2,9 @@ package elements
 
 import (
 	"fmt"
-	ui "github.com/VladimirMarkelov/clui"
 	. "github.com/instance-id/GoUI/text"
 	. "github.com/instance-id/GoUI/utils"
+	ui "github.com/instance-id/clui"
 	term "github.com/nsf/termbox-go"
 )
 
@@ -59,7 +59,7 @@ func (d *dbCache) NewValue(row, col int, newText string) {
 }
 
 // --- Window type for data table ----------------------------------------
-func CreateTableDialog(btn *ui.Button, tableTitle string) {
+func CreateTableDialog(btn *ui.ButtonNoShadow, tableTitle string) {
 	tableDialog := new(TableDialog)
 
 	// --- Obtain terminal overall size ----------------------------------
@@ -159,13 +159,13 @@ func CreateTableDialog(btn *ui.Button, tableTitle string) {
 	ui.CreateLabel(textFrame, ui.AutoSize, ui.AutoSize, "Simply press ok when completed. - Don't forget to save! -", ui.Fixed)
 	// --- Window Controls -----------------------------------------------
 	ui.CreateFrame(btnFrame, 1, 1, ui.BorderNone, 1)
-	BtnTheme = ui.CreateButton(btnFrame, 15, 1, " Save ", ui.Fixed)
-	BtnTheme.OnClick(func(ev ui.Event) {
+	BtnSave := ui.CreateButton(btnFrame, 15, 1, " Save ", ui.Fixed)
+	BtnSave.OnClick(func(ev ui.Event) {
 		AssetDetail = tmpAssetData
 		btn.SetEnabled(true)
 	})
-	BtnTheme = ui.CreateButton(btnFrame, 15, 1, " Close ", ui.Fixed)
-	BtnTheme.OnClick(func(ev ui.Event) {
+	BtnClose := ui.CreateButton(btnFrame, 15, 1, " Close ", ui.Fixed)
+	BtnClose.OnClick(func(ev ui.Event) {
 		ui.WindowManager().DestroyWindow(tableDialog.View)
 		btn.SetEnabled(true)
 	})

@@ -1,8 +1,8 @@
 package view
 
 import (
-	ui "github.com/VladimirMarkelov/clui"
 	. "github.com/instance-id/GoUI/elements"
+	ui "github.com/instance-id/clui"
 )
 
 func CreateViewContent() {
