@@ -76,7 +76,7 @@ func CreateTableDialog(btn *ui.ButtonNoShadow, tableTitle string) {
 	tableDialog.View.SetModal(true)
 	tableDialog.View.SetPack(ui.Vertical)
 
-	tableDialog.Frame = NewFramedWindowInput(tableDialog.View, tableTitle, nil)
+	tableDialog.Frame = NewFramedWindowInput(tableDialog.View, "", nil)
 
 	// --- Create data table ---------------------------------------------
 	td := ui.CreateTableView(tableDialog.Frame, 145, 15, 1)
@@ -109,7 +109,7 @@ func CreateTableDialog(btn *ui.ButtonNoShadow, tableTitle string) {
 	})
 
 	td.OnAction(func(ev ui.TableEvent) {
-		btns := []string{"Close", "Dismiss"}
+		btns := []string{TxtApplyBtn, TxtCancelBtn}
 		var action string
 		switch ev.Action {
 		case ui.TableActionSort:
@@ -125,6 +125,8 @@ func CreateTableDialog(btn *ui.ButtonNoShadow, tableTitle string) {
 			})(&newInfo)
 
 			dlg := ui.CreateEditDialog(fmt.Sprintf("Editing value: %s", editVal.OldVal), "New value", editVal.OldVal)
+			dlg.View.SetSize(35, 10)
+			dlg.View.BaseControl.SetSize(35, 10)
 			dlg.OnClose(func() {
 				switch dlg.Result() {
 				case ui.DialogButton1:
@@ -153,21 +155,24 @@ func CreateTableDialog(btn *ui.ButtonNoShadow, tableTitle string) {
 	btnFrame.SetPaddings(1, 1)
 	textFrame := ui.CreateFrame(btnFrame, 1, 1, ui.BorderNone, ui.Fixed)
 	textFrame.SetPack(ui.Vertical)
-	ui.CreateLabel(textFrame, ui.AutoSize, ui.AutoSize, "_____________", ui.Fixed)
+	// ui.CreateLabel(textFrame, ui.AutoSize, ui.AutoSize, "_____________", ui.Fixed)
 	ui.CreateLabel(textFrame, ui.AutoSize, ui.AutoSize, "Instructions: Use arrow keys or pageup/down to navigate the fields.", ui.Fixed)
 	ui.CreateLabel(textFrame, ui.AutoSize, ui.AutoSize, "Highlight the field you would like to edit. Press F2 or Space to edit the field ", ui.Fixed)
 	ui.CreateLabel(textFrame, ui.AutoSize, ui.AutoSize, "Simply press ok when completed. - Don't forget to save! -", ui.Fixed)
 
 	// --- Window Controls -----------------------------------------------
 	ui.CreateFrame(btnFrame, 1, 1, ui.BorderNone, 1)
-	BtnSave := ui.CreateButton(btnFrame, 15, 1, " Save ", ui.Fixed)
+	BtnSave := ui.CreateButton(btnFrame, 15, 1, TxtSaveBtn, ui.Fixed)
 	BtnSave.OnClick(func(ev ui.Event) {
 		AssetDetail = tmpAssetData
 		btn.SetEnabled(true)
 	})
-	BtnClose := ui.CreateButton(btnFrame, 15, 1, " Close ", ui.Fixed)
+	BtnClose := ui.CreateButton(btnFrame, 15, 1, TxtCloseBtn, ui.Fixed)
 	BtnClose.OnClick(func(ev ui.Event) {
 		ui.WindowManager().DestroyWindow(tableDialog.View)
 		btn.SetEnabled(true)
 	})
+
+	BtnSave.SetActive(false)
+	BtnClose.SetActive(false)
 }

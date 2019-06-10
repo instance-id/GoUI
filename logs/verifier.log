@@ -3,8 +3,8 @@
 ██║   ██║██╔════╝██╔══██╗██║██╔════╝██║██╔════╝██╔══██╗
 ██║   ██║█████╗  ██████╔╝██║█████╗  ██║█████╗  ██████╔╝
 ╚██╗ ██╔╝██╔══╝  ██╔══██╗██║██╔══╝  ██║██╔══╝  ██╔══██╗
-_╚████╔╝ ███████╗██║  ██║██║██║     ██║███████╗██║  ██║
-_ ╚═══╝  ╚══════╝╚═╝  ╚═╝╚═╝╚═╝     ╚═╝╚══════╝╚═╝  ╚═╝ v0.1
+ ╚████╔╝ ███████╗██║  ██║██║██║     ██║███████╗██║  ██║
+  ╚═══╝  ╚══════╝╚═╝  ╚═╝╚═╝╚═╝     ╚═╝╚══════╝╚═╝  ╚═╝ v0.1
 2019-06-10T03:25:00.502-0500	INFO	verifier/verifier.go:73	Connected as: instance.id :
 	{"service": "Verifier"}
 2019-06-10T03:25:00.503-0500	INFO	verifier/verifier.go:74	Command Prefix: "!cmd " registered
@@ -21,3 +21,20 @@ _ ╚═══╝  ╚══════╝╚═╝  ╚═╝╚═╝╚═�
 2019-06-10T03:25:00.929-0500	INFO	logging/dg_logger.go:44	exiting	{"service": "Verifier", "feature": "discordgo", "file": "logging.go:77", "method": "log"}
 2019-06-10T03:25:00.929-0500	INFO	logging/dg_logger.go:44	called	{"service": "Verifier", "feature": "discordgo", "file": "logging.go:77", "method": "log"}
 2019-06-10T03:25:00.929-0500	INFO	logging/dg_logger.go:44	called	{"service": "Verifier", "feature": "discordgo", "file": "logging.go:77", "method": "log"}
+
+
+## Important notes
+
+#### If anyone ends up using this, do shoot me a message and let me know how it's working for you! I would love to hear.
+#### Current version works - minus the WordPress integration. I believe something changed with one of the required plugins. I have not had a chance to test it yet. For now, in the config, for "wordpress" enter "no" as seen below.
+
+
+```json
+  features:{
+    wordpress: "No",
+    connection: "Oauth2"
+  },
+```
+
+#### I will try and turn the actual docs into a real wiki page on here.
+----

@@ -21,7 +21,9 @@ const TxtQuit = "| Quit "
 const Txtlogs = "| View Logs "
 
 // --- Popup Menus -------------------------------------------------------
-const TxtSave = " | Save "
+const TxtApplyBtn = " | Apply "
+const TxtCancelBtn = " | Cancel "
+const TxtSaveBtn = " | Save "
 const TxtCloseBtn = " | Close "
 
 // --- Main Settings -----------------------------------------------------

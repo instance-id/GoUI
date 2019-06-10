@@ -33,6 +33,8 @@ func CreateListDialog(listTitle string) *ListDialog {
 
 	listDialog.Frame = NewFramedWindowInput(listDialog.View, listTitle, nil)
 	listDialog.list = ui.CreateListBox(listDialog.Frame, 25, 12, 1)
+	listDialog.list.SetBackColor(term.ColorBlack)
+	listDialog.list.SetTextColor(term.ColorWhite)
 	ui.ActivateControl(listDialog.Frame, listDialog.list)
 	RefreshAssetList(listDialog)
 

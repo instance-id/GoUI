@@ -27,7 +27,7 @@ func CreateViewPlugins() {
 	btnFrame.SetPaddings(2, 2)
 	var params = FramedInputParams{Orientation: ui.Vertical, Width: 25, Height: 4, Scale: ui.Fixed}
 	saveSettings := NewFramedInput(btnFrame, TxtSaveDesc, &params)
-	BtnMainSettingsSave = ui.CreateButton_NoShadow(saveSettings, ui.AutoSize, ui.AutoSize, TxtSave, ui.Fixed)
+	BtnMainSettingsSave = ui.CreateButton_NoShadow(saveSettings, ui.AutoSize, ui.AutoSize, TxtSaveBtn, ui.Fixed)
 	BtnMainSettingsSave.SetAlign(ui.AlignLeft)
 	BtnMainSettingsSave.OnClick(func(ev ui.Event) {
 

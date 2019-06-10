@@ -20,10 +20,9 @@ func RefreshLog(log *LogDialog) {
 
 func CreateLogDialog(logTitle string) *LogDialog {
 	logDialog := new(LogDialog)
-
 	cw, ch := term.Size()
 
-	logDialog.View = ui.AddWindow(cw/2-75, ch/2-16, ui.AutoSize, ui.AutoSize, Txtlogs)
+	logDialog.View = ui.AddWindow(cw/2-75, ch/2-16, ui.AutoSize, ui.AutoSize, logTitle)
 	ui.WindowManager().BeginUpdate()
 	defer ui.WindowManager().EndUpdate()
 	logDialog.View.SetGaps(1, ui.KeepValue)
@@ -31,9 +30,10 @@ func CreateLogDialog(logTitle string) *LogDialog {
 	logDialog.View.SetPack(ui.Vertical)
 
 	logDialog.Frame = NewFramedWindowInput(logDialog.View, "", nil)
+	logDialog.Frame.SetBackColor(236)
 	logDialog.log = ui.CreateTextView(logDialog.Frame, 145, 25, 1)
 	ui.ActivateControl(logDialog.Frame, logDialog.log)
-	logDialog.log.LoadFile(LogLocation)
+	logDialog.log.LoadFileMD(LogLocation)
 	logDialog.log.SetAutoScroll(true)
 
 	autoScroll := ui.CreateCheckBox(logDialog.Frame, ui.AutoSize, TxtAutoScrollChk, ui.Fixed)
@@ -50,8 +50,8 @@ func CreateLogDialog(logTitle string) *LogDialog {
 		}())
 	})
 
-	logDialog.log.SetBackColor(term.ColorBlack)
-	logDialog.log.SetTextColor(term.ColorWhite)
+	logDialog.log.SetBackColor(238)
+	logDialog.log.SetTextColor(250)
 
 	//RefreshLog(logDialog)
 

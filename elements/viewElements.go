@@ -25,6 +25,7 @@ var (
 	BtnDatabaseSettings *ui.ButtonNoShadow
 	BtnPlugins          *ui.ButtonNoShadow
 	BtnTheme            *ui.ButtonNoShadow
+	BtnLogs             *ui.ButtonNoShadow
 	BtnQuit             *ui.ButtonNoShadow
 
 	// --- Main Settings buttons ----------------

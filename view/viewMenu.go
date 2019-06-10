@@ -11,11 +11,13 @@ func CreateViewMenu() {
 
 	FrameMenu = ui.CreateFrame(WindowMain, 25, 5, ui.BorderNone, ui.Fixed)
 	FrameMenu.SetPack(ui.Vertical)
+	FrameMenu.SetBackColor(235)
 
 	FrameMainMenu = ui.CreateFrame(FrameMenu, 5, 5, ui.BorderThin, ui.AutoSize)
 	FrameMainMenu.SetPack(ui.Vertical)
 	FrameMainMenu.SetTitle(TxtMainMenu)
 	FrameMainMenu.SetPaddings(2, 2)
+	FrameMainMenu.SetBackColor(235)
 
 	// --- Run Verifier --------------------------------------------------
 	BtnRunVerifier = ui.CreateButton_NoShadow(FrameMainMenu, 22, ui.AutoSize, TxtRunVerifier, ui.Fixed)
@@ -71,9 +73,9 @@ func CreateViewMenu() {
 	})
 
 	// --- Logs ----------------------------------------------------------
-	BtnQuit = ui.CreateButton_NoShadow(FrameMainMenu, 22, ui.AutoSize, Txtlogs, ui.Fixed)
-	BtnQuit.SetAlign(ui.AlignLeft)
-	BtnQuit.OnClick(func(ev ui.Event) {
+	BtnLogs = ui.CreateButton_NoShadow(FrameMainMenu, 22, ui.AutoSize, Txtlogs, ui.Fixed)
+	BtnLogs.SetAlign(ui.AlignLeft)
+	BtnLogs.OnClick(func(ev ui.Event) {
 		CreateLogDialog(Txtlogs)
 	})
 

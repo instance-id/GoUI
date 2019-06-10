@@ -7,34 +7,34 @@ parent=default
 
 // --- Colors -----------------------------------
 // --- View colors - internal area and border
-ViewBack = black
-ViewText = white 
+ViewBack = 236
+ViewText = 246
 
 // --- general colors
-Back         = black
-Text         = white
+Back         = 236
+Text         = 144
 DisabledText = white
 DisabledBack = black 
 
 // --- editable & listbox-like controls (interactive ones)
-EditBack       = white
-EditText       = black
-EditActiveBack = white
-EditActiveText = blue
+EditBack       = 240
+EditText       = 250
+EditActiveBack = 240
+EditActiveText = 40
 SelectionText  = yellow 
-SelectionBack  = cyan 
+SelectionBack  = 40
 
 // --- scroll control
-ScrollText = white 
+ScrollText = 238
 ScrollBack = black
 ThumbText  = white 
 ThumbBack  = black
 
 // --- window-like controls (checkbox, radiogroup...)
-ControlText         = white
-ControlBack         = black
-ControlActiveBack   = black
-ControlActiveText   = white
+ControlText         = 144
+ControlBack         = 236
+ControlActiveBack   = 236
+ControlActiveText   = 72
 ControlDisabledBack = cyan 
 ControlDisabledText = black 
 ControlShadow       = black
@@ -46,13 +46,13 @@ ProgressActiveBack = blue
 ProgressActiveText = yellow 
 
 // --- button control
-ButtonBack=black
-ButtonText=white
-ButtonActiveBack=black
-ButtonActiveText=white
+ButtonBack=235
+ButtonText=144
+ButtonActiveBack=240
+ButtonActiveText=190
 ButtonShadowBack=black
 ButtonDisabledText=black 
-ButtonDisabledBack=red
+ButtonDisabledBack=238
 
 // --- bar chart control
 BarChartBack=black
@@ -68,14 +68,14 @@ SparkChartMaxText=cyan
 
 // --- table view
 TableText=white
-TableBack=black
+TableBack=236
 TableSelectedText=blue
 TableSelectedBack=white
 TableActiveCellText=black
 TableActiveCellBack=white
 TableLineText=white
 TableHeaderText=white
-TableHeaderBack=black
+TableHeaderBack=235
 
 // --- Objects ----------------------------------
 SingleBorder=─│┌┐└┘

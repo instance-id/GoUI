@@ -6,7 +6,14 @@ import (
 	. "github.com/instance-id/GoUI/text"
 	"github.com/instance-id/GoUI/view"
 	ui "github.com/instance-id/clui"
+	term "github.com/nsf/termbox-go"
 	"os"
+)
+
+var (
+	text, background term.Attribute
+	lightness        int
+	helpVisible      bool
 )
 
 func InitData() {
@@ -30,6 +37,7 @@ func MainInitialSettings() {
 	BtnDatabaseSettings.SetActive(false)
 	BtnPlugins.SetActive(false)
 	BtnTheme.SetActive(false)
+	BtnLogs.SetActive(false)
 	BtnQuit.SetActive(false)
 }
 
@@ -38,6 +46,7 @@ func createView() {
 	// --- Main Window ---------------------------------------------------
 	WindowMain = ui.AddWindow(0, 0, 10, 7, TxtApplication)
 	WindowMain.SetPack(ui.Horizontal)
+	WindowMain.SetBackColor(236)
 
 	// --- Main Menu Frame -----------------------------------------------
 	view.CreateViewMenu()
@@ -51,19 +60,17 @@ func createView() {
 	view.CreateViewDatabaseSettings()
 	view.CreateViewPlugins()
 
-	// --- Popup Menu Frames ---------------------------------------------
-	//view.CreateViewPopupTheme()
-	//view.CreateViewLogLevel()
-	//view.CreateViewPopupAssetCodes()
-
 	MainInitialSettings()
 
 	ui.MainLoop()
 }
 
 func mainLoop() {
+	// Bool - Use 256 color or default?
 	ui.InitLibrary()
 	defer ui.DeinitLibrary()
+	term.SetOutputMode(term.Output256)
+	background = TermNative(234)
 
 	ui.SetThemePath("themes")
 	ui.SetCurrentTheme("verifier")
@@ -75,6 +82,10 @@ func mainLoop() {
 
 func main() {
 	mainLoop()
+}
+
+func TermNative(c int) term.Attribute {
+	return term.Attribute(c + 1)
 }
 
 type stderr struct{}
