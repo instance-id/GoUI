@@ -69,7 +69,7 @@ func CreateTableDialog(btn *ui.ButtonNoShadow, tableTitle string) {
 	tmpAssetData = AssetDetail
 
 	// --- Create new popup window for table data ------------------------
-	tableDialog.View = ui.AddWindow(cw/2-75, ch/2-16, ui.AutoSize, ui.AutoSize, TxtAssetCodes)
+	tableDialog.View = ui.AddWindow(cw/2-75, ch/2-16, ui.AutoSize, ui.AutoSize, TxtAssetDetails)
 	ui.WindowManager().BeginUpdate()
 	defer ui.WindowManager().EndUpdate()
 	tableDialog.View.SetGaps(1, ui.KeepValue)
@@ -157,6 +157,7 @@ func CreateTableDialog(btn *ui.ButtonNoShadow, tableTitle string) {
 	ui.CreateLabel(textFrame, ui.AutoSize, ui.AutoSize, "Instructions: Use arrow keys or pageup/down to navigate the fields.", ui.Fixed)
 	ui.CreateLabel(textFrame, ui.AutoSize, ui.AutoSize, "Highlight the field you would like to edit. Press F2 or Space to edit the field ", ui.Fixed)
 	ui.CreateLabel(textFrame, ui.AutoSize, ui.AutoSize, "Simply press ok when completed. - Don't forget to save! -", ui.Fixed)
+
 	// --- Window Controls -----------------------------------------------
 	ui.CreateFrame(btnFrame, 1, 1, ui.BorderNone, 1)
 	BtnSave := ui.CreateButton(btnFrame, 15, 1, " Save ", ui.Fixed)

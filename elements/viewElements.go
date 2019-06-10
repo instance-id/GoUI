@@ -35,6 +35,9 @@ var (
 	BtnAssetCodes   *ui.ButtonNoShadow
 	BtnAssetDetails *ui.ButtonNoShadow
 
+	// --- Database Settings buttons ----------------
+	BtnDatabaseProvider *ui.ButtonNoShadow
+
 	// --- Arbitrary ------------------------------------------------
 	WindowListDialog *ui.Window
 	FrameListDialog  *ui.Frame

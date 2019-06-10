@@ -41,8 +41,11 @@ func CreateViewMainSettings() {
 	ui.CreateCheckBox(requireEmail, 10, " Check for Yes, unchecked for No ", ui.Fixed)
 
 	// --- Select Log Level ----------------------------------------------
-	logLevel := NewFramedInput(settingsFrame, TxtLogLevel, nil)
-	BtnLogLevel = ui.CreateButton_NoShadow(logLevel, ui.AutoSize, ui.AutoSize, TxtLogLevelBtn, 1)
+	var logParams = FramedInputParams{Orientation: ui.Vertical, Width: 25, Height: 0, Scale: ui.Fixed, Border: ui.BorderThin, PadX: 1, PadY: 1}
+	logLevel := NewFramedInput(settingsFrame, TxtLogLevel, &logParams)
+	var logLevelParams = FramedInputParams{Orientation: ui.Vertical, Width: 25, Height: 0, Scale: ui.Fixed, Border: ui.BorderThin, PadX: 0, PadY: 0}
+	logLevelTxtFrame := NewFramedInput(logLevel, "", &logLevelParams)
+	BtnLogLevel = ui.CreateButton_NoShadow(logLevelTxtFrame, 25, ui.AutoSize, TxtLogLevelBtn, ui.Fixed)
 	BtnLogLevel.SetAlign(ui.AlignLeft)
 	BtnLogLevel.OnClick(func(ev ui.Event) {
 		BtnLogLevel.SetEnabled(false)
@@ -51,9 +54,11 @@ func CreateViewMainSettings() {
 	ui.CreateLabel(logLevel, ui.AutoSize, ui.AutoSize, TxtLogLevelDesc, ui.Fixed)
 
 	// --- Save Settings ------------------------------------------------
+	btnFrame := ui.CreateFrame(settingsFrame, 10, 1, ui.BorderNone, ui.Fixed)
+	btnFrame.SetPaddings(2, 2)
 	var params = FramedInputParams{Orientation: ui.Vertical, Width: 10, Height: 4, Scale: ui.Fixed}
-	saveSettings := NewFramedInput(settingsFrame, TxtSaveDesc, &params)
-	BtnMainSettingsSave = ui.CreateButton_NoShadow(saveSettings, 9, ui.AutoSize, TxtSave, ui.Fixed)
+	saveSettings := NewFramedInput(btnFrame, TxtSaveDesc, &params)
+	BtnMainSettingsSave = ui.CreateButton_NoShadow(saveSettings, 25, ui.AutoSize, TxtSave, ui.Fixed)
 	BtnMainSettings.SetSize(10, ui.AutoSize)
 	BtnMainSettingsSave.SetAlign(ui.AlignLeft)
 	BtnMainSettingsSave.OnClick(func(ev ui.Event) {

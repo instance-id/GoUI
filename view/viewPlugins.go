@@ -15,20 +15,20 @@ func CreateViewPlugins() {
 	FrmPlugins.SetPack(ui.Horizontal)
 
 	// --- Plugins Content -----------------------------------------------
-	pluginsFrame := ui.CreateFrame(FrmPlugins, 100, ui.AutoSize, ui.BorderThin, ui.AutoSize)
+	pluginsFrame := ui.CreateFrame(FrmPlugins, 130, ui.AutoSize, ui.BorderThin, ui.AutoSize)
 	pluginsFrame.SetPaddings(2, 2)
 	pluginsFrame.SetTitle(TxtPlugins)
 	pluginsFrame.SetPack(ui.Vertical)
 
+	ui.CreateLabel(pluginsFrame, ui.AutoSize, ui.AutoSize, TxtPluginsLabel, ui.Fixed)
+
 	// --- Window Control ------------------------------------------------
 	btnFrame := ui.CreateFrame(pluginsFrame, 10, 1, ui.BorderNone, ui.Fixed)
 	btnFrame.SetPaddings(2, 2)
-
-	var params = FramedInputParams{Orientation: ui.Vertical, Width: 190, Height: 4, Scale: ui.Fixed}
+	var params = FramedInputParams{Orientation: ui.Vertical, Width: 25, Height: 4, Scale: ui.Fixed}
 	saveSettings := NewFramedInput(btnFrame, TxtSaveDesc, &params)
 	BtnMainSettingsSave = ui.CreateButton_NoShadow(saveSettings, ui.AutoSize, ui.AutoSize, TxtSave, ui.Fixed)
 	BtnMainSettingsSave.SetAlign(ui.AlignLeft)
-
 	BtnMainSettingsSave.OnClick(func(ev ui.Event) {
 
 	})

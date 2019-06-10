@@ -1,6 +1,7 @@
 package view
 
 import (
+	"fmt"
 	. "github.com/instance-id/GoUI/elements"
 	. "github.com/instance-id/GoUI/text"
 	. "github.com/instance-id/GoUI/utils"
@@ -22,6 +23,7 @@ func GetProvider(db *DatabaseDetails, group *ProviderGroup) {
 
 func CreateViewDatabaseSettings() {
 
+	var tmpProviders = DatabaseData.Providers
 	var tmpProvider = DatabaseData.Provider
 	var tmpAddress = DatabaseData.Address
 	var tmpUsername = DatabaseData.Username
@@ -41,27 +43,17 @@ func CreateViewDatabaseSettings() {
 	settingsFrame.SetPack(ui.Vertical)
 
 	// --- Database Provider ---------------------------------------------
-	//var gIdparams = FramedInputParams{Border: ui.BorderNone}
 	providerFrame := NewFramedInput(settingsFrame, TxtDbProvider, nil)
 	providerFrame.SetPaddings(2, 2)
-
-	mySQLRadio := ui.CreateRadio(providerFrame, ui.AutoSize, TxtMysql, ui.Fixed)
-	postgresRadio := ui.CreateRadio(providerFrame, ui.AutoSize, TxtPostgres, ui.Fixed)
-	mssqlRadio := ui.CreateRadio(providerFrame, ui.AutoSize, TxtMSSQL, ui.Fixed)
-	sqliteRadio := ui.CreateRadio(providerFrame, ui.AutoSize, TxtSqlite, ui.Fixed)
-
-	providerGroup := ui.CreateRadioGroup()
-	providerGroup.AddItem(mySQLRadio)
-	providerGroup.AddItem(postgresRadio)
-	providerGroup.AddItem(mssqlRadio)
-	providerGroup.AddItem(sqliteRadio)
-
-	//var group = [mySQLRadio, postgresRadio, mssqlRadio, sqliteRadio]
-
-	//GetProvider(DatabaseData, providerGroup)
-
-	providerGroup.SelectItem(mySQLRadio)
-	tmpProvider = providerGroup.Selected()
+	BtnDatabaseProvider = ui.CreateButton_NoShadow(providerFrame, ui.AutoSize, ui.AutoSize, fmt.Sprintf(" | %s", DatabaseData.Providers[tmpProvider]), ui.Fixed)
+	BtnDatabaseProvider.SetAlign(ui.AlignLeft)
+	BtnDatabaseProvider.OnClick(func(ev ui.Event) {
+		dbProvider := ui.CreateSelectDialog(TxtDbProvider, tmpProviders, ui.AutoSize, ui.SelectDialogList)
+		dbProvider.OnClose(func() {
+			tmpProvider = dbProvider.Value()
+			BtnDatabaseProvider.SetTitle(fmt.Sprintf(" | %s", DatabaseData.Providers[tmpProvider]))
+		})
+	})
 
 	// --- Database Details -----------------------------------------------------
 	dbDetailsFrame := NewFramedInput(settingsFrame, TxtDbDetails, nil)
@@ -99,8 +91,8 @@ func CreateViewDatabaseSettings() {
 	btnFrame := ui.CreateFrame(settingsFrame, 10, 1, ui.BorderNone, ui.Fixed)
 	btnFrame.SetPaddings(2, 2)
 
-	var params = FramedInputParams{Orientation: ui.Vertical, Width: 10, Height: 4, Scale: ui.Fixed}
-	saveSettings := NewFramedInput(btnFrame, TxtSaveDesc, &params)
+	var saveParams = FramedInputParams{Orientation: ui.Vertical, Width: 25, Height: 4, Scale: ui.Fixed}
+	saveSettings := NewFramedInput(btnFrame, TxtSaveDesc, &saveParams)
 	BtnMainSettingsSave = ui.CreateButton_NoShadow(saveSettings, ui.AutoSize, ui.AutoSize, TxtSave, ui.Fixed)
 	BtnMainSettingsSave.SetAlign(ui.AlignLeft)
 	BtnMainSettingsSave.OnClick(func(ev ui.Event) {

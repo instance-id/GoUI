@@ -70,10 +70,18 @@ func CreateViewMenu() {
 		ChangeTheme(BtnTheme)
 	})
 
+	// --- Logs ----------------------------------------------------------
+	BtnQuit = ui.CreateButton_NoShadow(FrameMainMenu, 22, ui.AutoSize, Txtlogs, ui.Fixed)
+	BtnQuit.SetAlign(ui.AlignLeft)
+	BtnQuit.OnClick(func(ev ui.Event) {
+		CreateLogDialog(Txtlogs)
+	})
+
 	// --- Quit ----------------------------------------------------------
 	BtnQuit = ui.CreateButton_NoShadow(FrameMainMenu, 22, ui.AutoSize, TxtQuit, ui.Fixed)
 	BtnQuit.SetAlign(ui.AlignLeft)
 	BtnQuit.OnClick(func(ev ui.Event) {
 		go ui.Stop()
 	})
+
 }

@@ -75,6 +75,19 @@ type ListDialog struct {
 	onClose    func()
 }
 
+type LogDialog struct {
+	View       *ui.Window
+	Frame      *ui.Frame
+	result     int
+	value      int
+	edtResult  string
+	log        *ui.TextView
+	edit       *ui.EditField
+	editDialog *ui.SelectDialog
+	confirm    *ui.ConfirmationDialog
+	onClose    func()
+}
+
 var (
 	Log           LogLevels
 	DiscordToken  string

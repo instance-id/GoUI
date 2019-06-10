@@ -1,6 +1,8 @@
 package text
 
 // --- Application -------------------------------------------------------
+const LogLocation = "../logs/verifier.log"
+
 const TxtApplication = " Verifier "
 const TxtMainMenu = " Main Menu "
 const TxtSeeDocs = " See Documentation for more detailed information "
@@ -16,9 +18,11 @@ const TxtDatabaseSettings = "| Database Settings"
 const TxtPlugins = "| Plugins"
 const TxtSelectTheme = "| Select Theme"
 const TxtQuit = "| Quit "
+const Txtlogs = "| View Logs "
 
 // --- Popup Menus -------------------------------------------------------
-const TxtSave = "| Save "
+const TxtSave = " | Save "
+const TxtCloseBtn = " | Close "
 
 // --- Main Settings -----------------------------------------------------
 const TxtMainSettingsDesc = " Main Verifier settings"
@@ -33,10 +37,14 @@ const TxtRequireEmail = " Require Email "
 const TxtRequireEmailDesc = "Should the user be required to provide email address to store in database?"
 
 const TxtLogLevel = " Logging Level "
-const TxtLogLevelBtn = "| Logging Level "
+const TxtLogLevelBtn = " | Logging Level "
 const TxtLogLevelDesc = "What level of logging should be output? See docs for detailed info."
 
 // --- Discord Settings --------------------------------------------------
+// --- Buttons ----------------------------------
+const TxtAutoScrollChk = " AutoScroll "
+
+// --- Dialogs ----------------------------------
 const TxtGuildId = " Guild Id "
 const TxtGuildIdDesc = "The GuildId (Server Id) number found in Discords server settings."
 
@@ -44,11 +52,11 @@ const TxtBotUsers = " Bot Users "
 const TxtBotUsersDesc = "The role(s) which have permission to perform administrative bot functions"
 
 const TxtAssetCodes = " Asset Codes "
-const TxtAssetCodesBtn = "| Manage Asset Codes "
+const TxtAssetCodesBtn = " | Manage Asset Codes "
 const TxtAssetCodesDesc = "Shorthand abbreviations/identifiers for your asset(s). Ex `Best Asset Ever 7` = BAE7 "
 
 const TxtAssetDetails = " Asset Details "
-const TxtAssetDetailsBtn = "| Manage Asset Details "
+const TxtAssetDetailsBtn = " | Manage Asset Details "
 const TxtAssetDetailsDesc = "Asset details, such as full name, api key, Discord role association"
 
 const TxtAssetRoles = " Bot Users "
@@ -63,18 +71,19 @@ const TxtPostgres = "Postgres"
 const TxtMSSQL = "MSSQL"
 const TxtSqlite = "Sqlite"
 
-const TxtDbProvider = "Select database provider"
-const TxtDbDetails = "Database connection details"
+const TxtDbProvider = " Select database provider "
+const TxtDbDetails = " Database connection details "
 const TxtDbAddress = "Address:  "
 const TxtDbUsername = "Username: "
 const TxtDbPassword = "Password: "
 const TxtDbDatabase = "Database: "
 const TxtDbTablePrefix = "Prefix:   "
 
-const TxtDbAddressDesc = "Connection address to your database"
-const TxtDbUsernameDesc = "Database Username"
-const TxtDbPasswordDesc = "Database Password"
-const TxtDbDatabaseDesc = "The database name in which to store data"
-const TxtDbTablePrefixDesc = "Prefix for table names (Ex: Database -> Prefix_Database)"
+const TxtDbAddressDesc = " Connection address to your database "
+const TxtDbUsernameDesc = " Database Username "
+const TxtDbPasswordDesc = " Database Password "
+const TxtDbDatabaseDesc = " The database name in which to store data "
+const TxtDbTablePrefixDesc = " Prefix for table names (Ex: Database -> Prefix_Database) "
 
-// --- Asset Settings ----------------------------------------------------
+// --- Plugins Settings ----------------------------------------------------
+const TxtPluginsLabel = " Coming soon! "

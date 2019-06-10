@@ -61,9 +61,11 @@ func CreateViewDiscordSettings() {
 	ui.CreateLabel(logLevelFrame, ui.AutoSize, ui.AutoSize, TxtAssetDetailsDesc, ui.Fixed)
 
 	// --- Save Settings -------------------------------------------------
-	var params = FramedInputParams{Orientation: ui.Vertical, Width: 4, Height: 4}
-	saveSettings := NewFramedInput(settingsFrame, TxtSaveDesc, &params)
-	BtnMainSettingsSave = ui.CreateButton_NoShadow(saveSettings, ui.AutoSize, ui.AutoSize, TxtSave, ui.Fixed)
+	btnFrame := ui.CreateFrame(settingsFrame, 10, 1, ui.BorderNone, ui.Fixed)
+	btnFrame.SetPaddings(2, 2)
+	var params = FramedInputParams{Orientation: ui.Vertical, Width: 25, Height: 4}
+	saveSettings := NewFramedInput(btnFrame, TxtSaveDesc, &params)
+	BtnMainSettingsSave = ui.CreateButton_NoShadow(saveSettings, 25, ui.AutoSize, TxtSave, ui.Fixed)
 	BtnMainSettingsSave.SetAlign(ui.AlignLeft)
 	BtnMainSettingsSave.OnClick(func(ev ui.Event) {
 		DiscordData.GuildId = tmpGuidId
