@@ -2,9 +2,8 @@
 Console UI for GoVerifier  
 This uses a slightly modified version of [github.com/VladimirMarkelov/clui][https://github.com/VladimirMarkelov/clui]
 
-Discord main settings
+Discord main settings  
 ![alt text](https://i.imgur.com/fdWecrc.png "instance.id")    
-
 
 Newly added log viewer  
 ![alt text](https://i.imgur.com/xHDSbvc.png "instance.id")    
