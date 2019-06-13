@@ -45,8 +45,9 @@ func CreateViewDatabaseSettings() {
 	// --- Database Provider ---------------------------------------------
 	providerFrame := NewFramedInput(settingsFrame, TxtDbProvider, nil)
 	providerFrame.SetPaddings(2, 2)
-	BtnDatabaseProvider = ui.CreateButton_NoShadow(providerFrame, ui.AutoSize, ui.AutoSize, fmt.Sprintf(" | %s", DatabaseData.Providers[tmpProvider]), ui.Fixed)
+	BtnDatabaseProvider = ui.CreateButton(providerFrame, ui.AutoSize, ui.AutoSize, fmt.Sprintf(" | %s", DatabaseData.Providers[tmpProvider]), ui.Fixed)
 	BtnDatabaseProvider.SetAlign(ui.AlignLeft)
+	BtnDatabaseProvider.SetShadowType(ui.ShadowHalf)
 	BtnDatabaseProvider.OnClick(func(ev ui.Event) {
 		dbProvider := ui.CreateSelectDialog(TxtDbProvider, tmpProviders, ui.AutoSize, ui.SelectDialogList)
 		dbProvider.OnClose(func() {
@@ -93,8 +94,9 @@ func CreateViewDatabaseSettings() {
 
 	var saveParams = FramedInputParams{Orientation: ui.Vertical, Width: 25, Height: 4, Scale: ui.Fixed}
 	saveSettings := NewFramedInput(btnFrame, TxtSaveDesc, &saveParams)
-	BtnMainSettingsSave = ui.CreateButton_NoShadow(saveSettings, ui.AutoSize, ui.AutoSize, TxtSaveBtn, ui.Fixed)
+	BtnMainSettingsSave = ui.CreateButton(saveSettings, ui.AutoSize, ui.AutoSize, TxtSaveBtn, ui.Fixed)
 	BtnMainSettingsSave.SetAlign(ui.AlignLeft)
+	BtnMainSettingsSave.SetShadowType(ui.ShadowHalf)
 	BtnMainSettingsSave.OnClick(func(ev ui.Event) {
 		DatabaseData.Provider = tmpProvider
 		DatabaseData.Address = tmpAddress

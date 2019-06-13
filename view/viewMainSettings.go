@@ -5,9 +5,10 @@ import (
 	. "github.com/instance-id/GoUI/text"
 	. "github.com/instance-id/GoUI/utils"
 	ui "github.com/instance-id/clui"
+	term "github.com/nsf/termbox-go"
 )
 
-func CreateViewMainSettings() {
+func CreateViewMainSettings() *ui.EditField {
 
 	var tmpDiscordToken = DiscordToken
 	var tmpCommandPrefix = CommandPrefix
@@ -28,7 +29,7 @@ func CreateViewMainSettings() {
 	tokenFrame := NewFramedInput(settingsFrame, TxtDiscordToken, nil)
 	tokenFrame.SetPaddings(2, 2)
 	tokenFrame.SetBackColor(236)
-	ui.CreateEditField(tokenFrame, ui.AutoSize, tmpDiscordToken, ui.Fixed)
+	tokenEdit := ui.CreateEditField(tokenFrame, ui.AutoSize, tmpDiscordToken, ui.Fixed)
 	ui.CreateLabel(tokenFrame, ui.AutoSize, ui.AutoSize, TxtDiscordTokenDesc, ui.Fixed)
 
 	// --- Command Prefix ------------------------------------------------
@@ -52,8 +53,9 @@ func CreateViewMainSettings() {
 	var logLevelParams = FramedInputParams{Orientation: ui.Vertical, Width: 25, Height: 0, Scale: ui.Fixed, Border: ui.BorderThin, PadX: 0, PadY: 0}
 	logLevelTxtFrame := NewFramedInput(logLevel, "", &logLevelParams)
 	logLevelTxtFrame.SetBackColor(236)
-	BtnLogLevel = ui.CreateButton_NoShadow(logLevelTxtFrame, 25, ui.AutoSize, TxtLogLevelBtn, ui.Fixed)
+	BtnLogLevel = ui.CreateButton(logLevelTxtFrame, 25, ui.AutoSize, TxtLogLevelBtn, ui.Fixed)
 	BtnLogLevel.SetAlign(ui.AlignLeft)
+	BtnLogLevel.SetShadowType(ui.ShadowHalf)
 	BtnLogLevel.OnClick(func(ev ui.Event) {
 		BtnLogLevel.SetEnabled(false)
 		SelectLogLevel(BtnLogLevel)
@@ -67,14 +69,30 @@ func CreateViewMainSettings() {
 	var params = FramedInputParams{Orientation: ui.Vertical, Width: 10, Height: 4, Scale: ui.Fixed}
 	saveSettings := NewFramedInput(btnFrame, TxtSaveDesc, &params)
 	saveSettings.SetBackColor(236)
-	BtnMainSettingsSave = ui.CreateButton_NoShadow(saveSettings, 25, ui.AutoSize, TxtSaveBtn, ui.Fixed)
+	BtnMainSettingsSave = ui.CreateButton(saveSettings, 25, ui.AutoSize, TxtSaveBtn, ui.Fixed)
 	BtnMainSettings.SetSize(10, ui.AutoSize)
 	BtnMainSettingsSave.SetAlign(ui.AlignLeft)
+	BtnMainSettingsSave.SetShadowType(ui.ShadowHalf)
 	BtnMainSettingsSave.OnClick(func(ev ui.Event) {
 		DiscordToken = tmpDiscordToken
 		CommandPrefix = tmpCommandPrefix
 	})
-	FrmMainSettings.SetVisible(false)
+	//FrmMainSettings.SetVisible(false)
 	BtnLogLevel.SetActive(false)
-	BtnMainSettingsSave.SetActive(false)
+	//BtnMainSettingsSave.SetActive(false)
+
+	ui.PutEvent(ui.Event{Type: ui.EventKey, Key: term.MouseLeft, Target: tokenEdit})
+
+	//settingsFrame.OnActive(func(active bool) {
+	//	//tokenEdit.ProcessEvent(ui.Event{Type: ui.EventKey, Key: term.KeyTab})
+	//	ui.PutEvent(ui.Event{Type: ui.EventKey, Key: term.MouseLeft, Target: tokenEdit})
+	//
+	//	//(func() {
+	//	//	ui.PutEvent(ui.Event{Type: ui.EventKey, Key: term.MouseLeft, Target: tokenEdit})
+	//	//})()
+	//})
+
+	//settingsFrame.SetActive(true)
+
+	return tokenEdit
 }

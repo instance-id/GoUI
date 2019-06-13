@@ -4,17 +4,30 @@ import (
 	ui "github.com/instance-id/clui"
 )
 
-type LogLevels struct {
-	LogLevel        []string
-	CurrentLogLevel string
-	DefaultLogLevel string
+var Asset *AssetContainer
+
+func InitTmpAssetData() {
+	Asset = &AssetContainer{AD: []AssetDetails{
+		{AssetCode: "UFPS1",
+			AssetName:     "UFPS : Ultimate FPS",
+			AssetApiKey:   "123123112312312323123123123",
+			AssetRole:     "123123123123123123",
+			AssetReplaced: "Yes",
+			AssetVersion:  "1",
+			ReplaceDate:   "2018-06-06"},
+		{
+			AssetCode:     "UFPS2",
+			AssetName:     "UFP2 : Ultimate FPS",
+			AssetApiKey:   "123123112312312323123123123",
+			AssetRole:     "123123123123123123",
+			AssetReplaced: "Yes",
+			AssetVersion:  "1",
+			ReplaceDate:   "2018-06-06"}},
+	}
 }
 
-type TableEdit struct {
-	Row    int
-	Col    int
-	OldVal string
-	NewVal string
+type AssetContainer struct {
+	AD []AssetDetails
 }
 
 type AssetDetails struct {
@@ -27,18 +40,6 @@ type AssetDetails struct {
 	ReplaceDate   string
 }
 
-type DataAssets struct {
-	AssetCodes    []string
-	AssetPackages map[string]string
-	AssetApiKeys  map[string]string
-}
-
-type DataDiscord struct {
-	GuildId  string
-	BotUsers []string
-	Roles    map[string]string
-}
-
 type DatabaseDetails struct {
 	Providers   []string
 	Provider    int
@@ -49,20 +50,25 @@ type DatabaseDetails struct {
 	TablePrefix string
 }
 
-type TableDialog struct {
+type DataDiscord struct {
+	GuildId  string
+	BotUsers []string
+	Roles    map[string]string
+}
+
+type EditableDialog struct {
 	View       *ui.Window
 	Frame      *ui.Frame
 	result     int
 	value      int
 	edtResult  string
-	table      *ui.TableView
 	edit       *ui.EditField
 	editDialog *ui.SelectDialog
 	confirm    *ui.ConfirmationDialog
 	onClose    func()
 }
 
-type ListDialog struct {
+type EditDialog struct {
 	View       *ui.Window
 	Frame      *ui.Frame
 	result     int
@@ -88,29 +94,45 @@ type LogDialog struct {
 	onClose    func()
 }
 
+type LogLevels struct {
+	LogLevel        []string
+	CurrentLogLevel string
+	DefaultLogLevel string
+}
+
+type TableDialog struct {
+	View       *ui.Window
+	Frame      *ui.Frame
+	result     int
+	value      int
+	edtResult  string
+	table      *ui.TableView
+	edit       *ui.EditField
+	editDialog *ui.SelectDialog
+	confirm    *ui.ConfirmationDialog
+	onClose    func()
+}
+
+type TableEdit struct {
+	Row    int
+	Col    int
+	NewVal string
+	OldVal string
+}
+
 var (
-	Log           LogLevels
-	DiscordToken  string
 	CommandPrefix string
+	DiscordToken  string
+	Log           LogLevels
 )
 
-var AssetDetail = []*AssetDetails{{AssetCode: "SCT", AssetName: "SCT - Scriptable Text", AssetApiKey: "123123112312312323123123123", AssetRole: "123123123123123123", AssetReplaced: "No", AssetVersion: "1", ReplaceDate: ""},
-	{AssetCode: "UFPS1", AssetName: "UFPS : Ultimate FPS", AssetApiKey: "123123112312312323123123123", AssetRole: "123123123123123123", AssetReplaced: "Yes", AssetVersion: "1", ReplaceDate: "2018-06-06"},
-	{AssetCode: "UCC", AssetName: "Ultimate Character Controller", AssetApiKey: "123123112312312323123123123", AssetRole: "123123123123123123", AssetReplaced: "Yes", AssetVersion: "1", ReplaceDate: "2018-06-06"},
-	{AssetCode: "TPC", AssetName: "Third Person Controller", AssetApiKey: "123123112312312323123123123", AssetRole: "123123123123123123", AssetReplaced: "Yes", AssetVersion: "1", ReplaceDate: "2018-06-06"},
-	{AssetCode: "UTPS", AssetName: "UTPS: Ultimate Third Person Shooter", AssetApiKey: "123123112312312323123123123", AssetRole: "123123123123123123", AssetReplaced: "Yes", AssetVersion: "1", ReplaceDate: "2018-06-06"},
-	{AssetCode: "UTPM", AssetName: "UTPM: Ultimate Third Person Melee", AssetApiKey: "123123112312312323123123123", AssetRole: "123123123123123123", AssetReplaced: "Yes", AssetVersion: "1", ReplaceDate: "2018-06-06"},
-	{AssetCode: "TPC1", AssetName: "Third Person Controller", AssetApiKey: "123123112312312323123123123", AssetRole: "123123123123123123", AssetReplaced: "Yes", AssetVersion: "1", ReplaceDate: "2018-06-06"},
-	{AssetCode: "FPC", AssetName: "First Person Controller", AssetApiKey: "123123112312312323123123123", AssetRole: "123123123123123123", AssetReplaced: "Yes", AssetVersion: "1", ReplaceDate: "2018-06-06"},
-	{AssetCode: "BD", AssetName: "Behavior Designer - Behavior Trees for Everyone", AssetApiKey: "123123112312312323123123123", AssetRole: "123123123123123123", AssetReplaced: "No", AssetVersion: "1", ReplaceDate: "2018-06-06"},
-	{AssetCode: "UFPS", AssetName: "UFPS : Ultimate FPS", AssetApiKey: "123123112312312323123123123", AssetRole: "123123123123123123", AssetReplaced: "Yes", AssetVersion: "1", ReplaceDate: "2018-06-06"},
-	{AssetCode: "UFPM", AssetName: "UFPM: Ultimate First Person Melee", AssetApiKey: "123123112312312323123123123", AssetRole: "123123123123123123", AssetReplaced: "Yes", AssetVersion: "1", ReplaceDate: "2018-06-06"}}
-
-var DiscordData = DataDiscord{
-	GuildId:  "123123123123",
-	BotUsers: []string{"12312312344444", "32132132188888"},
-	Roles:    map[string]string{"ABC": "44444444444444", "BCD": "55555555555555"},
-}
+//var AssetData = DataAssets{
+//	AssetCodes:    []string{"ABC", "BCD"},
+//	AssetPackages: map[string]string{"ABC": "ABC - Best Asset", "BCD": "BCD : Also Best Asset", AssetDetail[0].AssetCode: AssetDetail[0].AssetName},
+//	AssetApiKeys:  map[string]string{"ABC": "1231232123123123", "BCD": "3453453453453645"},
+//}
+//
+//var AssetDetail = []*AssetDetails{{AssetCode: [...]}}
 
 var DatabaseData = DatabaseDetails{
 	Address:     "instance.id",
@@ -122,10 +144,10 @@ var DatabaseData = DatabaseDetails{
 	Provider:    0,                                                // 0=MySQL, 1=Postgres, 2=MSSQL, 3=SqLite
 }
 
-var AssetData = DataAssets{
-	AssetCodes:    []string{"ABC", "BCD"},
-	AssetPackages: map[string]string{"ABC": "ABC - Best Asset", "BCD": "BCD : Also Best Asset", AssetDetail[0].AssetCode: AssetDetail[0].AssetName},
-	AssetApiKeys:  map[string]string{"ABC": "1231232123123123", "BCD": "3453453453453645"},
+var DiscordData = DataDiscord{
+	GuildId:  "123123123123",
+	BotUsers: []string{"12312312344444", "32132132188888"},
+	Roles:    map[string]string{"ABC": "44444444444444", "BCD": "55555555555555"},
 }
 
 const (
@@ -142,3 +164,18 @@ const (
 	// DialogButton4 - a user clicked the fourth button in the dialog
 	DialogButton4 = 4
 )
+
+// --- Backup Data ------------------------------------------------
+
+//var Asset = *Deets{{{[]*AssetDetails{{AssetCode: "SCT", AssetName: "SCT - Scriptable Text", AssetApiKey: "123123112312312323123123123", AssetRole: "123123123123123123", AssetReplaced: "No", AssetVersion: "1", ReplaceDate: ""},
+// {AssetCode: "UFPS1", AssetName: "UFPS : Ultimate FPS", AssetApiKey: "123123112312312323123123123", AssetRole: "123123123123123123", AssetReplaced: "Yes", AssetVersion: "1", ReplaceDate: "2018-06-06"},
+// {AssetCode: "UCC", AssetName: "Ultimate Character Controller", AssetApiKey: "123123112312312323123123123", AssetRole: "123123123123123123", AssetReplaced: "Yes", AssetVersion: "1", ReplaceDate: "2018-06-06"},
+// {AssetCode: "TPC", AssetName: "Third Person Controller", AssetApiKey: "123123112312312323123123123", AssetRole: "123123123123123123", AssetReplaced: "Yes", AssetVersion: "1", ReplaceDate: "2018-06-06"},
+// {AssetCode: "UTPS", AssetName: "UTPS: Ultimate Third Person Shooter", AssetApiKey: "123123112312312323123123123", AssetRole: "123123123123123123", AssetReplaced: "Yes", AssetVersion: "1", ReplaceDate: "2018-06-06"},
+// {AssetCode: "UTPM", AssetName: "UTPM: Ultimate Third Person Melee", AssetApiKey: "123123112312312323123123123", AssetRole: "123123123123123123", AssetReplaced: "Yes", AssetVersion: "1", ReplaceDate: "2018-06-06"},
+// {AssetCode: "TPC1", AssetName: "Third Person Controller", AssetApiKey: "123123112312312323123123123", AssetRole: "123123123123123123", AssetReplaced: "Yes", AssetVersion: "1", ReplaceDate: "2018-06-06"},
+// {AssetCode: "FPC", AssetName: "First Person Controller", AssetApiKey: "123123112312312323123123123", AssetRole: "123123123123123123", AssetReplaced: "Yes", AssetVersion: "1", ReplaceDate: "2018-06-06"},
+// {AssetCode: "BD", AssetName: "Behavior Designer - Behavior Trees for Everyone", AssetApiKey: "123123112312312323123123123", AssetRole: "123123123123123123", AssetReplaced: "No", AssetVersion: "1", ReplaceDate: "2018-06-06"},
+// {AssetCode: "UFPS", AssetName: "UFPS : Ultimate FPS", AssetApiKey: "123123112312312323123123123", AssetRole: "123123123123123123", AssetReplaced: "Yes", AssetVersion: "1", ReplaceDate: "2018-06-06"},
+// {AssetCode: "UFPM", AssetName: "UFPM: Ultimate First Person Melee", AssetApiKey: "123123112312312323123123123", AssetRole: "123123123123123123", AssetReplaced: "Yes", AssetVersion: "1", ReplaceDate: "2018-06-06"}}
+//}}

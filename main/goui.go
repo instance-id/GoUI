@@ -23,6 +23,21 @@ func InitData() {
 	DiscordToken = "123123123SDFSDFSDFSDF1234123123"
 	CommandPrefix = "!cmd "
 
+	//if Asset == nil {
+	//	Asset = &AssetContainer{AD: []AssetDetails{
+	//		{
+	//			"",
+	//			"",
+	//			"",
+	//			"",
+	//			"",
+	//			"",
+	//			"",
+	//		},
+	//	}}
+	//}
+
+	// InitTmpAssetData()
 }
 
 func MainInitialSettings() {
@@ -36,13 +51,14 @@ func MainInitialSettings() {
 	BtnDiscordSettings.SetActive(false)
 	BtnDatabaseSettings.SetActive(false)
 	BtnPlugins.SetActive(false)
-	BtnTheme.SetActive(false)
+	//BtnTheme.SetActive(false)
 	BtnLogs.SetActive(false)
 	BtnQuit.SetActive(false)
+	InitData()
 }
 
 func createView() {
-	InitData()
+
 	// --- Main Window ---------------------------------------------------
 	WindowMain = ui.AddWindow(0, 0, 10, 7, TxtApplication)
 	WindowMain.SetPack(ui.Horizontal)
@@ -55,12 +71,16 @@ func createView() {
 	view.CreateViewContent()
 
 	// --- Settings Frames -----------------------------------------------
-	view.CreateViewMainSettings()
+	tokenEdit := view.CreateViewMainSettings()
 	view.CreateViewDiscordSettings()
 	view.CreateViewDatabaseSettings()
 	view.CreateViewPlugins()
 
 	MainInitialSettings()
+
+	tokenEdit.SetActive(true)
+	tokenEdit.SetEnabled(true)
+	tokenEdit.SetTabStop(true)
 
 	ui.MainLoop()
 }
@@ -69,8 +89,9 @@ func mainLoop() {
 	// Bool - Use 256 color or default?
 	ui.InitLibrary()
 	defer ui.DeinitLibrary()
+
+	// --- Newly added ---------------------
 	term.SetOutputMode(term.Output256)
-	background = TermNative(234)
 
 	ui.SetThemePath("themes")
 	ui.SetCurrentTheme("verifier")

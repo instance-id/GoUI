@@ -19,25 +19,24 @@ var (
 	FrmPlugins          *ui.Frame
 
 	// --- Menu buttons -------------------------
-	BtnRunVerifier      *ui.ButtonNoShadow
-	BtnMainSettings     *ui.ButtonNoShadow
-	BtnDiscordSettings  *ui.ButtonNoShadow
-	BtnDatabaseSettings *ui.ButtonNoShadow
-	BtnPlugins          *ui.ButtonNoShadow
-	BtnTheme            *ui.ButtonNoShadow
-	BtnLogs             *ui.ButtonNoShadow
-	BtnQuit             *ui.ButtonNoShadow
+	BtnRunVerifier      *ui.Button
+	BtnMainSettings     *ui.Button
+	BtnDiscordSettings  *ui.Button
+	BtnDatabaseSettings *ui.Button
+	BtnPlugins          *ui.Button
+	BtnLogs             *ui.Button
+	BtnQuit             *ui.Button
 
 	// --- Main Settings buttons ----------------
-	BtnMainSettingsSave *ui.ButtonNoShadow
-	BtnLogLevel         *ui.ButtonNoShadow
+	BtnMainSettingsSave *ui.Button
+	BtnLogLevel         *ui.Button
 
 	// --- Discord settings buttons -------------
-	BtnAssetCodes   *ui.ButtonNoShadow
-	BtnAssetDetails *ui.ButtonNoShadow
+	BtnAssetCodes   *ui.Button
+	BtnAssetDetails *ui.Button
 
 	// --- Database Settings buttons ----------------
-	BtnDatabaseProvider *ui.ButtonNoShadow
+	BtnDatabaseProvider *ui.Button
 
 	// --- Arbitrary ------------------------------------------------
 	WindowListDialog *ui.Window

@@ -12,7 +12,7 @@ import (
 //	frmLogLevel.SetActive(false)
 //}
 
-func SelectLogLevel(btn *ui.ButtonNoShadow) {
+func SelectLogLevel(btn *ui.Button) {
 
 	dlgType := ui.SelectDialogRadio
 

@@ -25,6 +25,9 @@ const TxtApplyBtn = " | Apply "
 const TxtCancelBtn = " | Cancel "
 const TxtSaveBtn = " | Save "
 const TxtCloseBtn = " | Close "
+const TxtEditing = "Editing"
+const TxtNewValue = "New Value: "
+const TxtNewAssetCodeValue = "New Asset Code: "
 
 // --- Main Settings -----------------------------------------------------
 const TxtMainSettingsDesc = " Main Verifier settings"
@@ -45,6 +48,11 @@ const TxtLogLevelDesc = "What level of logging should be output? See docs for de
 // --- Discord Settings --------------------------------------------------
 // --- Buttons ----------------------------------
 const TxtAutoScrollChk = " AutoScroll "
+
+// --- Table ------------------------------------------------
+const TxtInstructs1 = "Instructions: Use arrow keys or pageup/down to navigate the fields. "
+const TxtInstructs2 = "Highlight the field you would like to edit. Press F2 or Space to edit the field. "
+const TxtInstructs3 = "Simply press ok when completed. - Don't forget to save! - "
 
 // --- Dialogs ----------------------------------
 const TxtGuildId = " Guild Id "

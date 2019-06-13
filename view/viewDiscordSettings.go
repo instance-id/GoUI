@@ -1,7 +1,6 @@
 package view
 
 import (
-	"fmt"
 	. "github.com/instance-id/GoUI/elements"
 	. "github.com/instance-id/GoUI/text"
 	. "github.com/instance-id/GoUI/utils"
@@ -39,24 +38,27 @@ func CreateViewDiscordSettings() {
 	ui.CreateLabel(botUsersFrame, ui.AutoSize, ui.AutoSize, TxtBotUsersDesc, ui.Fixed)
 
 	// --- Asset Codes ---------------------------------------------------
-	assetCodesFrame := NewFramedInput(settingsFrame, fmt.Sprintf("%s - %s", TxtAssetCodes, TxtAssetCodesDesc), nil)
-	BtnAssetCodes = ui.CreateButton_NoShadow(assetCodesFrame, 22, ui.AutoSize, TxtAssetCodesBtn, ui.Fixed)
-	BtnAssetCodes.SetAlign(ui.AlignLeft)
-	BtnAssetCodes.OnClick(func(ev ui.Event) {
-		BtnAssetCodes.SetEnabled(false)
-		assetCodes := CreateListDialog(TxtAssetCodes)
-		assetCodes.OnClose(func() {
-			BtnAssetCodes.SetEnabled(true)
-		})
-	})
+	//assetCodesFrame := NewFramedInput(settingsFrame, fmt.Sprintf("%s - %s", TxtAssetCodes, TxtAssetCodesDesc), nil)
+	//BtnAssetCodes = ui.CreateButton_NoShadow(assetCodesFrame, 22, ui.AutoSize, TxtAssetCodesBtn, ui.Fixed)
+	//BtnAssetCodes.SetAlign(ui.AlignLeft)
+	//BtnAssetCodes.OnClick(func(ev ui.Event) {
+	//	BtnAssetCodes.SetEnabled(false)
+	//	assetCodes := CreateListDialog(TxtAssetCodes)
+	//	assetCodes.OnClose(func() {
+	//		BtnAssetCodes.SetEnabled(true)
+	//	})
+	//})
 
 	// --- Asset Details -------------------------------------------------
 	logLevelFrame := NewFramedInput(settingsFrame, TxtAssetDetails, nil)
-	BtnAssetDetails = ui.CreateButton_NoShadow(logLevelFrame, ui.AutoSize, ui.AutoSize, TxtAssetDetailsBtn, ui.Fixed)
+	BtnAssetDetails = ui.CreateButton(logLevelFrame, ui.AutoSize, ui.AutoSize, TxtAssetDetailsBtn, ui.Fixed)
 	BtnAssetDetails.SetAlign(ui.AlignLeft)
+	BtnAssetDetails.SetShadowType(ui.ShadowHalf)
 	BtnAssetDetails.OnClick(func(ev ui.Event) {
 		FrmDiscordSettings.SetActive(false)
-		CreateTableDialog(BtnAssetDetails, TxtAssetDetails)
+		td := CreateTableDialog(BtnAssetDetails)
+		td.SetActive(true)
+
 	})
 	ui.CreateLabel(logLevelFrame, ui.AutoSize, ui.AutoSize, TxtAssetDetailsDesc, ui.Fixed)
 
@@ -65,8 +67,9 @@ func CreateViewDiscordSettings() {
 	btnFrame.SetPaddings(2, 2)
 	var params = FramedInputParams{Orientation: ui.Vertical, Width: 25, Height: 4}
 	saveSettings := NewFramedInput(btnFrame, TxtSaveDesc, &params)
-	BtnMainSettingsSave = ui.CreateButton_NoShadow(saveSettings, 25, ui.AutoSize, TxtSaveBtn, ui.Fixed)
+	BtnMainSettingsSave = ui.CreateButton(saveSettings, 25, ui.AutoSize, TxtSaveBtn, ui.Fixed)
 	BtnMainSettingsSave.SetAlign(ui.AlignLeft)
+	BtnMainSettingsSave.SetShadowType(ui.ShadowHalf)
 	BtnMainSettingsSave.OnClick(func(ev ui.Event) {
 		DiscordData.GuildId = tmpGuidId
 		DiscordData.BotUsers = tmpBotUsers

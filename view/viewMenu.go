@@ -20,8 +20,9 @@ func CreateViewMenu() {
 	FrameMainMenu.SetBackColor(235)
 
 	// --- Run Verifier --------------------------------------------------
-	BtnRunVerifier = ui.CreateButton_NoShadow(FrameMainMenu, 22, ui.AutoSize, TxtRunVerifier, ui.Fixed)
+	BtnRunVerifier = ui.CreateButton(FrameMainMenu, 22, ui.AutoSize, TxtRunVerifier, ui.Fixed)
 	BtnRunVerifier.SetAlign(ui.AlignLeft)
+	BtnRunVerifier.SetShadowType(ui.ShadowHalf)
 	BtnRunVerifier.OnClick(func(ev ui.Event) {
 		if !FrmMainSettings.Visible() {
 			CommandMainSettings()
@@ -29,8 +30,9 @@ func CreateViewMenu() {
 	})
 
 	// --- Main Settings -------------------------------------------------
-	BtnMainSettings = ui.CreateButton_NoShadow(FrameMainMenu, 22, ui.AutoSize, TxtMainSettings+TxtActive, ui.Fixed)
+	BtnMainSettings = ui.CreateButton(FrameMainMenu, 22, ui.AutoSize, TxtMainSettings+TxtActive, ui.Fixed)
 	BtnMainSettings.SetAlign(ui.AlignLeft)
+	BtnMainSettings.SetShadowType(ui.ShadowHalf)
 	BtnMainSettings.OnClick(func(ev ui.Event) {
 		if !FrmMainSettings.Visible() {
 			CommandMainSettings()
@@ -38,8 +40,9 @@ func CreateViewMenu() {
 	})
 
 	// --- Discord Settings ----------------------------------------------
-	BtnDiscordSettings = ui.CreateButton_NoShadow(FrameMainMenu, 22, ui.AutoSize, TxtDiscordSettings, ui.AutoSize)
+	BtnDiscordSettings = ui.CreateButton(FrameMainMenu, 22, ui.AutoSize, TxtDiscordSettings, ui.AutoSize)
 	BtnDiscordSettings.SetAlign(ui.AlignLeft)
+	BtnDiscordSettings.SetShadowType(ui.ShadowHalf)
 	BtnDiscordSettings.OnClick(func(ev ui.Event) {
 		if !FrmDiscordSettings.Visible() {
 			CommandDiscordSettings()
@@ -47,8 +50,9 @@ func CreateViewMenu() {
 	})
 
 	// --- Database Settings ----------------------------------------------
-	BtnDatabaseSettings = ui.CreateButton_NoShadow(FrameMainMenu, 22, ui.AutoSize, TxtDatabaseSettings, ui.Fixed)
+	BtnDatabaseSettings = ui.CreateButton(FrameMainMenu, 22, ui.AutoSize, TxtDatabaseSettings, ui.Fixed)
 	BtnDatabaseSettings.SetAlign(ui.AlignLeft)
+	BtnDatabaseSettings.SetShadowType(ui.ShadowHalf)
 	BtnDatabaseSettings.OnClick(func(ev ui.Event) {
 		if !FrmDatabaseSettings.Visible() {
 			CommandDatabaseSettings()
@@ -56,32 +60,27 @@ func CreateViewMenu() {
 	})
 
 	// --- Plugins -------------------------------------------------------
-	BtnPlugins = ui.CreateButton_NoShadow(FrameMainMenu, 22, ui.AutoSize, TxtPlugins, ui.Fixed)
+	BtnPlugins = ui.CreateButton(FrameMainMenu, 22, ui.AutoSize, TxtPlugins, ui.Fixed)
 	BtnPlugins.SetAlign(ui.AlignLeft)
+	BtnPlugins.SetShadowType(ui.ShadowHalf)
 	BtnPlugins.OnClick(func(ev ui.Event) {
 		if !FrmPlugins.Visible() {
 			CommandPlugins()
 		}
 	})
 
-	// --- Select Theme --------------------------------------------------
-	BtnTheme = ui.CreateButton_NoShadow(FrameMainMenu, 22, ui.AutoSize, TxtSelectTheme, ui.AutoSize)
-	BtnTheme.SetAlign(ui.AlignLeft)
-	BtnTheme.OnClick(func(ev ui.Event) {
-		BtnTheme.SetEnabled(false)
-		ChangeTheme(BtnTheme)
-	})
-
 	// --- Logs ----------------------------------------------------------
-	BtnLogs = ui.CreateButton_NoShadow(FrameMainMenu, 22, ui.AutoSize, Txtlogs, ui.Fixed)
+	BtnLogs = ui.CreateButton(FrameMainMenu, 22, ui.AutoSize, Txtlogs, ui.Fixed)
 	BtnLogs.SetAlign(ui.AlignLeft)
+	BtnLogs.SetShadowType(ui.ShadowHalf)
 	BtnLogs.OnClick(func(ev ui.Event) {
 		CreateLogDialog(Txtlogs)
 	})
 
 	// --- Quit ----------------------------------------------------------
-	BtnQuit = ui.CreateButton_NoShadow(FrameMainMenu, 22, ui.AutoSize, TxtQuit, ui.Fixed)
+	BtnQuit = ui.CreateButton(FrameMainMenu, 22, ui.AutoSize, TxtQuit, ui.Fixed)
 	BtnQuit.SetAlign(ui.AlignLeft)
+	BtnQuit.SetShadowType(ui.ShadowHalf)
 	BtnQuit.OnClick(func(ev ui.Event) {
 		go ui.Stop()
 	})

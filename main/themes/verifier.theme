@@ -26,7 +26,7 @@ SelectionBack  = 40
 
 // --- scroll control
 ScrollText = 238
-ScrollBack = black
+ScrollBack = 234
 ThumbText  = white 
 ThumbBack  = black
 

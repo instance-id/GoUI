@@ -4,11 +4,10 @@ import (
 	"fmt"
 	. "github.com/instance-id/GoUI/text"
 	. "github.com/instance-id/GoUI/utils"
+
 	ui "github.com/instance-id/clui"
 	term "github.com/nsf/termbox-go"
 )
-
-var tmpAssetData []*AssetDetails
 
 type dbCache struct {
 	firstRow int        // previous first visible row
@@ -18,7 +17,12 @@ type dbCache struct {
 
 const columnInTable = 7
 
-func (d *dbCache) preload(firstRow, rowCount int) {
+func (d *dbCache) preload(firstRow, rowCount int, tmpAssetData *AssetContainer) {
+
+	if tmpAssetData.AD == nil {
+		return
+	}
+
 	if firstRow == d.firstRow && rowCount == d.rowCount {
 		// fast path: view area is the same, return immediately
 		return
@@ -28,13 +32,13 @@ func (d *dbCache) preload(firstRow, rowCount int) {
 	for i := 0; i < rowCount; i++ {
 		absIndex := firstRow + i
 		d.data[i] = make([]string, columnInTable, columnInTable)
-		d.data[i][0] = tmpAssetData[absIndex].AssetCode
-		d.data[i][1] = tmpAssetData[absIndex].AssetName
-		d.data[i][2] = tmpAssetData[absIndex].AssetApiKey
-		d.data[i][3] = tmpAssetData[absIndex].AssetRole
-		d.data[i][4] = tmpAssetData[absIndex].AssetVersion
-		d.data[i][5] = tmpAssetData[absIndex].AssetReplaced
-		d.data[i][6] = tmpAssetData[absIndex].ReplaceDate
+		d.data[i][0] = tmpAssetData.AD[absIndex].AssetCode
+		d.data[i][1] = tmpAssetData.AD[absIndex].AssetName
+		d.data[i][2] = tmpAssetData.AD[absIndex].AssetApiKey
+		d.data[i][3] = tmpAssetData.AD[absIndex].AssetRole
+		d.data[i][4] = tmpAssetData.AD[absIndex].AssetVersion
+		d.data[i][5] = tmpAssetData.AD[absIndex].AssetReplaced
+		d.data[i][6] = tmpAssetData.AD[absIndex].ReplaceDate
 	}
 
 	// do not forget to save the last values
@@ -58,15 +62,21 @@ func (d *dbCache) NewValue(row, col int, newText string) {
 	d.data[row][col] = newText
 }
 
+func (d *dbCache) AddNewValue(row, col int, newAsset string) string {
+	data := []string{newAsset, "", "", "", "", "", ""}
+	d.data = append(d.data, data)
+	return newAsset
+}
+
 // --- Window type for data table ----------------------------------------
-func CreateTableDialog(btn *ui.ButtonNoShadow, tableTitle string) {
+func CreateTableDialog(btn *ui.Button) *ui.TableView {
+	var tmpAssetData *AssetContainer
+	var restrictor = 0
+
 	tableDialog := new(TableDialog)
 
 	// --- Obtain terminal overall size ----------------------------------
 	cw, ch := term.Size()
-
-	// --- Save current values to temp value until saved -----------------
-	tmpAssetData = AssetDetail
 
 	// --- Create new popup window for table data ------------------------
 	tableDialog.View = ui.AddWindow(cw/2-75, ch/2-16, ui.AutoSize, ui.AutoSize, TxtAssetDetails)
@@ -82,25 +92,35 @@ func CreateTableDialog(btn *ui.ButtonNoShadow, tableTitle string) {
 	td := ui.CreateTableView(tableDialog.Frame, 145, 15, 1)
 	ui.ActivateControl(tableDialog.Frame, td)
 
+	// --- Save current values to temp value or create new if nonexistent -----------------
+	if Asset == nil {
+		tmpAssetData = &AssetContainer{AD: []AssetDetails{{"", "", "", "", "", "", ""}}}
+	} else {
+		tmpAssetData = Asset
+		restrictor = 1
+	}
+
 	cache := &dbCache{firstRow: -1}
-	rowCount := len(AssetDetail)
+	var rowCount int
+	rowCount = len(tmpAssetData.AD)
+
 	td.SetShowLines(true)
 	td.SetShowRowNumber(true)
 	td.SetRowCount(rowCount)
 
 	cols := []ui.Column{
-		ui.Column{Title: "Asset Code", Width: 5, Alignment: ui.AlignLeft},
-		ui.Column{Title: "Asset Name", Width: 50, Alignment: ui.AlignLeft},
-		ui.Column{Title: "Asset APIKey", Width: 30, Alignment: ui.AlignLeft},
-		ui.Column{Title: "Asset RoleId", Width: 20, Alignment: ui.AlignLeft},
-		ui.Column{Title: "Version", Width: 7, Alignment: ui.AlignLeft},
-		ui.Column{Title: "Replaced?", Width: 10, Alignment: ui.AlignLeft},
-		ui.Column{Title: "Replace Date", Width: 12, Alignment: ui.AlignLeft},
+		{Title: "Asset Code", Width: 5, Alignment: ui.AlignLeft},
+		{Title: "Asset Name", Width: 50, Alignment: ui.AlignLeft},
+		{Title: "Asset APIKey", Width: 30, Alignment: ui.AlignLeft},
+		{Title: "Asset RoleId", Width: 20, Alignment: ui.AlignLeft},
+		{Title: "Version", Width: 7, Alignment: ui.AlignLeft},
+		{Title: "Replaced?", Width: 10, Alignment: ui.AlignLeft},
+		{Title: "Replace Date", Width: 12, Alignment: ui.AlignLeft},
 	}
 	td.SetColumns(cols)
 
 	td.OnBeforeDraw(func(col, row, colCnt, rowCnt int) {
-		cache.preload(row, rowCnt)
+		cache.preload(row, rowCnt, tmpAssetData)
 		l, t, w, h := td.VisibleArea()
 		tableDialog.Frame.SetTitle(fmt.Sprintf("Caching: %d:%d - %dx%d", l, t, w, h))
 	})
@@ -108,12 +128,25 @@ func CreateTableDialog(btn *ui.ButtonNoShadow, tableTitle string) {
 		info.Text = cache.value(info.Row, info.Col)
 	})
 
+	var newInfo = ui.ColumnDrawInfo{Row: 0, Col: 0}
+
+	td.OnActive(func(active bool) {
+		if (func(info *ui.ColumnDrawInfo) string {
+			return cache.value(info.Row, info.Col)
+		})(&newInfo) == "" {
+			if restrictor == 0 {
+				cache.CreateNewData(tmpAssetData)
+				restrictor = 1
+			}
+		}
+	})
+
 	td.OnAction(func(ev ui.TableEvent) {
-		btns := []string{TxtApplyBtn, TxtCancelBtn}
-		var action string
+		// btns := []string{TxtApplyBtn, TxtCancelBtn}
+		//var action string
 		switch ev.Action {
 		case ui.TableActionSort:
-			action = "Sort table"
+			//action = "Sort table"
 		case ui.TableActionEdit:
 			c := ev.Col
 			r := ev.Row
@@ -124,50 +157,68 @@ func CreateTableDialog(btn *ui.ButtonNoShadow, tableTitle string) {
 				editVal.OldVal = cache.value(info.Row, info.Col)
 			})(&newInfo)
 
-			dlg := ui.CreateEditDialog(fmt.Sprintf("Editing value: %s", editVal.OldVal), "New value", editVal.OldVal)
+			dlg := CreateEditableDialog(fmt.Sprintf("%s: %s", TxtEditing, editVal.OldVal), editVal.OldVal)
 			dlg.View.SetSize(35, 10)
 			dlg.View.BaseControl.SetSize(35, 10)
 			dlg.OnClose(func() {
 				switch dlg.Result() {
 				case ui.DialogButton1:
 					editVal.NewVal = dlg.EditResult()
-					cache.NewValue(editVal.Row, editVal.Col, editVal.NewVal)
+					cache.UpdateData(editVal.Row, editVal.Col, editVal.NewVal, tmpAssetData)
 					ui.PutEvent(ui.Event{Type: ui.EventRedraw})
 				}
 			})
 			return
 		case ui.TableActionNew:
-			action = "Add new row"
-		case ui.TableActionDelete:
-			action = "Delete row"
-		default:
-			action = "Unknown action"
-		}
+			c := ev.Col
+			r := ev.Row
+			var editVal = TableEdit{Row: r, Col: c}
+			var newInfo = ui.ColumnDrawInfo{Row: r, Col: c}
+			dlg := CreateEditableDialog(fmt.Sprintf("%s:", TxtNewAssetCodeValue), "")
+			dlg.View.SetSize(35, 10)
+			dlg.View.BaseControl.SetSize(35, 10)
+			dlg.OnClose(func() {
+				switch dlg.Result() {
+				case ui.DialogButton1:
+					editVal.NewVal = dlg.EditResult()
+					details := AssetDetails{AssetCode: editVal.NewVal}
+					tmpAssetData.AddNewAsset(details)
+					func(info *ui.ColumnDrawInfo) {
+						info.Text = cache.AddNewValue(len(tmpAssetData.AD)-1, 0, editVal.NewVal)
+					}(&newInfo)
+					td.SetRowCount(len(tmpAssetData.AD))
+					ui.PutEvent(ui.Event{Type: ui.EventRedraw})
 
-		dlg := ui.CreateConfirmationDialog(
-			"<c:blue>"+action,
-			"Click any button or press <c:yellow>SPACE<c:> to close the dialog",
-			btns, ui.DialogButton1)
-		dlg.OnClose(func() {})
+				}
+				ui.PutEvent(ui.Event{Type: ui.EventRedraw})
+
+			})
+		case ui.TableActionDelete:
+			//action = "Delete row"
+		default:
+			//action = "Unknown action"
+		}
 	})
 
 	btnFrame := ui.CreateFrame(tableDialog.Frame, 1, 1, ui.BorderNone, ui.Fixed)
 	btnFrame.SetPaddings(1, 1)
 	textFrame := ui.CreateFrame(btnFrame, 1, 1, ui.BorderNone, ui.Fixed)
 	textFrame.SetPack(ui.Vertical)
-	// ui.CreateLabel(textFrame, ui.AutoSize, ui.AutoSize, "_____________", ui.Fixed)
-	ui.CreateLabel(textFrame, ui.AutoSize, ui.AutoSize, "Instructions: Use arrow keys or pageup/down to navigate the fields.", ui.Fixed)
-	ui.CreateLabel(textFrame, ui.AutoSize, ui.AutoSize, "Highlight the field you would like to edit. Press F2 or Space to edit the field ", ui.Fixed)
-	ui.CreateLabel(textFrame, ui.AutoSize, ui.AutoSize, "Simply press ok when completed. - Don't forget to save! -", ui.Fixed)
+
+	ui.CreateLabel(textFrame, ui.AutoSize, ui.AutoSize, TxtInstructs1, ui.Fixed)
+	ui.CreateLabel(textFrame, ui.AutoSize, ui.AutoSize, TxtInstructs2, ui.Fixed)
+	ui.CreateLabel(textFrame, ui.AutoSize, ui.AutoSize, TxtInstructs3, ui.Fixed)
 
 	// --- Window Controls -----------------------------------------------
 	ui.CreateFrame(btnFrame, 1, 1, ui.BorderNone, 1)
 	BtnSave := ui.CreateButton(btnFrame, 15, 1, TxtSaveBtn, ui.Fixed)
+	BtnSave.SetShadowType(ui.ShadowHalf)
 	BtnSave.OnClick(func(ev ui.Event) {
-		AssetDetail = tmpAssetData
+		Asset = tmpAssetData
 		btn.SetEnabled(true)
 	})
 	BtnClose := ui.CreateButton(btnFrame, 15, 1, TxtCloseBtn, ui.Fixed)
+	BtnClose.SetShadowType(ui.ShadowHalf)
 	BtnClose.OnClick(func(ev ui.Event) {
 		ui.WindowManager().DestroyWindow(tableDialog.View)
 		btn.SetEnabled(true)
@@ -175,4 +226,58 @@ func CreateTableDialog(btn *ui.ButtonNoShadow, tableTitle string) {
 
 	BtnSave.SetActive(false)
 	BtnClose.SetActive(false)
+	return td
+}
+
+func (d *dbCache) CreateNewData(tmpAssetData *AssetContainer) *dbCache {
+	var editVal = TableEdit{Row: 0, Col: 0}
+
+	dlg := CreateEditableDialog(fmt.Sprintf("%s:", TxtNewAssetCodeValue), "")
+	dlg.View.SetSize(35, 10)
+	dlg.View.SetActive(true)
+	dlg.View.SetEnabled(true)
+	dlg.OnClose(func() {
+		switch dlg.Result() {
+		case ui.DialogButton1:
+			editVal.NewVal = dlg.EditResult()
+			var newInfo = ui.ColumnDrawInfo{Row: 0, Col: 0}
+			data := d.UpdateData(newInfo.Row, newInfo.Col, editVal.NewVal, tmpAssetData)
+			tmpAssetData.AD = data
+		}
+	})
+	return d
+}
+
+func (a *AssetContainer) AddNewAsset(asset AssetDetails) []AssetDetails {
+	a.AD = append(a.AD, asset)
+	return a.AD
+}
+
+func (d *dbCache) UpdateData(row int, col int, data string, tmpAssetData *AssetContainer) []AssetDetails {
+
+	switch col {
+	case 0:
+		tmpAssetData.AD[row].AssetCode = data
+		d.data[row][col] = tmpAssetData.AD[row].AssetCode
+	case 1:
+		tmpAssetData.AD[row].AssetName = data
+		d.data[row][col] = tmpAssetData.AD[row].AssetName
+	case 2:
+		tmpAssetData.AD[row].AssetApiKey = data
+		d.data[row][col] = tmpAssetData.AD[row].AssetApiKey
+	case 3:
+		tmpAssetData.AD[row].AssetRole = data
+		d.data[row][col] = tmpAssetData.AD[row].AssetRole
+	case 4:
+		tmpAssetData.AD[row].AssetVersion = data
+		d.data[row][col] = tmpAssetData.AD[row].AssetVersion
+	case 5:
+		tmpAssetData.AD[row].AssetReplaced = data
+		d.data[row][col] = tmpAssetData.AD[row].AssetReplaced
+	case 6:
+		tmpAssetData.AD[row].ReplaceDate = data
+		d.data[row][col] = tmpAssetData.AD[row].ReplaceDate
+	}
+
+	return tmpAssetData.AD
 }

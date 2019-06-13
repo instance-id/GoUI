@@ -7,7 +7,7 @@ import (
 
 type AnimateData struct {
 	ui.BaseControl
-	Button      *ui.ButtonNoShadow
+	Button      *ui.Button
 	StartPOSX   int
 	StartPOSY   int
 	EndPOSX     int

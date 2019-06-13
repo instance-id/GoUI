@@ -7,17 +7,6 @@ import (
 	term "github.com/nsf/termbox-go"
 )
 
-// --- Populate log ------------------------------------------------
-func RefreshLog(log *LogDialog) {
-	//log.log.Clear()
-	//
-	//for k, _ := range AssetData.AssetPackages {
-	//	log.log.AddItem(k)
-	//}
-	//ui.PutEvent(ui.Event{Type: ui.EventRedraw})
-
-}
-
 func CreateLogDialog(logTitle string) *LogDialog {
 	logDialog := new(LogDialog)
 	cw, ch := term.Size()
