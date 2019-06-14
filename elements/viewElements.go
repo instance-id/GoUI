@@ -6,9 +6,7 @@ import (
 
 // --- Application Elements ----------------------------------------------
 var (
-	WindowMain       *ui.Window
-	WindowAssetCodes *ui.Window
-	WindowAssetData  *ui.Window
+	WindowMain *ui.Window
 
 	FrameMenu           *ui.Frame
 	FrameMainMenu       *ui.Frame
@@ -32,13 +30,10 @@ var (
 	BtnLogLevel         *ui.Button
 
 	// --- Discord settings buttons -------------
-	BtnAssetCodes   *ui.Button
 	BtnAssetDetails *ui.Button
 
 	// --- Database Settings buttons ----------------
 	BtnDatabaseProvider *ui.Button
 
 	// --- Arbitrary ------------------------------------------------
-	WindowListDialog *ui.Window
-	FrameListDialog  *ui.Frame
 )

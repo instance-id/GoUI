@@ -18,12 +18,21 @@ var Services = []di.Def{
 		}},
 	{
 		// --- Creates database connection object ----------------------------------------------------------------------
-		Name:  "dbConn",
+		Name:  "dbData",
 		Scope: di.App,
 		Build: func(ctn di.Container) (interface{}, error) {
 			var db appconfig.DbSettings
-			var conn components.DbConfig
 			dbConfig := db.GetDbConfig()
+			return dbConfig, nil
+		},
+	},
+	{
+		// --- Creates database connection object ----------------------------------------------------------------------
+		Name:  "dbConn",
+		Scope: di.App,
+		Build: func(ctn di.Container) (interface{}, error) {
+			var conn components.DbConfig
+			dbConfig := ctn.Get("dbData").(*appconfig.DbSettings)
 			dbConn := conn.ConnectDB(dbConfig)
 			return dbConn, nil
 		},

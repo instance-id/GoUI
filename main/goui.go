@@ -103,7 +103,6 @@ func mainLoop() {
 }
 
 func main() {
-
 	app := DISetup()
 	defer app.Delete()
 	CmdInitialize(app)
@@ -111,11 +110,15 @@ func main() {
 	mainLoop()
 }
 
-func TermNative(c int) term.Attribute {
+func termNative(c int) term.Attribute {
 	return term.Attribute(c + 1)
 }
 
 type stderr struct{}
+
+func init() {
+	readline.Stdout = &stderr{}
+}
 
 func (s *stderr) Write(b []byte) (int, error) {
 	if len(b) == 1 && b[0] == 7 {
@@ -126,8 +129,4 @@ func (s *stderr) Write(b []byte) (int, error) {
 
 func (s *stderr) Close() error {
 	return os.Stderr.Close()
-}
-
-func init() {
-	readline.Stdout = &stderr{}
 }

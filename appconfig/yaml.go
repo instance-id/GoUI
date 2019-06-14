@@ -78,12 +78,12 @@ func Open(file string) (*Yaml, error) {
 /*
 	Sets a YAML setting
 */
-func (self *Yaml) Set(params ...interface{}) error {
+func (y *Yaml) Set(params ...interface{}) error {
 
 	l := len(params)
 
 	if l < 2 {
-		return fmt.Errorf("Missing value.")
+		return fmt.Errorf("missing value")
 	}
 
 	if Compat == true {
@@ -103,8 +103,8 @@ func (self *Yaml) Set(params ...interface{}) error {
 
 					log.Printf(`Using a route separated by "/" is deprecated, please use yaml.*Yaml.Get("%s") instead.`, strings.Join(p, `", "`))
 
-					dig.Dig(&self.values, route...)
-					return dig.Set(&self.values, value, route...)
+					_ = dig.Dig(&y.values, route...)
+					return dig.Set(&y.values, value, route...)
 				}
 			}
 		}
@@ -113,14 +113,14 @@ func (self *Yaml) Set(params ...interface{}) error {
 	route := params[0 : l-1]
 	value := params[l-1]
 
-	dig.Dig(&self.values, route...)
-	return dig.Set(&self.values, value, route...)
+	_ = dig.Dig(&y.values, route...)
+	return dig.Set(&y.values, value, route...)
 }
 
 /*
 	Returns a YAML setting
 */
-func (self *Yaml) Get(route ...interface{}) interface{} {
+func (y *Yaml) Get(route ...interface{}) interface{} {
 	var i interface{}
 
 	if Compat == true {
@@ -139,34 +139,33 @@ func (self *Yaml) Get(route ...interface{}) interface{} {
 
 				log.Printf(`Using a route separated by "/" is deprecated, please use yaml.*Yaml.Get("%s") instead.`, strings.Join(p, `", "`))
 
-				dig.Get(&self.values, &i, route...)
+				_ = dig.Get(&y.values, &i, route...)
 				return i
 			}
 		}
 	}
 
-	dig.Get(&self.values, &i, route...)
+	_ = dig.Get(&y.values, &i, route...)
 	return i
 }
 
 /*
 	Writes changes to the currently opened YAML file.
 */
-func (self *Yaml) Save() error {
-	if self.file != "" {
-		return self.Write(self.file)
+func (y *Yaml) Save() error {
+	if y.file != "" {
+		return y.Write(y.file)
 	} else {
 		return fmt.Errorf("No file specified.")
 	}
-	return nil
 }
 
 /*
 	Writes the current YAML struct to disk.
 */
-func (self *Yaml) Write(filename string) error {
+func (y *Yaml) Write(filename string) error {
 
-	out, err := yaml.Marshal(self.values)
+	out, err := yaml.Marshal(y.values)
 
 	if err != nil {
 		return err
@@ -188,16 +187,16 @@ func (self *Yaml) Write(filename string) error {
 /*
 	Loads a YAML file from disk.
 */
-func (self *Yaml) Read(filename string) error {
+func (y *Yaml) Read(filename string) error {
 	var err error
 
-	fileinfo, err := os.Stat(filename)
+	fileInfo, err := os.Stat(filename)
 
 	if err != nil {
 		return err
 	}
 
-	filesize := fileinfo.Size()
+	fileSize := fileInfo.Size()
 
 	fp, err := os.Open(filename)
 
@@ -207,10 +206,10 @@ func (self *Yaml) Read(filename string) error {
 
 	defer fp.Close()
 
-	buf := make([]byte, filesize)
-	fp.Read(buf)
+	buf := make([]byte, fileSize)
+	_, _ = fp.Read(buf)
 
-	err = yaml.Unmarshal(buf, &self.values)
+	err = yaml.Unmarshal(buf, &y.values)
 
 	if err != nil {
 		return err

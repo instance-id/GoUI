@@ -1,6 +1,7 @@
 package elements
 
 import (
+	. "github.com/instance-id/GoUI/utils"
 	ui "github.com/instance-id/clui"
 )
 
@@ -126,20 +127,12 @@ var (
 	Log           LogLevels
 )
 
-//var AssetData = DataAssets{
-//	AssetCodes:    []string{"ABC", "BCD"},
-//	AssetPackages: map[string]string{"ABC": "ABC - Best Asset", "BCD": "BCD : Also Best Asset", AssetDetail[0].AssetCode: AssetDetail[0].AssetName},
-//	AssetApiKeys:  map[string]string{"ABC": "1231232123123123", "BCD": "3453453453453645"},
-//}
-//
-//var AssetDetail = []*AssetDetails{{AssetCode: [...]}}
-
-var DatabaseData = DatabaseDetails{
-	Address:     "instance.id",
-	Username:    "Username",
-	Password:    "Password",
-	Database:    "Verifier",
-	TablePrefix: "verifier_",
+var DatabaseData = &DatabaseDetails{
+	Address:     Dbd.Data.Address,
+	Username:    Dbd.Data.Username,
+	Password:    Dbd.Data.Password,
+	Database:    Dbd.Data.DbName,
+	TablePrefix: Dbd.Data.TablePrefix,
 	Providers:   []string{"MySQL", "Postgres", "MSSQL", "SqLite"}, // 0=MySQL, 1=Postgres, 2=MSSQL, 3=SqLite
 	Provider:    0,                                                // 0=MySQL, 1=Postgres, 2=MSSQL, 3=SqLite
 }
@@ -166,7 +159,6 @@ const (
 )
 
 // --- Backup Data ------------------------------------------------
-
 //var Asset = *Deets{{{[]*AssetDetails{{AssetCode: "SCT", AssetName: "SCT - Scriptable Text", AssetApiKey: "123123112312312323123123123", AssetRole: "123123123123123123", AssetReplaced: "No", AssetVersion: "1", ReplaceDate: ""},
 // {AssetCode: "UFPS1", AssetName: "UFPS : Ultimate FPS", AssetApiKey: "123123112312312323123123123", AssetRole: "123123123123123123", AssetReplaced: "Yes", AssetVersion: "1", ReplaceDate: "2018-06-06"},
 // {AssetCode: "UCC", AssetName: "Ultimate Character Controller", AssetApiKey: "123123112312312323123123123", AssetRole: "123123123123123123", AssetReplaced: "Yes", AssetVersion: "1", ReplaceDate: "2018-06-06"},

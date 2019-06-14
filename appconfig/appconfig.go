@@ -56,6 +56,7 @@ type MainSettings struct {
 		Roles    map[string]string `json:"roles"`
 	} `json:"discord"`
 	Assets struct {
+		AssetCodes       []string          `json:"assetcodes"`
 		DateCompare      string            `json:"datecompare"`
 		CompareDate      string            `json:"comparedate"`
 		AssetOriginal    string            `json:"assetoriginal"`
@@ -131,6 +132,7 @@ func (m *MainSettings) loadConfig() *MainSettings {
 			Roles:    config.StringMap("settings.discord.roles"),
 		},
 		Assets: struct {
+			AssetCodes       []string          `json:"assetcodes"`
 			DateCompare      string            `json:"datecompare"`
 			CompareDate      string            `json:"comparedate"`
 			AssetOriginal    string            `json:"assetoriginal"`
@@ -138,6 +140,7 @@ func (m *MainSettings) loadConfig() *MainSettings {
 			ApiKeys          map[string]string `json:"apikey"`
 			Packages         map[string]string `json:"package"`
 		}{
+			AssetCodes:       config.Strings("settings.assets.assetcodes"),
 			DateCompare:      config.String("settings.assets.datecompare"),
 			CompareDate:      config.String("settings.assets.comparedate"),
 			AssetOriginal:    config.String("settings.assets.assetoriginal"),
@@ -170,6 +173,7 @@ func (m *MainSettings) newConfig() (*MainSettings, error) {
 	_ = yml.Set("settings", "discord", "botusers", []string{""})
 	_ = yml.Set("settings", "discord", "roles", map[string]string{"": ""})
 
+	_ = yml.Set("settings", "assets", "assetcodes", "")
 	_ = yml.Set("settings", "assets", "datecompare", "")
 	_ = yml.Set("settings", "assets", "comparedate", "")
 	_ = yml.Set("settings", "assets", "assetoriginal", "")
@@ -202,6 +206,7 @@ func (m *MainSettings) saveConfig() (*MainSettings, error) {
 	_ = yml.Set("settings", "discord", "botusers", m.Discord.BotUsers)
 	_ = yml.Set("settings", "discord", "roles", m.Discord.Roles)
 
+	_ = yml.Set("settings", "assets", "assetcodes", m.Assets.AssetCodes)
 	_ = yml.Set("settings", "assets", "datecompare", m.Assets.DateCompare)
 	_ = yml.Set("settings", "assets", "comparedate", m.Assets.CompareDate)
 	_ = yml.Set("settings", "assets", "assetoriginal", m.Assets.AssetOriginal)

@@ -4,7 +4,6 @@ import (
 	"fmt"
 	. "github.com/instance-id/GoUI/text"
 	. "github.com/instance-id/GoUI/utils"
-
 	ui "github.com/instance-id/clui"
 	term "github.com/nsf/termbox-go"
 )
