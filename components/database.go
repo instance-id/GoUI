@@ -2,15 +2,15 @@ package components
 
 import (
 	"fmt"
+	"github.com/instance-id/GoUI/appconfig"
 
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/go-xorm/xorm"
-	"github.com/instance-id/GoVerifier-dgo/appconfig"
 	"github.com/sirupsen/logrus"
 )
 
 type DbConfig struct {
-	Db   *appConfig.DbSettings
+	Db   *appconfig.DbSettings
 	Xorm *XormDB
 }
 
@@ -21,7 +21,7 @@ type XormDB struct {
 	runit       bool
 }
 
-func (xdb *DbConfig) ConnectDB(d *appConfig.DbSettings) *DbConfig {
+func (xdb *DbConfig) ConnectDB(d *appconfig.DbSettings) *DbConfig {
 	dbConfig := &DbConfig{
 		Db: d,
 		Xorm: &XormDB{
@@ -62,7 +62,7 @@ func (x *XormDB) Close() (err error) {
 	return
 }
 
-func DetermineConnection(d *appConfig.DbSettings) string {
+func DetermineConnection(d *appconfig.DbSettings) string {
 	var connString string
 	switch d.Database {
 	case "mysql":

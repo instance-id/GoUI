@@ -1,8 +1,9 @@
 package services
 
 import (
-	"github.com/instance-id/GoVerifier-dgo/appconfig"
-	"github.com/instance-id/GoVerifier-dgo/components"
+	"github.com/instance-id/GoUI/appconfig"
+	"github.com/instance-id/GoUI/components"
+
 	"github.com/sarulabs/di/v2"
 )
 
