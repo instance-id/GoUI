@@ -4,6 +4,7 @@ import (
 	"github.com/chzyer/readline"
 	. "github.com/instance-id/GoUI/elements"
 	. "github.com/instance-id/GoUI/text"
+	. "github.com/instance-id/GoUI/utils"
 	"github.com/instance-id/GoUI/view"
 	ui "github.com/instance-id/clui"
 	term "github.com/nsf/termbox-go"
@@ -86,7 +87,7 @@ func createView() {
 }
 
 func mainLoop() {
-	// Bool - Use 256 color or default?
+
 	ui.InitLibrary()
 	defer ui.DeinitLibrary()
 
@@ -102,6 +103,11 @@ func mainLoop() {
 }
 
 func main() {
+
+	app := DISetup()
+	defer app.Delete()
+	CmdInitialize(app)
+
 	mainLoop()
 }
 

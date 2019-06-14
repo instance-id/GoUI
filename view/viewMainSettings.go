@@ -79,20 +79,22 @@ func CreateViewMainSettings() *ui.EditField {
 	})
 	//FrmMainSettings.SetVisible(false)
 	BtnLogLevel.SetActive(false)
-	//BtnMainSettingsSave.SetActive(false)
+	BtnMainSettingsSave.SetActive(false)
 
 	ui.PutEvent(ui.Event{Type: ui.EventKey, Key: term.MouseLeft, Target: tokenEdit})
 
-	//settingsFrame.OnActive(func(active bool) {
-	//	//tokenEdit.ProcessEvent(ui.Event{Type: ui.EventKey, Key: term.KeyTab})
-	//	ui.PutEvent(ui.Event{Type: ui.EventKey, Key: term.MouseLeft, Target: tokenEdit})
-	//
-	//	//(func() {
-	//	//	ui.PutEvent(ui.Event{Type: ui.EventKey, Key: term.MouseLeft, Target: tokenEdit})
-	//	//})()
-	//})
+	FrmMainSettings.OnActive(func(active bool) {
+		ui.ActivateControl(tokenFrame, tokenEdit)
 
-	//settingsFrame.SetActive(true)
+		//tokenEdit.ProcessEvent(ui.Event{Type: ui.EventKey, Key: term.KeyTab})
+		//ui.PutEvent(ui.Event{Type: ui.EventKey, Key: term.MouseLeft, Target: tokenEdit})
+
+		//(func() {
+		//	ui.PutEvent(ui.Event{Type: ui.EventKey, Key: term.MouseLeft, Target: tokenEdit})
+		//})()
+	})
+
+	FrmMainSettings.SetActive(true)
 
 	return tokenEdit
 }
