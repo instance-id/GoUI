@@ -1,6 +1,8 @@
 package view
 
 import (
+	"fmt"
+	. "github.com/instance-id/GoUI/dicontainer"
 	. "github.com/instance-id/GoUI/elements"
 	. "github.com/instance-id/GoUI/text"
 	. "github.com/instance-id/GoUI/utils"
@@ -9,9 +11,9 @@ import (
 
 func CreateViewDiscordSettings() {
 
-	var tmpGuidId = DiscordData.GuildId
-	var tmpBotUsers = DiscordData.BotUsers
-	var tmpRoles = DiscordData.Roles
+	var tmpGuidId = DiCon.Cnt.Dac.Discord.Guild
+	var tmpBotUsers = DiCon.Cnt.Dac.Discord.BotUsers
+	var tmpRoles = DiCon.Cnt.Dac.Discord.Roles
 
 	// --- Discord Settings Frame ------------------------------------------
 	FrmDiscordSettings = ui.CreateFrame(FrameContent, ui.AutoSize, ui.AutoSize, ui.BorderNone, ui.Fixed)
@@ -34,20 +36,8 @@ func CreateViewDiscordSettings() {
 	// --- Bot Users -----------------------------------------------------
 	botUsersFrame := NewFramedInput(settingsFrame, TxtBotUsers, nil)
 	botUsersFrame.SetPaddings(2, 2)
-	ui.CreateEditField(botUsersFrame, ui.AutoSize, DiscordData.BotUsers[0], ui.Fixed)
+	ui.CreateEditField(botUsersFrame, ui.AutoSize, DiCon.Cnt.Dac.Discord.BotUsers[0], ui.Fixed)
 	ui.CreateLabel(botUsersFrame, ui.AutoSize, ui.AutoSize, TxtBotUsersDesc, ui.Fixed)
-
-	// --- Asset Codes ---------------------------------------------------
-	//assetCodesFrame := NewFramedInput(settingsFrame, fmt.Sprintf("%s - %s", TxtAssetCodes, TxtAssetCodesDesc), nil)
-	//BtnAssetCodes = ui.CreateButton_NoShadow(assetCodesFrame, 22, ui.AutoSize, TxtAssetCodesBtn, ui.Fixed)
-	//BtnAssetCodes.SetAlign(ui.AlignLeft)
-	//BtnAssetCodes.OnClick(func(ev ui.Event) {
-	//	BtnAssetCodes.SetEnabled(false)
-	//	assetCodes := CreateListDialog(TxtAssetCodes)
-	//	assetCodes.OnClose(func() {
-	//		BtnAssetCodes.SetEnabled(true)
-	//	})
-	//})
 
 	// --- Asset Details -------------------------------------------------
 	logLevelFrame := NewFramedInput(settingsFrame, TxtAssetDetails, nil)
@@ -71,9 +61,13 @@ func CreateViewDiscordSettings() {
 	BtnMainSettingsSave.SetAlign(ui.AlignLeft)
 	BtnMainSettingsSave.SetShadowType(ui.ShadowHalf)
 	BtnMainSettingsSave.OnClick(func(ev ui.Event) {
-		DiscordData.GuildId = tmpGuidId
-		DiscordData.BotUsers = tmpBotUsers
-		DiscordData.Roles = tmpRoles
+		DiCon.Cnt.Dac.Discord.Guild = tmpGuidId
+		DiCon.Cnt.Dac.Discord.BotUsers = tmpBotUsers
+		DiCon.Cnt.Dac.Discord.Roles = tmpRoles
+		_, err := DiCon.Cnt.Wtr.SetConfig()
+		if err != nil {
+			ui.CreateAlertDialog(ErrCouldNotSaveCfg, fmt.Sprintf("Error Could not save config: &s", err), TxtCloseBtn)
+		}
 	})
 	FrmDiscordSettings.SetVisible(false)
 }

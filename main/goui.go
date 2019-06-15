@@ -2,9 +2,9 @@ package main
 
 import (
 	"github.com/chzyer/readline"
+	. "github.com/instance-id/GoUI/components"
 	. "github.com/instance-id/GoUI/elements"
 	. "github.com/instance-id/GoUI/text"
-	. "github.com/instance-id/GoUI/utils"
 	"github.com/instance-id/GoUI/view"
 	ui "github.com/instance-id/clui"
 	term "github.com/nsf/termbox-go"
@@ -24,21 +24,6 @@ func InitData() {
 	DiscordToken = "123123123SDFSDFSDFSDF1234123123"
 	CommandPrefix = "!cmd "
 
-	//if Asset == nil {
-	//	Asset = &AssetContainer{AD: []AssetDetails{
-	//		{
-	//			"",
-	//			"",
-	//			"",
-	//			"",
-	//			"",
-	//			"",
-	//			"",
-	//		},
-	//	}}
-	//}
-
-	// InitTmpAssetData()
 }
 
 func MainInitialSettings() {
@@ -52,7 +37,6 @@ func MainInitialSettings() {
 	BtnDiscordSettings.SetActive(false)
 	BtnDatabaseSettings.SetActive(false)
 	BtnPlugins.SetActive(false)
-	//BtnTheme.SetActive(false)
 	BtnLogs.SetActive(false)
 	BtnQuit.SetActive(false)
 	InitData()
@@ -72,16 +56,18 @@ func createView() {
 	view.CreateViewContent()
 
 	// --- Settings Frames -----------------------------------------------
-	tokenEdit := view.CreateViewMainSettings()
+	tokenFrame, tokenEdit := view.CreateViewMainSettings()
 	view.CreateViewDiscordSettings()
 	view.CreateViewDatabaseSettings()
 	view.CreateViewPlugins()
 
 	MainInitialSettings()
 
-	tokenEdit.SetActive(true)
-	tokenEdit.SetEnabled(true)
-	tokenEdit.SetTabStop(true)
+	ui.ActivateControl(tokenFrame, tokenEdit)
+
+	//tokenEdit.SetActive(true)
+	//tokenEdit.SetEnabled(true)
+	//tokenEdit.SetTabStop(true)
 
 	ui.MainLoop()
 }
@@ -103,9 +89,9 @@ func mainLoop() {
 }
 
 func main() {
-	app := DISetup()
-	defer app.Delete()
-	CmdInitialize(app)
+	//var diCont = new(DIContainer)
+	CmdInitialize()
+	//diCont.InitDi()
 
 	mainLoop()
 }

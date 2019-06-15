@@ -1,17 +1,19 @@
 package view
 
 import (
+	"fmt"
+	. "github.com/instance-id/GoUI/components"
+	. "github.com/instance-id/GoUI/dicontainer"
 	. "github.com/instance-id/GoUI/elements"
 	. "github.com/instance-id/GoUI/text"
 	. "github.com/instance-id/GoUI/utils"
 	ui "github.com/instance-id/clui"
-	term "github.com/nsf/termbox-go"
 )
 
-func CreateViewMainSettings() *ui.EditField {
+func CreateViewMainSettings() (*ui.Frame, *ui.EditField) {
 
-	var tmpDiscordToken = DiscordToken
-	var tmpCommandPrefix = CommandPrefix
+	var tmpDiscordToken = DiCon.Cnt.Dac.System.Token
+	var tmpCommandPrefix = DiCon.Cnt.Dac.System.CommandPrefix
 
 	// --- Main Settings Frame -------------------------------------------
 	FrmMainSettings = ui.CreateFrame(FrameContent, ui.AutoSize, ui.AutoSize, ui.BorderNone, ui.Fixed)
@@ -74,27 +76,31 @@ func CreateViewMainSettings() *ui.EditField {
 	BtnMainSettingsSave.SetAlign(ui.AlignLeft)
 	BtnMainSettingsSave.SetShadowType(ui.ShadowHalf)
 	BtnMainSettingsSave.OnClick(func(ev ui.Event) {
-		DiscordToken = tmpDiscordToken
-		CommandPrefix = tmpCommandPrefix
+		DiCon.Cnt.Dac.System.Token = tmpDiscordToken
+		DiCon.Cnt.Dac.System.CommandPrefix = tmpCommandPrefix
+		_, err := Cntnrs.Wtr.SetConfig()
+		if err != nil {
+			ui.CreateAlertDialog(ErrCouldNotSaveCfg, fmt.Sprintf("Error Could not save config: &s", err), TxtCloseBtn)
+		}
 	})
 	//FrmMainSettings.SetVisible(false)
 	BtnLogLevel.SetActive(false)
 	BtnMainSettingsSave.SetActive(false)
 
-	ui.PutEvent(ui.Event{Type: ui.EventKey, Key: term.MouseLeft, Target: tokenEdit})
-
-	FrmMainSettings.OnActive(func(active bool) {
-		ui.ActivateControl(tokenFrame, tokenEdit)
-
-		//tokenEdit.ProcessEvent(ui.Event{Type: ui.EventKey, Key: term.KeyTab})
-		//ui.PutEvent(ui.Event{Type: ui.EventKey, Key: term.MouseLeft, Target: tokenEdit})
-
-		//(func() {
-		//	ui.PutEvent(ui.Event{Type: ui.EventKey, Key: term.MouseLeft, Target: tokenEdit})
-		//})()
-	})
+	//FrmMainSettings.OnActive(func(active bool) {
+	//	ui.ActivateControl(tokenFrame, tokenEdit)
+	//	ui.PutEvent(ui.Event{Type: ui.EventKey, Key: term.MouseLeft, Target: tokenEdit})
+	//
+	//
+	//	//tokenEdit.ProcessEvent(ui.Event{Type: ui.EventKey, Key: term.KeyTab})
+	//	//ui.PutEvent(ui.Event{Type: ui.EventKey, Key: term.MouseLeft, Target: tokenEdit})
+	//
+	//	//(func() {
+	//	//	ui.PutEvent(ui.Event{Type: ui.EventKey, Key: term.MouseLeft, Target: tokenEdit})
+	//	//})()
+	//})
 
 	FrmMainSettings.SetActive(true)
 
-	return tokenEdit
+	return tokenFrame, tokenEdit
 }

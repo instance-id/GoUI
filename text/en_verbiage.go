@@ -97,3 +97,7 @@ const TxtDbTablePrefixDesc = " Prefix for table names (Ex: Database -> Prefix_Da
 
 // --- Plugins Settings ----------------------------------------------------
 const TxtPluginsLabel = " Coming soon! "
+
+// --- Errors Messages -------------------------------------------------------
+const ErrCouldNotSaveCfg = " Config Error "
+const ErrCouldNotSaveDb = " DB Config Error "

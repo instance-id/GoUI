@@ -2,10 +2,9 @@ package components
 
 import (
 	"fmt"
-	"github.com/instance-id/GoUI/appconfig"
-
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/go-xorm/xorm"
+	"github.com/instance-id/GoUI/appconfig"
 	"github.com/sirupsen/logrus"
 )
 
@@ -26,7 +25,7 @@ func (xdb *DbConfig) ConnectDB(d *appconfig.DbSettings) *DbConfig {
 		Db: d,
 		Xorm: &XormDB{
 			Engine: func() *xorm.Engine {
-				eng, err := xorm.NewEngine(d.Database, DetermineConnection(d))
+				eng, err := xorm.NewEngine(DatabaseData.Providers[d.Database], DetermineConnection(d))
 				if err != nil {
 					logrus.Fatalf("Database Connection Error: %s", err)
 				}
@@ -64,7 +63,7 @@ func (x *XormDB) Close() (err error) {
 
 func DetermineConnection(d *appconfig.DbSettings) string {
 	var connString string
-	switch d.Database {
+	switch DatabaseData.Providers[d.Database] {
 	case "mysql":
 		connString = fmt.Sprintf("%s:%s@tcp(%s:3306)/%s?charset=utf8",
 			d.Data.Username,

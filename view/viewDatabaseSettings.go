@@ -2,34 +2,22 @@ package view
 
 import (
 	"fmt"
+	. "github.com/instance-id/GoUI/components"
+	. "github.com/instance-id/GoUI/dicontainer"
 	. "github.com/instance-id/GoUI/elements"
 	. "github.com/instance-id/GoUI/text"
 	. "github.com/instance-id/GoUI/utils"
 	ui "github.com/instance-id/clui"
 )
 
-type ProviderGroup struct {
-	Group      *ui.RadioGroup
-	RadioGroup *ui.Radio
-}
-
-func GetProvider(db *DatabaseDetails, group *ProviderGroup) {
-	switch db.Provider {
-	case 0:
-		//group.Group.SetSelected(group.RadioGroup[0])
-	}
-
-}
-
 func CreateViewDatabaseSettings() {
-
 	var tmpProviders = DatabaseData.Providers
-	var tmpProvider = DatabaseData.Provider
-	var tmpAddress = DatabaseData.Address
-	var tmpUsername = DatabaseData.Username
-	var tmpPassword = DatabaseData.Password
-	var tmpDatabase = DatabaseData.Database
-	var tmpTablePrefix = DatabaseData.TablePrefix
+	var tmpProvider = DiCon.Cnt.Dbd.Database
+	var tmpAddress = DiCon.Cnt.Dbd.Data.Address
+	var tmpUsername = DiCon.Cnt.Dbd.Data.Username
+	var tmpPassword = DiCon.Cnt.Dbd.Data.Password
+	var tmpDatabase = DiCon.Cnt.Dbd.Data.DbName
+	var tmpTablePrefix = DiCon.Cnt.Dbd.Data.TablePrefix
 
 	// --- Database Settings Frame ---------------------------------------
 	FrmDatabaseSettings = ui.CreateFrame(FrameContent, ui.AutoSize, ui.AutoSize, ui.BorderNone, ui.Fixed)
@@ -98,12 +86,17 @@ func CreateViewDatabaseSettings() {
 	BtnMainSettingsSave.SetAlign(ui.AlignLeft)
 	BtnMainSettingsSave.SetShadowType(ui.ShadowHalf)
 	BtnMainSettingsSave.OnClick(func(ev ui.Event) {
-		DatabaseData.Provider = tmpProvider
-		DatabaseData.Address = tmpAddress
-		DatabaseData.Username = tmpUsername
-		DatabaseData.Password = tmpPassword
-		DatabaseData.Database = tmpDatabase
-		DatabaseData.TablePrefix = tmpTablePrefix
+		DiCon.Cnt.Dbd.Database = tmpProvider
+		DiCon.Cnt.Dbd.Data.Address = tmpAddress
+		DiCon.Cnt.Dbd.Data.Username = tmpUsername
+		DiCon.Cnt.Dbd.Data.Password = tmpPassword
+		DiCon.Cnt.Dbd.Data.DbName = tmpDatabase
+		DiCon.Cnt.Dbd.Data.TablePrefix = tmpTablePrefix
+		_, err := DiCon.Cnt.Wtr.SetDbConfig()
+		if err != nil {
+			ui.CreateAlertDialog(ErrCouldNotSaveDb, fmt.Sprintf("Error Could not save DB config: &s", err), TxtCloseBtn)
+		}
+
 	})
 
 	BtnMainSettingsSave.SetActive(false)

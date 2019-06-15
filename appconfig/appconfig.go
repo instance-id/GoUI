@@ -4,23 +4,11 @@ import (
 	"fmt"
 	"github.com/gookit/config/v2"
 	"github.com/gookit/config/v2/yaml"
+	. "github.com/instance-id/GoUI/dicontainer"
 	"os"
 )
 
-type ConfigData struct {
-	MainSettings *MainSettings
-	folderName   string
-	fileName     string
-	path         string
-}
-
 type ConnectionType int
-
-const (
-	Oauth  ConnectionType = 0
-	Oauth2 ConnectionType = 1
-	JWT    ConnectionType = 2
-)
 
 type WordPressSettings struct {
 	ConnectionType    int
@@ -66,35 +54,30 @@ type MainSettings struct {
 	} `json:"assets"`
 }
 
-var configData ConfigData
-
 func (m *MainSettings) GetConfig() *MainSettings {
 	return m.loadConfig()
 }
 
 func (m *MainSettings) loadConfig() *MainSettings {
 
+	fmt.Printf("Config path from writer in di: %s \n", DiCon.Cnt.Wtr.ConfigData.Path)
+
 	config.AddDriver(yaml.Driver)
-	configData.folderName = "config"
-	configData.fileName = "config.yml"
-	configData.path = fmt.Sprintf("./%s/%s", configData.folderName, configData.fileName)
 
-	fmt.Printf("Config path: %s \n", configData.path)
-
-	if _, err := os.Stat(configData.path); err != nil {
+	if _, err := os.Stat(DiCon.Cnt.Wtr.ConfigData.Path); err != nil {
 		if os.IsNotExist(err) {
-			err := os.MkdirAll(configData.folderName, 0755)
+			err := os.MkdirAll(DiCon.Cnt.Wtr.ConfigData.FolderName, 0755)
 			if err != nil {
 				fmt.Printf("Error at creating new config %s", err)
 			}
-			_, err = m.newConfig()
+			_, err = DiCon.Cnt.Wtr.NewConfig()
 			if err != nil {
 				fmt.Printf("Error at setting new config %s", err)
 			}
 		}
 	}
 
-	err := config.LoadFiles(string(configData.path))
+	err := config.LoadFiles(string(DiCon.Cnt.Wtr.ConfigData.Path))
 	if err != nil {
 		fmt.Printf("Error at loading config %s", err)
 	}
@@ -150,74 +133,4 @@ func (m *MainSettings) loadConfig() *MainSettings {
 		}}
 
 	return mainSettings
-}
-
-func (m *MainSettings) SetConfig() (*MainSettings, error) {
-	return m.saveConfig()
-}
-
-func (m *MainSettings) newConfig() (*MainSettings, error) {
-	yml := New()
-
-	_ = yml.Set("settings", "system", "token", "")
-	_ = yml.Set("settings", "system", "commandprefix", "")
-	_ = yml.Set("settings", "system", "requireemail", "")
-	_ = yml.Set("settings", "system", "consoleloglevel", "")
-	_ = yml.Set("settings", "system", "fileloglevel", "")
-
-	_ = yml.Set("settings", "integrations", "wordpress", "")
-	_ = yml.Set("settings", "integrations", "connection", "")
-	_ = yml.Set("settings", "integrations", "webaddress", "")
-
-	_ = yml.Set("settings", "discord", "guild", "")
-	_ = yml.Set("settings", "discord", "botusers", []string{""})
-	_ = yml.Set("settings", "discord", "roles", map[string]string{"": ""})
-
-	_ = yml.Set("settings", "assets", "assetcodes", "")
-	_ = yml.Set("settings", "assets", "datecompare", "")
-	_ = yml.Set("settings", "assets", "comparedate", "")
-	_ = yml.Set("settings", "assets", "assetoriginal", "")
-	_ = yml.Set("settings", "assets", "assetreplacement", "")
-	_ = yml.Set("settings", "assets", "apikey", map[string]string{"": ""})
-	_ = yml.Set("settings", "assets", "package", map[string]string{"": ""})
-
-	err := yml.Write(configData.path)
-	if err != nil {
-		fmt.Printf("Error creating new config %s", err)
-	}
-
-	return m, err
-}
-
-func (m *MainSettings) saveConfig() (*MainSettings, error) {
-	yml := New()
-
-	_ = yml.Set("settings", "system", "token", m.System.Token)
-	_ = yml.Set("settings", "system", "commandprefix", m.System.CommandPrefix)
-	_ = yml.Set("settings", "system", "requireemail", m.System.RequireEmail)
-	_ = yml.Set("settings", "system", "consoleloglevel", m.System.ConsoleLogLevel)
-	_ = yml.Set("settings", "system", "fileloglevel", m.System.FileLogLevel)
-
-	_ = yml.Set("settings", "integrations", "wordpress", m.Integrations.WordPress)
-	_ = yml.Set("settings", "integrations", "connection", m.Integrations.Connection)
-	_ = yml.Set("settings", "integrations", "webaddress", m.Integrations.WebAddress)
-
-	_ = yml.Set("settings", "discord", "guild", m.Discord.Guild)
-	_ = yml.Set("settings", "discord", "botusers", m.Discord.BotUsers)
-	_ = yml.Set("settings", "discord", "roles", m.Discord.Roles)
-
-	_ = yml.Set("settings", "assets", "assetcodes", m.Assets.AssetCodes)
-	_ = yml.Set("settings", "assets", "datecompare", m.Assets.DateCompare)
-	_ = yml.Set("settings", "assets", "comparedate", m.Assets.CompareDate)
-	_ = yml.Set("settings", "assets", "assetoriginal", m.Assets.AssetOriginal)
-	_ = yml.Set("settings", "assets", "assetreplacement", m.Assets.AssetReplacement)
-	_ = yml.Set("settings", "assets", "apikey", m.Assets.ApiKeys)
-	_ = yml.Set("settings", "assets", "package", m.Assets.Packages)
-
-	err := yml.Write(configData.path)
-	if err != nil {
-		fmt.Printf("Error reloading new config %s", err)
-	}
-
-	return m, err
 }

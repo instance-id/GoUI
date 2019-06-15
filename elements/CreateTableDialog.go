@@ -2,6 +2,7 @@ package elements
 
 import (
 	"fmt"
+	. "github.com/instance-id/GoUI/components"
 	. "github.com/instance-id/GoUI/text"
 	. "github.com/instance-id/GoUI/utils"
 	ui "github.com/instance-id/clui"
@@ -14,11 +15,15 @@ type dbCache struct {
 	data     [][]string // cache - contains at least 'rowCount' rows from DB
 }
 
+type assetContain struct {
+	assetContainer *AssetContainer
+}
+
 const columnInTable = 7
 
-func (d *dbCache) preload(firstRow, rowCount int, tmpAssetData *AssetContainer) {
+func (d *dbCache) preload(firstRow, rowCount int, tmpAssetData *assetContain) {
 
-	if tmpAssetData.AD == nil {
+	if tmpAssetData.assetContainer.AD == nil {
 		return
 	}
 
@@ -31,13 +36,13 @@ func (d *dbCache) preload(firstRow, rowCount int, tmpAssetData *AssetContainer) 
 	for i := 0; i < rowCount; i++ {
 		absIndex := firstRow + i
 		d.data[i] = make([]string, columnInTable, columnInTable)
-		d.data[i][0] = tmpAssetData.AD[absIndex].AssetCode
-		d.data[i][1] = tmpAssetData.AD[absIndex].AssetName
-		d.data[i][2] = tmpAssetData.AD[absIndex].AssetApiKey
-		d.data[i][3] = tmpAssetData.AD[absIndex].AssetRole
-		d.data[i][4] = tmpAssetData.AD[absIndex].AssetVersion
-		d.data[i][5] = tmpAssetData.AD[absIndex].AssetReplaced
-		d.data[i][6] = tmpAssetData.AD[absIndex].ReplaceDate
+		d.data[i][0] = tmpAssetData.assetContainer.AD[absIndex].AssetCode
+		d.data[i][1] = tmpAssetData.assetContainer.AD[absIndex].AssetName
+		d.data[i][2] = tmpAssetData.assetContainer.AD[absIndex].AssetApiKey
+		d.data[i][3] = tmpAssetData.assetContainer.AD[absIndex].AssetRole
+		d.data[i][4] = tmpAssetData.assetContainer.AD[absIndex].AssetVersion
+		d.data[i][5] = tmpAssetData.assetContainer.AD[absIndex].AssetReplaced
+		d.data[i][6] = tmpAssetData.assetContainer.AD[absIndex].ReplaceDate
 	}
 
 	// do not forget to save the last values
@@ -69,7 +74,7 @@ func (d *dbCache) AddNewValue(row, col int, newAsset string) string {
 
 // --- Window type for data table ----------------------------------------
 func CreateTableDialog(btn *ui.Button) *ui.TableView {
-	var tmpAssetData *AssetContainer
+	var tmpAssetData *assetContain
 	var restrictor = 0
 
 	tableDialog := new(TableDialog)
@@ -93,15 +98,15 @@ func CreateTableDialog(btn *ui.Button) *ui.TableView {
 
 	// --- Save current values to temp value or create new if nonexistent -----------------
 	if Asset == nil {
-		tmpAssetData = &AssetContainer{AD: []AssetDetails{{"", "", "", "", "", "", ""}}}
+		tmpAssetData.assetContainer = &AssetContainer{AD: []AssetDetails{{"", "", "", "", "", "", ""}}}
 	} else {
-		tmpAssetData = Asset
+		tmpAssetData.assetContainer = Asset
 		restrictor = 1
 	}
 
 	cache := &dbCache{firstRow: -1}
 	var rowCount int
-	rowCount = len(tmpAssetData.AD)
+	rowCount = len(tmpAssetData.assetContainer.AD)
 
 	td.SetShowLines(true)
 	td.SetShowRowNumber(true)
@@ -183,9 +188,9 @@ func CreateTableDialog(btn *ui.Button) *ui.TableView {
 					details := AssetDetails{AssetCode: editVal.NewVal}
 					tmpAssetData.AddNewAsset(details)
 					func(info *ui.ColumnDrawInfo) {
-						info.Text = cache.AddNewValue(len(tmpAssetData.AD)-1, 0, editVal.NewVal)
+						info.Text = cache.AddNewValue(len(tmpAssetData.assetContainer.AD)-1, 0, editVal.NewVal)
 					}(&newInfo)
-					td.SetRowCount(len(tmpAssetData.AD))
+					td.SetRowCount(len(tmpAssetData.assetContainer.AD))
 					ui.PutEvent(ui.Event{Type: ui.EventRedraw})
 
 				}
@@ -213,7 +218,7 @@ func CreateTableDialog(btn *ui.Button) *ui.TableView {
 	BtnSave := ui.CreateButton(btnFrame, 15, 1, TxtSaveBtn, ui.Fixed)
 	BtnSave.SetShadowType(ui.ShadowHalf)
 	BtnSave.OnClick(func(ev ui.Event) {
-		Asset = tmpAssetData
+		Asset = tmpAssetData.assetContainer
 		btn.SetEnabled(true)
 	})
 	BtnClose := ui.CreateButton(btnFrame, 15, 1, TxtCloseBtn, ui.Fixed)
@@ -228,7 +233,7 @@ func CreateTableDialog(btn *ui.Button) *ui.TableView {
 	return td
 }
 
-func (d *dbCache) CreateNewData(tmpAssetData *AssetContainer) *dbCache {
+func (d *dbCache) CreateNewData(tmpAssetData *assetContain) *dbCache {
 	var editVal = TableEdit{Row: 0, Col: 0}
 
 	dlg := CreateEditableDialog(fmt.Sprintf("%s:", TxtNewAssetCodeValue), "")
@@ -241,42 +246,42 @@ func (d *dbCache) CreateNewData(tmpAssetData *AssetContainer) *dbCache {
 			editVal.NewVal = dlg.EditResult()
 			var newInfo = ui.ColumnDrawInfo{Row: 0, Col: 0}
 			data := d.UpdateData(newInfo.Row, newInfo.Col, editVal.NewVal, tmpAssetData)
-			tmpAssetData.AD = data
+			tmpAssetData.assetContainer.AD = data
 		}
 	})
 	return d
 }
 
-func (a *AssetContainer) AddNewAsset(asset AssetDetails) []AssetDetails {
-	a.AD = append(a.AD, asset)
-	return a.AD
+func (a *assetContain) AddNewAsset(asset AssetDetails) []AssetDetails {
+	a.assetContainer.AD = append(a.assetContainer.AD, asset)
+	return a.assetContainer.AD
 }
 
-func (d *dbCache) UpdateData(row int, col int, data string, tmpAssetData *AssetContainer) []AssetDetails {
+func (d *dbCache) UpdateData(row int, col int, data string, tmpAssetData *assetContain) []AssetDetails {
 
 	switch col {
 	case 0:
-		tmpAssetData.AD[row].AssetCode = data
-		d.data[row][col] = tmpAssetData.AD[row].AssetCode
+		tmpAssetData.assetContainer.AD[row].AssetCode = data
+		d.data[row][col] = tmpAssetData.assetContainer.AD[row].AssetCode
 	case 1:
-		tmpAssetData.AD[row].AssetName = data
-		d.data[row][col] = tmpAssetData.AD[row].AssetName
+		tmpAssetData.assetContainer.AD[row].AssetName = data
+		d.data[row][col] = tmpAssetData.assetContainer.AD[row].AssetName
 	case 2:
-		tmpAssetData.AD[row].AssetApiKey = data
-		d.data[row][col] = tmpAssetData.AD[row].AssetApiKey
+		tmpAssetData.assetContainer.AD[row].AssetApiKey = data
+		d.data[row][col] = tmpAssetData.assetContainer.AD[row].AssetApiKey
 	case 3:
-		tmpAssetData.AD[row].AssetRole = data
-		d.data[row][col] = tmpAssetData.AD[row].AssetRole
+		tmpAssetData.assetContainer.AD[row].AssetRole = data
+		d.data[row][col] = tmpAssetData.assetContainer.AD[row].AssetRole
 	case 4:
-		tmpAssetData.AD[row].AssetVersion = data
-		d.data[row][col] = tmpAssetData.AD[row].AssetVersion
+		tmpAssetData.assetContainer.AD[row].AssetVersion = data
+		d.data[row][col] = tmpAssetData.assetContainer.AD[row].AssetVersion
 	case 5:
-		tmpAssetData.AD[row].AssetReplaced = data
-		d.data[row][col] = tmpAssetData.AD[row].AssetReplaced
+		tmpAssetData.assetContainer.AD[row].AssetReplaced = data
+		d.data[row][col] = tmpAssetData.assetContainer.AD[row].AssetReplaced
 	case 6:
-		tmpAssetData.AD[row].ReplaceDate = data
-		d.data[row][col] = tmpAssetData.AD[row].ReplaceDate
+		tmpAssetData.assetContainer.AD[row].ReplaceDate = data
+		d.data[row][col] = tmpAssetData.assetContainer.AD[row].ReplaceDate
 	}
 
-	return tmpAssetData.AD
+	return tmpAssetData.assetContainer.AD
 }

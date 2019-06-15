@@ -4,11 +4,14 @@ import (
 	"fmt"
 	"github.com/gookit/config/v2"
 	"github.com/gookit/config/v2/yaml"
+	. "github.com/instance-id/GoUI/dicontainer"
 	"os"
 )
 
+var dbData DbData
+
 type DbData struct {
-	DbSettings *DbSettings
+	DbSettings DbSettings
 	folderName string
 	fileName   string
 	path       string
@@ -16,7 +19,7 @@ type DbData struct {
 
 // --- Maps dbconfig.yml fields to DbSettings fields -------------------------------------------------------------------
 type DbSettings struct {
-	Database string `json:"database"`
+	Database int `json:"database"`
 	Data     struct {
 		Address     string `json:"address"`
 		Username    string `json:"username"`
@@ -26,8 +29,6 @@ type DbSettings struct {
 	} `json:"data"`
 }
 
-var dbData DbData
-
 // --- Gets called from Services and returns DbSettings to Dependency Injection container ------------------------------
 func (d *DbSettings) GetDbConfig() *DbSettings {
 	return d.loadDbConfig()
@@ -35,10 +36,8 @@ func (d *DbSettings) GetDbConfig() *DbSettings {
 
 // --- Populates the DbSettings struct from dbconfig.yml file and returns the data for use -----------------------------
 func (d *DbSettings) loadDbConfig() *DbSettings {
+
 	config.AddDriver(yaml.Driver)
-	dbData.folderName = "config"
-	dbData.fileName = "dbconfig.yml"
-	dbData.path = fmt.Sprintf("./%s/%s", dbData.folderName, dbData.fileName)
 
 	fmt.Printf("Db path: %s \n", dbData.path)
 
@@ -48,7 +47,7 @@ func (d *DbSettings) loadDbConfig() *DbSettings {
 			if err != nil {
 				fmt.Printf("Error at creating new dbconfig %s", err)
 			}
-			_, err = d.newDbConfig()
+			_, err = DiCon.Cnt.Wtr.NewDbConfig()
 			if err != nil {
 				fmt.Printf("Error at setting new dbconfig %s", err)
 			}
@@ -61,7 +60,7 @@ func (d *DbSettings) loadDbConfig() *DbSettings {
 	}
 
 	dbSettings := &DbSettings{
-		Database: config.String("database"),
+		Database: config.Int("database"),
 		Data: struct {
 			Address     string `json:"address"`
 			Username    string `json:"username"`
@@ -77,42 +76,4 @@ func (d *DbSettings) loadDbConfig() *DbSettings {
 		},
 	}
 	return dbSettings
-}
-
-func (d *DbSettings) SetDbConfig() (*DbSettings, error) {
-	return d.saveDbConfig()
-}
-
-func (d *DbSettings) newDbConfig() (*DbSettings, error) {
-	yml := New()
-
-	_ = yml.Set("database", "mysql")
-	_ = yml.Set("data", "address", "")
-	_ = yml.Set("data", "username", "")
-	_ = yml.Set("data", "password", "")
-	_ = yml.Set("data", "dbname", "")
-	_ = yml.Set("data", "tableprefix", "")
-
-	err := yml.Write(dbData.path)
-	if err != nil {
-		fmt.Printf("Error writing new dbconfig %s", err)
-	}
-	return d, err
-}
-
-func (d *DbSettings) saveDbConfig() (*DbSettings, error) {
-	yml := New()
-
-	_ = yml.Set("database", d.Database)
-	_ = yml.Set("data", "address", d.Data.Address)
-	_ = yml.Set("data", "username", d.Data.Username)
-	_ = yml.Set("data", "password", d.Data.Password)
-	_ = yml.Set("data", "dbname", d.Data.DbName)
-	_ = yml.Set("data", "tableprefix", d.Data.TablePrefix)
-
-	err := yml.Write(dbData.path)
-	if err != nil {
-		fmt.Printf("Error writing new dbconfig %s", err)
-	}
-	return d, err
 }
