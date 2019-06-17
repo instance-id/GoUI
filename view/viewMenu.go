@@ -24,8 +24,8 @@ func CreateViewMenu() {
 	BtnRunVerifier.SetAlign(ui.AlignLeft)
 	BtnRunVerifier.SetShadowType(ui.ShadowHalf)
 	BtnRunVerifier.OnClick(func(ev ui.Event) {
-		if !FrmMainSettings.Visible() {
-			CommandMainSettings()
+		if !FrmVerifier.Visible() {
+			CommandRunVerifier()
 		}
 	})
 
@@ -35,6 +35,7 @@ func CreateViewMenu() {
 	BtnMainSettings.SetShadowType(ui.ShadowHalf)
 	BtnMainSettings.OnClick(func(ev ui.Event) {
 		if !FrmMainSettings.Visible() {
+			_ = Tails.Stop()
 			CommandMainSettings()
 		}
 	})
@@ -45,16 +46,18 @@ func CreateViewMenu() {
 	BtnDiscordSettings.SetShadowType(ui.ShadowHalf)
 	BtnDiscordSettings.OnClick(func(ev ui.Event) {
 		if !FrmDiscordSettings.Visible() {
+			_ = Tails.Stop()
 			CommandDiscordSettings()
 		}
 	})
 
-	// --- Database Settings ----------------------------------------------
+	// --- Database Settings ---------------------------------------------
 	BtnDatabaseSettings = ui.CreateButton(FrameMainMenu, 22, ui.AutoSize, TxtDatabaseSettings, ui.Fixed)
 	BtnDatabaseSettings.SetAlign(ui.AlignLeft)
 	BtnDatabaseSettings.SetShadowType(ui.ShadowHalf)
 	BtnDatabaseSettings.OnClick(func(ev ui.Event) {
 		if !FrmDatabaseSettings.Visible() {
+			_ = Tails.Stop()
 			CommandDatabaseSettings()
 		}
 	})
@@ -65,6 +68,7 @@ func CreateViewMenu() {
 	BtnPlugins.SetShadowType(ui.ShadowHalf)
 	BtnPlugins.OnClick(func(ev ui.Event) {
 		if !FrmPlugins.Visible() {
+			_ = Tails.Stop()
 			CommandPlugins()
 		}
 	})
@@ -82,6 +86,7 @@ func CreateViewMenu() {
 	BtnQuit.SetAlign(ui.AlignLeft)
 	BtnQuit.SetShadowType(ui.ShadowHalf)
 	BtnQuit.OnClick(func(ev ui.Event) {
+		_ = Tails.Stop()
 		go ui.Stop()
 	})
 

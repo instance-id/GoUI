@@ -60,7 +60,7 @@ func SetValues(params *FramedInputParams) {
 	if params.Width != 0 {
 		defaultWidth = params.Width
 	}
-	if params.Border != 0 {
+	if params.Border != ui.BorderNone {
 		defaultBorder = params.Border
 	}
 	if params.Scale != 0 {

@@ -8,7 +8,7 @@ import (
 )
 
 func CreateLogDialog(logTitle string) *LogDialog {
-	logDialog := new(LogDialog)
+	logDialog := LogViewer
 	cw, ch := term.Size()
 
 	logDialog.View = ui.AddWindow(cw/2-75, ch/2-16, ui.AutoSize, ui.AutoSize, logTitle)
@@ -20,14 +20,12 @@ func CreateLogDialog(logTitle string) *LogDialog {
 
 	logDialog.Frame = NewFramedWindowInput(logDialog.View, "", nil)
 	logDialog.Frame.SetBackColor(236)
-	logDialog.log = ui.CreateTextView(logDialog.Frame, 145, 25, 1)
-	ui.ActivateControl(logDialog.Frame, logDialog.log)
-	logDialog.log.LoadFileMD(LogLocation)
-	logDialog.log.SetAutoScroll(true)
-
+	logDialog.Log = ui.CreateTextView(logDialog.Frame, 145, 25, 1)
+	ui.ActivateControl(logDialog.Frame, logDialog.Log)
 	autoScroll := ui.CreateCheckBox(logDialog.Frame, ui.AutoSize, TxtAutoScrollChk, ui.Fixed)
+	autoScroll.SetState(1)
 	autoScroll.OnChange(func(i int) {
-		logDialog.log.SetAutoScroll(func() bool {
+		logDialog.Log.SetAutoScroll(func() bool {
 			var result bool
 			switch i {
 			case 0:
@@ -39,8 +37,8 @@ func CreateLogDialog(logTitle string) *LogDialog {
 		}())
 	})
 
-	logDialog.log.SetBackColor(238)
-	logDialog.log.SetTextColor(250)
+	logDialog.Log.SetBackColor(238)
+	logDialog.Log.SetTextColor(250)
 
 	//RefreshLog(logDialog)
 

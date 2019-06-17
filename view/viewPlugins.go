@@ -7,6 +7,14 @@ import (
 	ui "github.com/instance-id/clui"
 )
 
+var pendingPlugins = struct {
+	tmp1 bool
+	tmp2 bool
+}{
+	tmp1: false,
+	tmp2: false,
+}
+
 func CreateViewPlugins() {
 
 	// --- Plugins Frame -------------------------------------------------
@@ -27,10 +35,10 @@ func CreateViewPlugins() {
 	btnFrame.SetPaddings(2, 2)
 	var params = FramedInputParams{Orientation: ui.Vertical, Width: 25, Height: 4, Scale: ui.Fixed}
 	saveSettings := NewFramedInput(btnFrame, TxtSaveDesc, &params)
-	BtnMainSettingsSave = ui.CreateButton(saveSettings, ui.AutoSize, ui.AutoSize, TxtSaveBtn, ui.Fixed)
-	BtnMainSettingsSave.SetAlign(ui.AlignLeft)
-	BtnMainSettingsSave.SetShadowType(ui.ShadowHalf)
-	BtnMainSettingsSave.OnClick(func(ev ui.Event) {
+	BtnPluginsSave = ui.CreateButton(saveSettings, ui.AutoSize, ui.AutoSize, TxtSaveBtn, ui.Fixed)
+	BtnPluginsSave.SetAlign(ui.AlignLeft)
+	BtnPluginsSave.SetShadowType(ui.ShadowHalf)
+	BtnPluginsSave.OnClick(func(ev ui.Event) {
 
 	})
 
@@ -40,7 +48,17 @@ func CreateViewPlugins() {
 
 func AnimateButton() {
 	aData := new(AnimateData)
-	aData.Button = BtnMainSettingsSave
+	aData.Button = BtnPluginsSave
 	aData.AnimateBtnNShdw(3000, 100, 10, 0)
 
+}
+
+func SavePendingPlugins() {
+	if pendingPlugins.tmp1 || pendingPlugins.tmp2 == true {
+		BtnPluginsSave.SetTitle(TxtSavePendingBtn)
+		ui.PutEvent(ui.Event{Type: ui.EventRedraw})
+	} else {
+		BtnPluginsSave.SetTitle(TxtSaveBtn)
+		ui.PutEvent(ui.Event{Type: ui.EventRedraw})
+	}
 }

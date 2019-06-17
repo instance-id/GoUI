@@ -20,14 +20,24 @@ const TxtSelectTheme = "| Select Theme"
 const TxtQuit = "| Quit "
 const Txtlogs = "| View Logs "
 
-// --- Popup Menus -------------------------------------------------------
+// --- Button Text -------------------------------------------------------
 const TxtApplyBtn = " | Apply "
 const TxtCancelBtn = " | Cancel "
 const TxtSaveBtn = " | Save "
+const TxtSavePendingBtn = " | Save * "
 const TxtCloseBtn = " | Close "
 const TxtEditing = "Editing"
 const TxtNewValue = "New Value: "
 const TxtNewAssetCodeValue = "New Asset Code: "
+
+// --- Verifier Controls -----------------------------------------------------
+const TxtVerifier = " Verifier Controls "
+
+const TxtVerifierStartBtn = " | Start "
+const TxtVerifierRestartBtn = " | Restart "
+const TxtVerifierStopBtn = " | Stop "
+const TxtVerifierDesc = " Verifier server controls "
+const TxtClearBtn = " | Clear "
 
 // --- Main Settings -----------------------------------------------------
 const TxtMainSettingsDesc = " Main Verifier settings"
@@ -42,7 +52,7 @@ const TxtRequireEmail = " Require Email "
 const TxtRequireEmailDesc = "Should the user be required to provide email address to store in database?"
 
 const TxtLogLevel = " Logging Level "
-const TxtLogLevelBtn = " | Logging Level "
+const TxtLogLevelBtn = " | Logging Level  - Current: "
 const TxtLogLevelDesc = "What level of logging should be output? See docs for detailed info."
 
 // --- Discord Settings --------------------------------------------------

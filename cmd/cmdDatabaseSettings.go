@@ -8,6 +8,8 @@ import (
 func CommandDatabaseSettings() {
 
 	// --- Disable ---------------------------------------------
+	FrmVerifier.SetVisible(false)
+	FrmVerifier.SetActive(false)
 	FrmMainSettings.SetVisible(false)
 	FrmMainSettings.SetActive(false)
 	FrmDiscordSettings.SetVisible(false)
@@ -20,6 +22,7 @@ func CommandDatabaseSettings() {
 	FrmDatabaseSettings.SetActive(true)
 
 	// --- Modify ----------------------------------------------
+	BtnRunVerifier.SetTitle(TxtRunVerifier)
 	BtnMainSettings.SetTitle(TxtMainSettings)
 	BtnDiscordSettings.SetTitle(TxtDiscordSettings)
 	BtnDatabaseSettings.SetTitle(TxtDatabaseSettings + TxtActive)

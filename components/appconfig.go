@@ -1,10 +1,9 @@
-package appconfig
+package components
 
 import (
 	"fmt"
 	"github.com/gookit/config/v2"
 	"github.com/gookit/config/v2/yaml"
-	. "github.com/instance-id/GoUI/dicontainer"
 	"os"
 )
 
@@ -30,8 +29,8 @@ type MainSettings struct {
 		Token           string `json:"token"`
 		CommandPrefix   string `json:"commandprefix"`
 		RequireEmail    string `json:"requireemail"`
-		ConsoleLogLevel string `json:"consoleloglevel"`
-		FileLogLevel    string `json:"fileloglevel"`
+		ConsoleLogLevel int    `json:"consoleloglevel"`
+		FileLogLevel    int    `json:"fileloglevel"`
 	} `json:"system"`
 	Integrations struct {
 		WordPress  string `json:"wordpress"`
@@ -45,12 +44,12 @@ type MainSettings struct {
 	} `json:"discord"`
 	Assets struct {
 		AssetCodes       []string          `json:"assetcodes"`
-		DateCompare      string            `json:"datecompare"`
-		CompareDate      string            `json:"comparedate"`
-		AssetOriginal    string            `json:"assetoriginal"`
-		AssetReplacement string            `json:"assetreplacement"`
+		ReplaceDate      map[string]string `json:"replacedate"`
+		AssetReplaced    map[string]string `json:"assetreplaced"`
+		AssetReplacement map[string]string `json:"assetreplacement"`
 		ApiKeys          map[string]string `json:"apikey"`
 		Packages         map[string]string `json:"package"`
+		Version          map[string]string `json:"version"`
 	} `json:"assets"`
 }
 
@@ -59,25 +58,22 @@ func (m *MainSettings) GetConfig() *MainSettings {
 }
 
 func (m *MainSettings) loadConfig() *MainSettings {
-
-	fmt.Printf("Config path from writer in di: %s \n", DiCon.Cnt.Wtr.ConfigData.Path)
-
 	config.AddDriver(yaml.Driver)
 
-	if _, err := os.Stat(DiCon.Cnt.Wtr.ConfigData.Path); err != nil {
+	if _, err := os.Stat(configPath.Path); err != nil {
 		if os.IsNotExist(err) {
-			err := os.MkdirAll(DiCon.Cnt.Wtr.ConfigData.FolderName, 0755)
+			err := os.MkdirAll(configPath.FolderName, 0755)
 			if err != nil {
 				fmt.Printf("Error at creating new config %s", err)
 			}
-			_, err = DiCon.Cnt.Wtr.NewConfig()
+			_, err = Cntnrs.Wtr.NewConfig()
 			if err != nil {
 				fmt.Printf("Error at setting new config %s", err)
 			}
 		}
 	}
 
-	err := config.LoadFiles(string(DiCon.Cnt.Wtr.ConfigData.Path))
+	err := config.LoadFiles(string(configPath.Path))
 	if err != nil {
 		fmt.Printf("Error at loading config %s", err)
 	}
@@ -87,14 +83,14 @@ func (m *MainSettings) loadConfig() *MainSettings {
 			Token           string `json:"token"`
 			CommandPrefix   string `json:"commandprefix"`
 			RequireEmail    string `json:"requireemail"`
-			ConsoleLogLevel string `json:"consoleloglevel"`
-			FileLogLevel    string `json:"fileloglevel"`
+			ConsoleLogLevel int    `json:"consoleloglevel"`
+			FileLogLevel    int    `json:"fileloglevel"`
 		}{
 			Token:           config.String("settings.system.token"),
 			CommandPrefix:   config.String("settings.system.commandprefix"),
 			RequireEmail:    config.String("settings.system.requireemail"),
-			ConsoleLogLevel: config.String("settings.system.consoleloglevel"),
-			FileLogLevel:    config.String("settings.system.fileloglevel"),
+			ConsoleLogLevel: config.Int("settings.system.consoleloglevel"),
+			FileLogLevel:    config.Int("settings.system.fileloglevel"),
 		},
 		Integrations: struct {
 			WordPress  string `json:"wordpress"`
@@ -116,20 +112,20 @@ func (m *MainSettings) loadConfig() *MainSettings {
 		},
 		Assets: struct {
 			AssetCodes       []string          `json:"assetcodes"`
-			DateCompare      string            `json:"datecompare"`
-			CompareDate      string            `json:"comparedate"`
-			AssetOriginal    string            `json:"assetoriginal"`
-			AssetReplacement string            `json:"assetreplacement"`
+			ReplaceDate      map[string]string `json:"replacedate"`
+			AssetReplaced    map[string]string `json:"assetreplaced"`
+			AssetReplacement map[string]string `json:"assetreplacement"`
 			ApiKeys          map[string]string `json:"apikey"`
 			Packages         map[string]string `json:"package"`
+			Version          map[string]string `json:"version"`
 		}{
 			AssetCodes:       config.Strings("settings.assets.assetcodes"),
-			DateCompare:      config.String("settings.assets.datecompare"),
-			CompareDate:      config.String("settings.assets.comparedate"),
-			AssetOriginal:    config.String("settings.assets.assetoriginal"),
-			AssetReplacement: config.String("settings.assets.assetreplacement"),
+			ReplaceDate:      config.StringMap("settings.assets.replacedate"),
+			AssetReplaced:    config.StringMap("settings.assets.assetreplaced"),
+			AssetReplacement: config.StringMap("settings.assets.assetreplacement"),
 			ApiKeys:          config.StringMap("settings.assets.apikey"),
 			Packages:         config.StringMap("settings.assets.package"),
+			Version:          config.StringMap("settings.assets.version"),
 		}}
 
 	return mainSettings

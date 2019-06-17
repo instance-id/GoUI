@@ -8,6 +8,8 @@ import (
 func CommandDiscordSettings() {
 
 	// --- Disable ---------------------------------------------
+	FrmVerifier.SetVisible(false)
+	FrmVerifier.SetActive(false)
 	FrmMainSettings.SetVisible(false)
 	FrmMainSettings.SetActive(false)
 	FrmDatabaseSettings.SetVisible(false)
@@ -20,6 +22,7 @@ func CommandDiscordSettings() {
 	FrmDiscordSettings.SetActive(true)
 
 	// --- Modify ----------------------------------------------
+	BtnRunVerifier.SetTitle(TxtRunVerifier)
 	BtnMainSettings.SetTitle(TxtMainSettings)
 	BtnDiscordSettings.SetTitle(TxtDiscordSettings + TxtActive)
 	BtnDatabaseSettings.SetTitle(TxtDatabaseSettings)
@@ -27,5 +30,7 @@ func CommandDiscordSettings() {
 
 	// --- Activate --------------------------------------------
 	//FrmDiscordSettings.SetActive(true)
+
+	// --- Buttons ---------------------------------------------
 
 }

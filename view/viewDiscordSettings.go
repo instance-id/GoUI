@@ -2,18 +2,26 @@ package view
 
 import (
 	"fmt"
-	. "github.com/instance-id/GoUI/dicontainer"
+	. "github.com/instance-id/GoUI/components"
 	. "github.com/instance-id/GoUI/elements"
 	. "github.com/instance-id/GoUI/text"
 	. "github.com/instance-id/GoUI/utils"
 	ui "github.com/instance-id/clui"
 )
 
+var pendingDiscord = struct {
+	guildId  bool
+	botUsers bool
+}{
+	guildId:  false,
+	botUsers: false,
+}
+
 func CreateViewDiscordSettings() {
 
-	var tmpGuidId = DiCon.Cnt.Dac.Discord.Guild
-	var tmpBotUsers = DiCon.Cnt.Dac.Discord.BotUsers
-	var tmpRoles = DiCon.Cnt.Dac.Discord.Roles
+	var tmpGuidId = Cntnrs.Dac.Discord.Guild
+	var tmpBotUsers = Cntnrs.Dac.Discord.BotUsers[0]
+	var tmpRoles = Cntnrs.Dac.Discord.Roles
 
 	// --- Discord Settings Frame ------------------------------------------
 	FrmDiscordSettings = ui.CreateFrame(FrameContent, ui.AutoSize, ui.AutoSize, ui.BorderNone, ui.Fixed)
@@ -27,16 +35,36 @@ func CreateViewDiscordSettings() {
 	settingsFrame.SetPack(ui.Vertical)
 
 	// --- GuildId -------------------------------------------------------
-	//var gIdparams = FramedInputParams{Border: ui.BorderNone}
 	guildIdFrame := NewFramedInput(settingsFrame, TxtGuildId, nil)
 	guildIdFrame.SetPaddings(2, 2)
-	ui.CreateEditField(guildIdFrame, ui.AutoSize, tmpGuidId, ui.Fixed)
+	guildIdResult := ui.CreateEditField(guildIdFrame, ui.AutoSize, tmpGuidId, ui.Fixed)
+	guildIdResult.OnChange(func(event ui.Event) {
+		tmpGuidId = guildIdResult.Title()
+		if tmpGuidId != Cntnrs.Dac.Discord.Guild {
+			pendingDiscord.guildId = true
+			SavePendingDiscord()
+		} else {
+			pendingDiscord.guildId = false
+			SavePendingDiscord()
+		}
+
+	})
 	ui.CreateLabel(guildIdFrame, ui.AutoSize, ui.AutoSize, TxtGuildIdDesc, ui.Fixed)
 
 	// --- Bot Users -----------------------------------------------------
 	botUsersFrame := NewFramedInput(settingsFrame, TxtBotUsers, nil)
 	botUsersFrame.SetPaddings(2, 2)
-	ui.CreateEditField(botUsersFrame, ui.AutoSize, DiCon.Cnt.Dac.Discord.BotUsers[0], ui.Fixed)
+	botUsersResult := ui.CreateEditField(botUsersFrame, ui.AutoSize, tmpBotUsers, ui.Fixed)
+	botUsersResult.OnChange(func(event ui.Event) {
+		tmpBotUsers = botUsersResult.Title()
+		if tmpBotUsers != Cntnrs.Dac.Discord.BotUsers[0] {
+			pendingDiscord.botUsers = true
+			SavePendingDiscord()
+		} else {
+			pendingDiscord.botUsers = false
+			SavePendingDiscord()
+		}
+	})
 	ui.CreateLabel(botUsersFrame, ui.AutoSize, ui.AutoSize, TxtBotUsersDesc, ui.Fixed)
 
 	// --- Asset Details -------------------------------------------------
@@ -48,7 +76,6 @@ func CreateViewDiscordSettings() {
 		FrmDiscordSettings.SetActive(false)
 		td := CreateTableDialog(BtnAssetDetails)
 		td.SetActive(true)
-
 	})
 	ui.CreateLabel(logLevelFrame, ui.AutoSize, ui.AutoSize, TxtAssetDetailsDesc, ui.Fixed)
 
@@ -57,17 +84,28 @@ func CreateViewDiscordSettings() {
 	btnFrame.SetPaddings(2, 2)
 	var params = FramedInputParams{Orientation: ui.Vertical, Width: 25, Height: 4}
 	saveSettings := NewFramedInput(btnFrame, TxtSaveDesc, &params)
-	BtnMainSettingsSave = ui.CreateButton(saveSettings, 25, ui.AutoSize, TxtSaveBtn, ui.Fixed)
-	BtnMainSettingsSave.SetAlign(ui.AlignLeft)
-	BtnMainSettingsSave.SetShadowType(ui.ShadowHalf)
-	BtnMainSettingsSave.OnClick(func(ev ui.Event) {
-		DiCon.Cnt.Dac.Discord.Guild = tmpGuidId
-		DiCon.Cnt.Dac.Discord.BotUsers = tmpBotUsers
-		DiCon.Cnt.Dac.Discord.Roles = tmpRoles
-		_, err := DiCon.Cnt.Wtr.SetConfig()
+	BtnDiscordSettingsSave = ui.CreateButton(saveSettings, 25, ui.AutoSize, TxtSaveBtn, ui.Fixed)
+	BtnDiscordSettingsSave.SetAlign(ui.AlignLeft)
+	BtnDiscordSettingsSave.SetShadowType(ui.ShadowHalf)
+	BtnDiscordSettingsSave.OnClick(func(ev ui.Event) {
+		Cntnrs.Dac.Discord.Guild = tmpGuidId
+		Cntnrs.Dac.Discord.BotUsers[0] = tmpBotUsers
+		Cntnrs.Dac.Discord.Roles = tmpRoles
+		_, err := Cntnrs.Wtr.SetConfig()
 		if err != nil {
-			ui.CreateAlertDialog(ErrCouldNotSaveCfg, fmt.Sprintf("Error Could not save config: &s", err), TxtCloseBtn)
+			ui.CreateAlertDialog(ErrCouldNotSaveCfg, fmt.Sprintf("Error Could not save config: %s", err), TxtCloseBtn)
 		}
+		BtnDiscordSettingsSave.SetTitle(TxtSaveBtn)
+		ui.PutEvent(ui.Event{Type: ui.EventRedraw})
 	})
-	FrmDiscordSettings.SetVisible(false)
+}
+
+func SavePendingDiscord() {
+	if pendingDiscord.guildId || pendingDiscord.botUsers == true {
+		BtnDiscordSettingsSave.SetTitle(TxtSavePendingBtn)
+		ui.PutEvent(ui.Event{Type: ui.EventRedraw})
+	} else {
+		BtnDiscordSettingsSave.SetTitle(TxtSaveBtn)
+		ui.PutEvent(ui.Event{Type: ui.EventRedraw})
+	}
 }

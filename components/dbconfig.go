@@ -1,26 +1,17 @@
-package appconfig
+package components
 
 import (
 	"fmt"
 	"github.com/gookit/config/v2"
 	"github.com/gookit/config/v2/yaml"
-	. "github.com/instance-id/GoUI/dicontainer"
 	"os"
 )
 
-var dbData DbData
-
-type DbData struct {
-	DbSettings DbSettings
-	folderName string
-	fileName   string
-	path       string
-}
-
 // --- Maps dbconfig.yml fields to DbSettings fields -------------------------------------------------------------------
 type DbSettings struct {
-	Database int `json:"database"`
-	Data     struct {
+	Providers []string
+	Database  int `json:"database"`
+	Data      struct {
 		Address     string `json:"address"`
 		Username    string `json:"username"`
 		Password    string `json:"password"`
@@ -39,28 +30,27 @@ func (d *DbSettings) loadDbConfig() *DbSettings {
 
 	config.AddDriver(yaml.Driver)
 
-	fmt.Printf("Db path: %s \n", dbData.path)
-
-	if _, err := os.Stat(dbData.path); err != nil {
+	if _, err := os.Stat(configPath.DbPath); err != nil {
 		if os.IsNotExist(err) {
-			err := os.MkdirAll(dbData.folderName, 0755)
+			err := os.MkdirAll(configPath.FolderName, 0755)
 			if err != nil {
 				fmt.Printf("Error at creating new dbconfig %s", err)
 			}
-			_, err = DiCon.Cnt.Wtr.NewDbConfig()
+			_, err = Cntnrs.Wtr.NewDbConfig()
 			if err != nil {
 				fmt.Printf("Error at setting new dbconfig %s", err)
 			}
 		}
 	}
 
-	err := config.LoadFiles(string(dbData.path))
+	err := config.LoadFiles(string(configPath.DbPath))
 	if err != nil {
 		fmt.Printf("Error loading dbconfig %s", err)
 	}
 
 	dbSettings := &DbSettings{
-		Database: config.Int("database"),
+		Providers: []string{"mysql", "postgres", "mssql", "sqlite"},
+		Database:  config.Int("database"),
 		Data: struct {
 			Address     string `json:"address"`
 			Username    string `json:"username"`

@@ -1,42 +1,31 @@
 package view
 
 import (
+	. "github.com/instance-id/GoUI/components"
 	. "github.com/instance-id/GoUI/elements"
+	. "github.com/instance-id/GoUI/text"
 	ui "github.com/instance-id/clui"
 )
 
-//func CreateViewLogLevel() {
-//	frmLogLevel := ui.CreateFrame(FrameMenu, 8, 1, ui.BorderNone, ui.Fixed)
-//	frmLogLevel.SetGaps(1, ui.KeepValue)
-//	frmLogLevel.SetVisible(false)
-//	frmLogLevel.SetActive(false)
-//}
+func SelectLogLevel(btn *ui.Button, currentLogLevel int) int {
 
-func SelectLogLevel(btn *ui.Button) {
-
-	dlgType := ui.SelectDialogRadio
-
-	curr := -1
-	for i, lLevel := range Log.LogLevel {
-		if lLevel == Log.CurrentLogLevel {
-			curr = i
-			break
-		}
-	}
-
-	selDlg := ui.CreateSelectDialog("Choose log level", Log.LogLevel, curr, dlgType)
-	selDlg.OnClose(func() {
-		switch selDlg.Result() {
+	logLevel := ui.CreateSelectDialog(TxtDbProvider, Log.LogLevel, currentLogLevel, ui.SelectDialogList)
+	logLevel.View.SetTitle(Log.LogLevel[currentLogLevel])
+	logLevel.OnClose(func() {
+		switch logLevel.Result() {
 		case ui.DialogButton1:
-			idx := selDlg.Value()
-			if idx != -1 {
-				Log.CurrentLogLevel = Log.LogLevel[idx]
+			logResult := logLevel.Value()
+			Log.CurrentLogLevel = logResult
+			btn.SetTitle(TxtLogLevelBtn + Log.LogLevel[Log.CurrentLogLevel])
+			if Log.CurrentLogLevel != Cntnrs.Dac.System.FileLogLevel {
+				pendingMain.logLevel = true
+				SavePendingMainSettings()
+			} else {
+				pendingMain.logLevel = false
+				SavePendingMainSettings()
 			}
 		}
-
 		btn.SetEnabled(true)
-		// ask the composer to repaint all windows
-		ui.PutEvent(ui.Event{Type: ui.EventRedraw})
 	})
-
+	return Log.CurrentLogLevel
 }

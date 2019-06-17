@@ -2,27 +2,22 @@ package main
 
 import (
 	"github.com/chzyer/readline"
+	"github.com/instance-id/GoUI/cmd"
 	. "github.com/instance-id/GoUI/components"
 	. "github.com/instance-id/GoUI/elements"
+
+	//. "github.com/instance-id/GoUI/rpcclient"
+	"os"
+
 	. "github.com/instance-id/GoUI/text"
 	"github.com/instance-id/GoUI/view"
 	ui "github.com/instance-id/clui"
 	term "github.com/nsf/termbox-go"
-	"os"
-)
-
-var (
-	text, background term.Attribute
-	lightness        int
-	helpVisible      bool
 )
 
 func InitData() {
 	Log.LogLevel = []string{"INFO", "DEBUG", "WARNING", "ERROR"}
-	Log.DefaultLogLevel = "INFO"
-	Log.CurrentLogLevel = Log.DefaultLogLevel
-	DiscordToken = "123123123SDFSDFSDFSDF1234123123"
-	CommandPrefix = "!cmd "
+	Log.DefaultLogLevel = 0
 
 }
 
@@ -39,11 +34,10 @@ func MainInitialSettings() {
 	BtnPlugins.SetActive(false)
 	BtnLogs.SetActive(false)
 	BtnQuit.SetActive(false)
-	InitData()
 }
 
 func createView() {
-
+	InitData()
 	// --- Main Window ---------------------------------------------------
 	WindowMain = ui.AddWindow(0, 0, 10, 7, TxtApplication)
 	WindowMain.SetPack(ui.Horizontal)
@@ -56,19 +50,20 @@ func createView() {
 	view.CreateViewContent()
 
 	// --- Settings Frames -----------------------------------------------
-	tokenFrame, tokenEdit := view.CreateViewMainSettings()
+	/*tokenFrame, tokenEdit := */
+	view.CreateViewVerifier()
+	view.CreateViewMainSettings()
 	view.CreateViewDiscordSettings()
 	view.CreateViewDatabaseSettings()
 	view.CreateViewPlugins()
 
 	MainInitialSettings()
 
-	ui.ActivateControl(tokenFrame, tokenEdit)
-
+	//ui.ActivateControl(tokenFrame, tokenEdit)
 	//tokenEdit.SetActive(true)
 	//tokenEdit.SetEnabled(true)
 	//tokenEdit.SetTabStop(true)
-
+	cmd.CommandMainSettings()
 	ui.MainLoop()
 }
 
@@ -81,6 +76,9 @@ func mainLoop() {
 	term.SetOutputMode(term.Output256)
 
 	ui.SetThemePath("themes")
+
+	// --- Changing theme won't do much ----
+	// --- Many values are hard coded ------
 	ui.SetCurrentTheme("verifier")
 
 	createView()
@@ -89,9 +87,8 @@ func mainLoop() {
 }
 
 func main() {
-	//var diCont = new(DIContainer)
+	//rpcclient.Client()
 	CmdInitialize()
-	//diCont.InitDi()
 
 	mainLoop()
 }

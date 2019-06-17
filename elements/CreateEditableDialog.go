@@ -23,6 +23,7 @@ func CreateEditableDialog(editTitle string, oldVal string) *EditableDialog {
 	editableDialog.Frame = NewFramedWindowInput(editableDialog.View, editTitle, &params)
 	editableDialog.edit = ui.CreateEditField(editableDialog.Frame, 50, oldVal, ui.Fixed)
 	ui.ActivateControl(editableDialog.Frame, editableDialog.edit)
+	ui.PutEvent(ui.Event{Type: ui.EventKey, Key: term.KeyTab})
 
 	// --- Buttons -------------------------------------------------------
 	// --- Edit currently selected entry ------------------

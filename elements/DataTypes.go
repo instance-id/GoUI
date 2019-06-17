@@ -1,14 +1,16 @@
 package elements
 
 import (
+	"github.com/hpcloud/tail"
 	ui "github.com/instance-id/clui"
 )
 
 var (
-	CommandPrefix string
-	DiscordToken  string
-	Log           LogLevels
+	Log LogLevels
 )
+
+var LogViewer *LogDialog
+var Tails *tail.Tail
 
 type DataDiscord struct {
 	GuildId  string
@@ -47,7 +49,7 @@ type LogDialog struct {
 	result     int
 	value      int
 	edtResult  string
-	log        *ui.TextView
+	Log        *ui.TextView
 	edit       *ui.EditField
 	editDialog *ui.SelectDialog
 	confirm    *ui.ConfirmationDialog
@@ -56,8 +58,8 @@ type LogDialog struct {
 
 type LogLevels struct {
 	LogLevel        []string
-	CurrentLogLevel string
-	DefaultLogLevel string
+	CurrentLogLevel int
+	DefaultLogLevel int
 }
 
 type TableDialog struct {

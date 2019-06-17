@@ -4,12 +4,11 @@ import (
 	"fmt"
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/go-xorm/xorm"
-	"github.com/instance-id/GoUI/appconfig"
 	"github.com/sirupsen/logrus"
 )
 
 type DbConfig struct {
-	Db   *appconfig.DbSettings
+	Db   *DbSettings
 	Xorm *XormDB
 }
 
@@ -20,12 +19,12 @@ type XormDB struct {
 	runit       bool
 }
 
-func (xdb *DbConfig) ConnectDB(d *appconfig.DbSettings) *DbConfig {
+func (xdb *DbConfig) ConnectDB(d *DbSettings) *DbConfig {
 	dbConfig := &DbConfig{
 		Db: d,
 		Xorm: &XormDB{
 			Engine: func() *xorm.Engine {
-				eng, err := xorm.NewEngine(DatabaseData.Providers[d.Database], DetermineConnection(d))
+				eng, err := xorm.NewEngine(xdb.Db.Providers[d.Database], DetermineConnection(d))
 				if err != nil {
 					logrus.Fatalf("Database Connection Error: %s", err)
 				}
@@ -61,9 +60,9 @@ func (x *XormDB) Close() (err error) {
 	return
 }
 
-func DetermineConnection(d *appconfig.DbSettings) string {
+func DetermineConnection(d *DbSettings) string {
 	var connString string
-	switch DatabaseData.Providers[d.Database] {
+	switch d.Providers[d.Database] {
 	case "mysql":
 		connString = fmt.Sprintf("%s:%s@tcp(%s:3306)/%s?charset=utf8",
 			d.Data.Username,

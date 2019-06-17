@@ -8,6 +8,8 @@ import (
 func CommandPlugins() {
 
 	// --- Disable ---------------------------------------------
+	FrmVerifier.SetVisible(false)
+	FrmVerifier.SetActive(false)
 	FrmMainSettings.SetVisible(false)
 	FrmMainSettings.SetActive(false)
 	FrmDiscordSettings.SetVisible(false)
@@ -20,6 +22,7 @@ func CommandPlugins() {
 	FrmPlugins.SetActive(true)
 
 	// --- Modify ----------------------------------------------
+	BtnRunVerifier.SetTitle(TxtRunVerifier)
 	BtnMainSettings.SetTitle(TxtMainSettings)
 	BtnDiscordSettings.SetTitle(TxtDiscordSettings)
 	BtnDatabaseSettings.SetTitle(TxtDatabaseSettings)
