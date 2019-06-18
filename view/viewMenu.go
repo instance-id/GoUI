@@ -1,11 +1,14 @@
 package view
 
 import (
-	. "github.com/instance-id/GoUI/cmd"
-	. "github.com/instance-id/GoUI/elements"
+	"runtime"
+	"sync"
+
 	. "github.com/instance-id/GoUI/text"
 	ui "github.com/instance-id/clui"
 )
+
+var wg sync.WaitGroup
 
 func CreateViewMenu() {
 
@@ -35,7 +38,9 @@ func CreateViewMenu() {
 	BtnMainSettings.SetShadowType(ui.ShadowHalf)
 	BtnMainSettings.OnClick(func(ev ui.Event) {
 		if !FrmMainSettings.Visible() {
-			_ = Tails.Stop()
+			if LogRunning {
+				LogRunning = false
+			}
 			CommandMainSettings()
 		}
 	})
@@ -46,7 +51,9 @@ func CreateViewMenu() {
 	BtnDiscordSettings.SetShadowType(ui.ShadowHalf)
 	BtnDiscordSettings.OnClick(func(ev ui.Event) {
 		if !FrmDiscordSettings.Visible() {
-			_ = Tails.Stop()
+			if LogRunning {
+				LogRunning = false
+			}
 			CommandDiscordSettings()
 		}
 	})
@@ -57,7 +64,9 @@ func CreateViewMenu() {
 	BtnDatabaseSettings.SetShadowType(ui.ShadowHalf)
 	BtnDatabaseSettings.OnClick(func(ev ui.Event) {
 		if !FrmDatabaseSettings.Visible() {
-			_ = Tails.Stop()
+			if LogRunning {
+				LogRunning = false
+			}
 			CommandDatabaseSettings()
 		}
 	})
@@ -68,7 +77,9 @@ func CreateViewMenu() {
 	BtnPlugins.SetShadowType(ui.ShadowHalf)
 	BtnPlugins.OnClick(func(ev ui.Event) {
 		if !FrmPlugins.Visible() {
-			_ = Tails.Stop()
+			if LogRunning {
+				LogRunning = false
+			}
 			CommandPlugins()
 		}
 	})
@@ -78,7 +89,16 @@ func CreateViewMenu() {
 	BtnLogs.SetAlign(ui.AlignLeft)
 	BtnLogs.SetShadowType(ui.ShadowHalf)
 	BtnLogs.OnClick(func(ev ui.Event) {
-		CreateLogDialog(Txtlogs)
+		if !LogRunningView {
+			go LoadLogs()
+			runtime.Gosched()
+		}
+		log := CreateLogDialog(Txtlogs)
+		log.View.OnClose(func(ev ui.Event) bool {
+			LogChan <- true
+			return true
+		})
+
 	})
 
 	// --- Quit ----------------------------------------------------------
@@ -86,8 +106,9 @@ func CreateViewMenu() {
 	BtnQuit.SetAlign(ui.AlignLeft)
 	BtnQuit.SetShadowType(ui.ShadowHalf)
 	BtnQuit.OnClick(func(ev ui.Event) {
-		_ = Tails.Stop()
+		if LogRunning {
+			LogChan <- true
+		}
 		go ui.Stop()
 	})
-
 }

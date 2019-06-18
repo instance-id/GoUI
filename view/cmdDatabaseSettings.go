@@ -1,7 +1,6 @@
-package cmd
+package view
 
 import (
-	. "github.com/instance-id/GoUI/elements"
 	. "github.com/instance-id/GoUI/text"
 )
 

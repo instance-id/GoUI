@@ -1,36 +1,35 @@
-package cmd
+package view
 
 import (
-	. "github.com/instance-id/GoUI/elements"
 	. "github.com/instance-id/GoUI/text"
 )
 
-func CommandDiscordSettings() {
+func CommandMainSettings() {
 
 	// --- Disable ---------------------------------------------
 	FrmVerifier.SetVisible(false)
 	FrmVerifier.SetActive(false)
-	FrmMainSettings.SetVisible(false)
-	FrmMainSettings.SetActive(false)
+	FrmDiscordSettings.SetVisible(false)
+	FrmDiscordSettings.SetActive(false)
 	FrmDatabaseSettings.SetVisible(false)
 	FrmDatabaseSettings.SetActive(false)
 	FrmPlugins.SetVisible(false)
 	FrmPlugins.SetActive(false)
 
 	// --- Enable ----------------------------------------------
-	FrmDiscordSettings.SetVisible(true)
-	FrmDiscordSettings.SetActive(true)
+	FrmMainSettings.SetVisible(true)
+	FrmMainSettings.SetActive(true)
 
 	// --- Modify ----------------------------------------------
 	BtnRunVerifier.SetTitle(TxtRunVerifier)
-	BtnMainSettings.SetTitle(TxtMainSettings)
-	BtnDiscordSettings.SetTitle(TxtDiscordSettings + TxtActive)
+	BtnMainSettings.SetTitle(TxtMainSettings + TxtActive)
+	BtnDiscordSettings.SetTitle(TxtDiscordSettings)
 	BtnDatabaseSettings.SetTitle(TxtDatabaseSettings)
 	BtnPlugins.SetTitle(TxtPlugins)
 
 	// --- Activate --------------------------------------------
-	//FrmDiscordSettings.SetActive(true)
 
 	// --- Buttons ---------------------------------------------
-
+	BtnLogLevel.SetActive(false)
+	BtnMainSettingsSave.SetActive(false)
 }

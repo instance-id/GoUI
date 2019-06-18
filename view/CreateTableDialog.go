@@ -1,7 +1,8 @@
-package elements
+package view
 
 import (
 	"fmt"
+
 	. "github.com/instance-id/GoUI/components"
 	. "github.com/instance-id/GoUI/text"
 	. "github.com/instance-id/GoUI/utils"

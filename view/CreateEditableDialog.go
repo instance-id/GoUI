@@ -1,4 +1,4 @@
-package elements
+package view
 
 import (
 	. "github.com/instance-id/GoUI/text"

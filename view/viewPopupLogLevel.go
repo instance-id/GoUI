@@ -2,7 +2,6 @@ package view
 
 import (
 	. "github.com/instance-id/GoUI/components"
-	. "github.com/instance-id/GoUI/elements"
 	. "github.com/instance-id/GoUI/text"
 	ui "github.com/instance-id/clui"
 )

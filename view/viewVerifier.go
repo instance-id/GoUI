@@ -6,27 +6,17 @@ import (
 	"runtime"
 
 	"github.com/hpcloud/tail"
-	. "github.com/instance-id/GoUI/elements"
+
 	"github.com/instance-id/GoUI/rpcclient"
 	. "github.com/instance-id/GoUI/text"
 	. "github.com/instance-id/GoUI/utils"
 	ui "github.com/instance-id/clui"
 )
 
+var LogRunning = false
 var LogChan chan bool
 
-var pendingVerifier = struct {
-	token     bool
-	cmdPrefix bool
-	logLevel  bool
-}{
-	token:     false,
-	cmdPrefix: false,
-	logLevel:  false,
-}
-
 func CreateViewVerifier() /*(*ui.Frame, *ui.EditField)*/ {
-
 	LogViewer = new(LogDialog)
 
 	// --- Verifier Controls Frame ---------------------------------------
@@ -56,6 +46,10 @@ func CreateViewVerifier() /*(*ui.Frame, *ui.EditField)*/ {
 	BtnVerifierStart.OnClick(func(ev ui.Event) {
 		go rpcclient.StartServer()
 		runtime.Gosched()
+		if !LogRunning {
+			go LoadVerifierLogs()
+			runtime.Gosched()
+		}
 	})
 
 	// --- Restart -------------------------------------------------------
@@ -80,9 +74,12 @@ func CreateViewVerifier() /*(*ui.Frame, *ui.EditField)*/ {
 	BtnVerifierStop.OnClick(func(ev ui.Event) {
 		go rpcclient.StopServer()
 		runtime.Gosched()
-		_ = Tails.Stop()
+		if LogRunning {
+			LogRunning = false
+		}
 	})
 
+	// --- Autoscroll checkbox ------------------------------------------------
 	logFrameParams := FramedInputParams{Orientation: ui.Vertical, Width: 10, Height: 0, Scale: ui.Fixed, Border: ui.BorderThin, PadX: 1, PadY: 1}
 	LogViewer.Frame = NewFramedInput(settingsFrame, TxtLogLevel, &logFrameParams)
 	LogViewer.Frame.SetBackColor(236)
@@ -91,7 +88,6 @@ func CreateViewVerifier() /*(*ui.Frame, *ui.EditField)*/ {
 	ui.ActivateControl(LogViewer.Frame, LogViewer.Log)
 	LogViewer.Log.LoadFileMD(LogLocation)
 	LogViewer.Log.SetAutoScroll(true)
-	go LoadLogs()
 
 	buttonFrame := ui.CreateFrame(LogViewer.Frame, 130, 6, ui.BorderNone, ui.AutoSize)
 
@@ -118,8 +114,8 @@ func CreateViewVerifier() /*(*ui.Frame, *ui.EditField)*/ {
 	BtnVerifierStart.SetAlign(ui.AlignLeft)
 	BtnVerifierStart.SetShadowType(ui.ShadowHalf)
 	BtnVerifierStart.OnClick(func(ev ui.Event) {
-		_ = os.Remove("../logs/verifier.log")
-		_, _ = os.Create("../logs/verifier.log")
+		_ = os.Remove("./logs/verifier.log")
+		_, _ = os.Create("./logs/verifier.log")
 	})
 
 	LogViewer.Log.SetBackColor(238)
@@ -127,14 +123,44 @@ func CreateViewVerifier() /*(*ui.Frame, *ui.EditField)*/ {
 
 }
 
-func LoadLogs() {
-	var err error
-	Tails, err = tail.TailFile("../logs/verifier.log", tail.Config{Follow: true, ReOpen: true, Logger: tail.DiscardingLogger})
-	if err != nil {
+func LoadVerifierLogs() error {
+	//LogChan = make(chan bool)
+	defer Tails.Done()
 
+	var _ error
+	Tails, _ = tail.TailFile("./logs/verifier.log", tail.Config{Follow: true, ReOpen: true, Logger: tail.DiscardingLogger})
+	LogRunning = true
+
+	for LogRunning {
+		if !LogRunning {
+			_ = Tails.Stop()
+			break
+		}
+		for line := range Tails.Lines {
+			LogViewer.Log.AddText([]string{line.Text})
+			if []string{line.Text} != nil {
+				ui.PutEvent(ui.Event{Type: ui.EventRedraw})
+			}
+
+		}
 	}
-	for line := range Tails.Lines {
-		LogViewer.Log.AddText([]string{line.Text})
-		ui.PutEvent(ui.Event{Type: ui.EventRedraw})
-	}
+	LogRunning = false
+	return nil
+
+	//for {
+	//	select {
+	//	case line, ok := <-Tails.Lines:
+	//		if !ok {
+	//			_ = Tails.Wait()
+	//			break
+	//		}
+	//		if []string{line.Text} != nil {
+	//			LogViewer.Log.AddText([]string{line.Text})
+	//			ui.PutEvent(ui.Event{Type: ui.EventRedraw})
+	//		}
+	//	case <-LogChan:
+	//		LogRunning = false
+	//		return Tails.Stop()
+	//	}
+	//}
 }

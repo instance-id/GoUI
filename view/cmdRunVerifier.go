@@ -1,15 +1,14 @@
-package cmd
+package view
 
 import (
-	. "github.com/instance-id/GoUI/elements"
 	. "github.com/instance-id/GoUI/text"
 )
 
-func CommandMainSettings() {
+func CommandRunVerifier() {
 
 	// --- Disable ---------------------------------------------
-	FrmVerifier.SetVisible(false)
-	FrmVerifier.SetActive(false)
+	FrmMainSettings.SetVisible(false)
+	FrmMainSettings.SetActive(false)
 	FrmDiscordSettings.SetVisible(false)
 	FrmDiscordSettings.SetActive(false)
 	FrmDatabaseSettings.SetVisible(false)
@@ -18,12 +17,12 @@ func CommandMainSettings() {
 	FrmPlugins.SetActive(false)
 
 	// --- Enable ----------------------------------------------
-	FrmMainSettings.SetVisible(true)
-	FrmMainSettings.SetActive(true)
+	FrmVerifier.SetVisible(true)
+	FrmVerifier.SetActive(true)
 
 	// --- Modify ----------------------------------------------
-	BtnRunVerifier.SetTitle(TxtRunVerifier)
-	BtnMainSettings.SetTitle(TxtMainSettings + TxtActive)
+	BtnRunVerifier.SetTitle(TxtRunVerifier + TxtActive)
+	BtnMainSettings.SetTitle(TxtMainSettings)
 	BtnDiscordSettings.SetTitle(TxtDiscordSettings)
 	BtnDatabaseSettings.SetTitle(TxtDatabaseSettings)
 	BtnPlugins.SetTitle(TxtPlugins)
@@ -31,6 +30,7 @@ func CommandMainSettings() {
 	// --- Activate --------------------------------------------
 
 	// --- Buttons ---------------------------------------------
-	BtnLogLevel.SetActive(false)
-	BtnMainSettingsSave.SetActive(false)
+	BtnVerifierStart.SetActive(false)
+	BtnVerifierRestart.SetActive(false)
+	BtnVerifierStop.SetActive(false)
 }

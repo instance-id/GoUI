@@ -12,13 +12,16 @@ type Containers struct {
 
 var Cntnrs = new(Containers)
 
-func CmdInitialize() {
+func CmdInitialize() (string, string) {
 	app := DISetup()
 	defer app.Delete()
 
 	Cntnrs.Dac = DataAccessContainer(app)
 	Cntnrs.Dbd = DatabaseContainer(app)
 	Cntnrs.Wtr = WriterAccessContainer(app)
+	key := Cntnrs.Dac.System.Token
+	phrase := Cntnrs.Dac.Discord.Guild
+	return phrase, key
 }
 
 func DISetup() di.Container {

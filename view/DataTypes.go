@@ -1,4 +1,4 @@
-package elements
+package view
 
 import (
 	"github.com/hpcloud/tail"
@@ -9,8 +9,9 @@ var (
 	Log LogLevels
 )
 
+var Tails, _ = tail.TailFile("../logs/verifier.log", tail.Config{Follow: true, ReOpen: true, Logger: tail.DiscardingLogger})
+
 var LogViewer *LogDialog
-var Tails *tail.Tail
 
 type DataDiscord struct {
 	GuildId  string

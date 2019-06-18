@@ -2,9 +2,8 @@ package main
 
 import (
 	"github.com/chzyer/readline"
-	"github.com/instance-id/GoUI/cmd"
 	. "github.com/instance-id/GoUI/components"
-	. "github.com/instance-id/GoUI/elements"
+	"github.com/instance-id/GoUI/rpcclient"
 
 	//. "github.com/instance-id/GoUI/rpcclient"
 	"os"
@@ -16,32 +15,32 @@ import (
 )
 
 func InitData() {
-	Log.LogLevel = []string{"INFO", "DEBUG", "WARNING", "ERROR"}
-	Log.DefaultLogLevel = 0
+	view.Log.LogLevel = []string{"INFO", "DEBUG", "WARNING", "ERROR"}
+	view.Log.DefaultLogLevel = 0
 
 }
 
 func MainInitialSettings() {
-	FrmMainSettings.SetVisible(true)
-	FrmDiscordSettings.SetActive(false)
-	FrmDatabaseSettings.SetActive(false)
-	FrmPlugins.SetActive(false)
+	view.FrmMainSettings.SetVisible(true)
+	view.FrmDiscordSettings.SetActive(false)
+	view.FrmDatabaseSettings.SetActive(false)
+	view.FrmPlugins.SetActive(false)
 
-	BtnRunVerifier.SetActive(false)
-	BtnMainSettings.SetActive(false)
-	BtnDiscordSettings.SetActive(false)
-	BtnDatabaseSettings.SetActive(false)
-	BtnPlugins.SetActive(false)
-	BtnLogs.SetActive(false)
-	BtnQuit.SetActive(false)
+	view.BtnRunVerifier.SetActive(false)
+	view.BtnMainSettings.SetActive(false)
+	view.BtnDiscordSettings.SetActive(false)
+	view.BtnDatabaseSettings.SetActive(false)
+	view.BtnPlugins.SetActive(false)
+	view.BtnLogs.SetActive(false)
+	view.BtnQuit.SetActive(false)
 }
 
 func createView() {
 	InitData()
 	// --- Main Window ---------------------------------------------------
-	WindowMain = ui.AddWindow(0, 0, 10, 7, TxtApplication)
-	WindowMain.SetPack(ui.Horizontal)
-	WindowMain.SetBackColor(236)
+	view.WindowMain = ui.AddWindow(0, 0, 10, 7, TxtApplication)
+	view.WindowMain.SetPack(ui.Horizontal)
+	view.WindowMain.SetBackColor(236)
 
 	// --- Main Menu Frame -----------------------------------------------
 	view.CreateViewMenu()
@@ -63,7 +62,7 @@ func createView() {
 	//tokenEdit.SetActive(true)
 	//tokenEdit.SetEnabled(true)
 	//tokenEdit.SetTabStop(true)
-	cmd.CommandMainSettings()
+	view.CommandMainSettings()
 	ui.MainLoop()
 }
 
@@ -87,8 +86,8 @@ func mainLoop() {
 }
 
 func main() {
-	//rpcclient.Client()
-	CmdInitialize()
+	phrase, key := CmdInitialize()
+	rpcclient.GetKey(phrase, key)
 
 	mainLoop()
 }

@@ -2,8 +2,8 @@ package view
 
 import (
 	"fmt"
+
 	. "github.com/instance-id/GoUI/components"
-	. "github.com/instance-id/GoUI/elements"
 	. "github.com/instance-id/GoUI/text"
 	. "github.com/instance-id/GoUI/utils"
 	ui "github.com/instance-id/clui"

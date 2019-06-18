@@ -1,4 +1,4 @@
-package elements
+package view
 
 import (
 	ui "github.com/instance-id/clui"

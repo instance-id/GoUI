@@ -9,14 +9,23 @@ import (
 	"time"
 )
 
-var wg sync.WaitGroup
+var (
+	wg sync.WaitGroup
+	ad AccessData
+)
+
+type AccessData struct {
+	key []byte
+}
 
 type Response struct {
 	Message string
+	Key     []byte
 }
 
 type Request struct {
 	Name string
+	Key  []byte
 }
 
 var (
@@ -38,6 +47,7 @@ func Client() {
 	if err != nil {
 		fmt.Println(err)
 	}
+	_ = c.Close()
 	wg.Done()
 }
 
@@ -45,7 +55,8 @@ func StartServer() {
 	wg.Add(1)
 	var err error
 	cmd := exec.Command("./goverifier", "-rpc=true", fmt.Sprintf("-port=%s", port))
-	outfile, err = os.Create("../logs/verifier.log")
+	outfile, err = os.Create("./logs/verifier.log")
+
 	cmd.Stdout = outfile
 	cmd.Stderr = outfile
 	if err != nil {
@@ -69,10 +80,11 @@ func StartServer() {
 		return
 	}
 	var result *Response
-	err = c.Call("Server.StartServer", Request{"StartServer"}, &result)
+	err = c.Call("Server.StartServer", Request{"StartServer", ad.key}, &result)
 	if err != nil {
 		fmt.Println(err)
 	}
+	_ = c.Close()
 	wg.Done()
 
 }
@@ -85,10 +97,11 @@ func StopServer() {
 		return
 	}
 	var result *Response
-	err = c.Call("Server.StopServer", Request{"StopServer"}, &result)
+	err = c.Call("Server.StopServer", Request{"StopServer", ad.key}, &result)
 	if err != nil {
 		fmt.Println(err)
 	}
+	_ = c.Close()
 	wg.Done()
 }
 
@@ -101,9 +114,17 @@ func RestartServer() {
 	}
 	//fmt.Println("Connected...")
 	var result *Response
-	err = c.Call("Server.RestartServer", Request{"RestartServer"}, &result)
+	err = c.Call("Server.RestartServer", Request{"RestartServer", ad.key}, &result)
 	if err != nil {
 		fmt.Println(err)
 	}
+	_ = c.Close()
 	wg.Done()
+}
+
+func GetKey(phrase string, key string) {
+	keyChar := key[len(key)-13:]
+	encrypted := encrypt([]byte(keyChar), phrase)
+	fmt.Printf("key: %x", encrypted)
+	ad.key = encrypted
 }
