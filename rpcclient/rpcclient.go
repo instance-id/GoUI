@@ -1,130 +1,206 @@
 package rpcclient
 
 import (
+	"context"
+	"flag"
 	"fmt"
-	"net/rpc"
 	"os"
 	"os/exec"
+	"runtime"
 	"sync"
 	"time"
+
+	. "github.com/instance-id/GoUI/components"
+	"github.com/smallnest/rpcx/client"
 )
 
 var (
-	wg sync.WaitGroup
-	ad AccessData
+	wg             sync.WaitGroup
+	ad             AccessData
+	verifierStatus bool
+	rpcStatus      bool
+	xC             client.XClient
 )
 
 type AccessData struct {
 	key []byte
 }
 
-type Response struct {
-	Message string
-	Key     []byte
+type Reply struct {
+	Message   string
+	RunCheck  bool
+	RPCCheck  bool
+	ProcessID int
+	Key       []byte
 }
 
-type Request struct {
-	Name string
-	Key  []byte
+type Args struct {
+	Key     []byte
+	Name    string
+	Message string
+	Ctx     map[string]interface{}
 }
 
 var (
-	ip      = "127.0.0.1"
-	port    = "4555"
+	ip      = "localhost"
+	port    = "14555"
 	address = fmt.Sprintf("%s:%s", ip, port)
 	outfile *os.File
+	dev     *bool
 )
 
-func Client() {
-	wg.Add(1)
-	c, err := rpc.Dial("tcp", "127.0.0.1:4555")
-	if err != nil {
-		fmt.Println(err)
-		return
-	}
-	var result string
-	err = c.Call("Server.Add", [2]int64{10, 20}, &result)
-	if err != nil {
-		fmt.Println(err)
-	}
-	_ = c.Close()
-	wg.Done()
+type RpcClient struct {
 }
 
-func StartServer() {
+func ReturnRunning() (bool, bool) {
+	return verifierStatus, rpcStatus
+}
+
+func send(args *Args, reply *Reply) (*Args, *Reply) {
+	err := xC.Call(context.Background(), "RpcRequestHandler", args, reply)
+	if err != nil {
+		_ = fmt.Errorf("failed to call: %v", err)
+	}
+	return args, reply
+}
+
+func CheckRunning() (bool, bool) {
+
+	reply := &Reply{}
+	args := &Args{Name: RPC_STATUS, Key: ad.key, Message: "You got this!"}
+
+	err := xC.Call(context.Background(), "RpcRequestHandler", args, reply)
+	if err != nil {
+		_ = fmt.Errorf("failed to call: %v", err)
+	}
+	fmt.Printf("Response: %s : Pid: %v \n", reply.Message, reply.ProcessID)
+
+	if reply.RunCheck == false {
+		verifierStatus = false
+		rpcStatus = false
+	} else {
+		verifierStatus = reply.RunCheck
+		rpcStatus = reply.RPCCheck
+	}
+
+	fmt.Printf("Runcheck: %v RPCCheck: %v \n", reply.RunCheck, reply.RPCCheck)
+	fmt.Printf("Verifier: %v RPCServer: %v \n", verifierStatus, rpcStatus)
+	fmt.Printf("Whats the message?? %s", reply.Message)
+	return verifierStatus, rpcStatus
+}
+
+func StartVerifier() {
 	wg.Add(1)
 	var err error
-	cmd := exec.Command("./goverifier", "-rpc=true", fmt.Sprintf("-port=%s", port))
-	outfile, err = os.Create("./logs/verifier.log")
+	var path string
+	if *dev {
+		path = "/home/mosthated/_dev/programming/go/src/github.com/instance-id/GoVerifier-dgo/main"
 
-	cmd.Stdout = outfile
-	cmd.Stderr = outfile
-	if err != nil {
-		panic(err)
+	} else {
+		path = "./goverifier"
 	}
-	defer outfile.Close()
-
+	cmd := exec.Command(path, "-rpc=true", fmt.Sprintf("-port=%s", port))
 	err = cmd.Start()
 	if err != nil {
 		fmt.Printf("cmd.Run() failed with %s\n", err)
 	}
-	wg.Done()
-
-	timer1 := time.NewTimer(2 * time.Second)
-	<-timer1.C
-	wg.Add(1)
-
-	c, err := rpc.Dial("tcp", address)
+	rpcStatus = true
+	err = cmd.Process.Release()
 	if err != nil {
-		fmt.Println(err)
-		return
+
 	}
-	var result *Response
-	err = c.Call("Server.StartServer", Request{"StartServer", ad.key}, &result)
-	if err != nil {
-		fmt.Println(err)
-	}
-	_ = c.Close()
 	wg.Done()
+	fmt.Printf("Running Timer to allow Verifier to load...")
 
 }
 
-func StopServer() {
+func StartServer() bool {
+
+	if !rpcStatus {
+		go StartVerifier()
+		runtime.Gosched()
+		timer1 := time.NewTimer(5 * time.Second)
+		<-timer1.C
+		fmt.Printf("Starting Verifier discord services...")
+	}
+
 	wg.Add(1)
-	c, err := rpc.Dial("tcp", address)
-	if err != nil {
-		fmt.Println(err)
-		return
-	}
-	var result *Response
-	err = c.Call("Server.StopServer", Request{"StopServer", ad.key}, &result)
-	if err != nil {
-		fmt.Println(err)
-	}
-	_ = c.Close()
+
+	// --- Send RPC request -----------
+	reply := &Reply{}
+	args := &Args{Name: RPC_START, Key: ad.key}
+	args, reply = send(args, reply)
+	fmt.Printf("Response: %s ", reply.Message)
+
+	verifierStatus = reply.RunCheck
 	wg.Done()
+	return verifierStatus
 }
 
+//
 func RestartServer() {
+
 	wg.Add(1)
-	c, err := rpc.Dial("tcp", address)
-	if err != nil {
-		fmt.Println(err)
-		return
-	}
-	//fmt.Println("Connected...")
-	var result *Response
-	err = c.Call("Server.RestartServer", Request{"RestartServer", ad.key}, &result)
-	if err != nil {
-		fmt.Println(err)
-	}
-	_ = c.Close()
+
+	reply := &Reply{}
+	args := &Args{Name: RPC_RESTART, Key: ad.key}
+	args, reply = send(args, reply)
+	fmt.Printf("Response: %s ", reply.Message)
+
 	wg.Done()
+}
+
+//
+func StopServer() {
+
+	wg.Add(1)
+
+	reply := &Reply{}
+	args := &Args{Name: RPC_STOP, Key: ad.key}
+	args, reply = send(args, reply)
+	fmt.Printf("Response: %s ", reply.Message)
+
+	wg.Done()
+}
+
+func CreateClient(phrase string, key string, isDev *bool) {
+	dev = isDev
+	GetKey(phrase, key)
+	go runClient()
+	runtime.Gosched()
+	CheckRunning()
+
+}
+
+func runClient() {
+
+	wg.Add(1)
+
+	cli := client.NewPeer2PeerDiscovery("tcp@"+address, "")
+	xClient := client.NewXClient("Server", client.Failtry, client.RandomSelect, cli, client.DefaultOption)
+	xC = xClient
+	defer xC.Close()
+
+	wg.Wait()
+	fmt.Printf("Run Client Closing")
+
 }
 
 func GetKey(phrase string, key string) {
 	keyChar := key[len(key)-13:]
 	encrypted := encrypt([]byte(keyChar), phrase)
-	fmt.Printf("key: %x", encrypted)
 	ad.key = encrypted
+}
+
+func CloseConnection() {
+	wg.Done()
+}
+
+func Initialize() {
+
+	isDev := flag.Bool("dev", false, "Run with developer paths? (Looks in different folder for GoVerifier)")
+	flag.Parse()
+	key := Cntnrs.Dac.System.Token
+	phrase := Cntnrs.Dac.Discord.Guild
+	CreateClient(phrase, key, isDev)
 }

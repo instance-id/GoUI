@@ -1,23 +1,23 @@
 package main
 
 import (
-	"github.com/chzyer/readline"
-	. "github.com/instance-id/GoUI/components"
-	"github.com/instance-id/GoUI/rpcclient"
-
-	//. "github.com/instance-id/GoUI/rpcclient"
 	"os"
 
+	"github.com/instance-id/GoUI/rpcclient"
+
+	"github.com/chzyer/readline"
+	. "github.com/instance-id/GoUI/components"
 	. "github.com/instance-id/GoUI/text"
 	"github.com/instance-id/GoUI/view"
 	ui "github.com/instance-id/clui"
 	term "github.com/nsf/termbox-go"
 )
 
+var Status *view.ServerStatus
+
 func InitData() {
 	view.Log.LogLevel = []string{"INFO", "DEBUG", "WARNING", "ERROR"}
 	view.Log.DefaultLogLevel = 0
-
 }
 
 func MainInitialSettings() {
@@ -50,7 +50,7 @@ func createView() {
 
 	// --- Settings Frames -----------------------------------------------
 	/*tokenFrame, tokenEdit := */
-	view.CreateViewVerifier()
+	view.CreateViewVerifier(Status)
 	view.CreateViewMainSettings()
 	view.CreateViewDiscordSettings()
 	view.CreateViewDatabaseSettings()
@@ -77,7 +77,7 @@ func mainLoop() {
 	ui.SetThemePath("themes")
 
 	// --- Changing theme won't do much ----
-	// --- Many values are hard coded ------
+	// --- as many values are hard coded ---
 	ui.SetCurrentTheme("verifier")
 
 	createView()
@@ -86,16 +86,19 @@ func mainLoop() {
 }
 
 func main() {
-	phrase, key := CmdInitialize()
-	rpcclient.GetKey(phrase, key)
+	Status = new(view.ServerStatus)
+	CmdInitialize()
+	rpcclient.Initialize()
 
 	mainLoop()
+	rpcclient.CloseConnection()
 }
 
 func termNative(c int) term.Attribute {
 	return term.Attribute(c + 1)
 }
 
+// --- Supposedly a fix for some terminals that have display issues ------
 type stderr struct{}
 
 func init() {

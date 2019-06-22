@@ -10,18 +10,20 @@ import (
 )
 
 var pendingDiscord = struct {
-	guildId  bool
-	botUsers bool
+	guildId       bool
+	botUsers      bool
+	verifiedUsers bool
 }{
-	guildId:  false,
-	botUsers: false,
+	guildId:       false,
+	botUsers:      false,
+	verifiedUsers: false,
 }
 
 func CreateViewDiscordSettings() {
 
 	var tmpGuidId = Cntnrs.Dac.Discord.Guild
+	var tmpVerifiedUsers = Cntnrs.Dac.Discord.Roles["Verified"]
 	var tmpBotUsers = Cntnrs.Dac.Discord.BotUsers[0]
-	var tmpRoles = Cntnrs.Dac.Discord.Roles
 
 	// --- Discord Settings Frame ------------------------------------------
 	FrmDiscordSettings = ui.CreateFrame(FrameContent, ui.AutoSize, ui.AutoSize, ui.BorderNone, ui.Fixed)
@@ -50,6 +52,22 @@ func CreateViewDiscordSettings() {
 
 	})
 	ui.CreateLabel(guildIdFrame, ui.AutoSize, ui.AutoSize, TxtGuildIdDesc, ui.Fixed)
+
+	// --- Verified Users ------------------------------------------------
+	verifiedUsersFrame := NewFramedInput(settingsFrame, TxtVerifiedUsers, nil)
+	verifiedUsersFrame.SetPaddings(2, 2)
+	verifiedUsersResult := ui.CreateEditField(verifiedUsersFrame, ui.AutoSize, tmpVerifiedUsers, ui.Fixed)
+	verifiedUsersResult.OnChange(func(event ui.Event) {
+		tmpVerifiedUsers = verifiedUsersResult.Title()
+		if tmpVerifiedUsers != Cntnrs.Dac.Discord.Roles["Verified"] {
+			pendingDiscord.botUsers = true
+			SavePendingDiscord()
+		} else {
+			pendingDiscord.botUsers = false
+			SavePendingDiscord()
+		}
+	})
+	ui.CreateLabel(verifiedUsersFrame, ui.AutoSize, ui.AutoSize, TxtVerifiedUsersDesc, ui.Fixed)
 
 	// --- Bot Users -----------------------------------------------------
 	botUsersFrame := NewFramedInput(settingsFrame, TxtBotUsers, nil)
@@ -90,7 +108,7 @@ func CreateViewDiscordSettings() {
 	BtnDiscordSettingsSave.OnClick(func(ev ui.Event) {
 		Cntnrs.Dac.Discord.Guild = tmpGuidId
 		Cntnrs.Dac.Discord.BotUsers[0] = tmpBotUsers
-		Cntnrs.Dac.Discord.Roles = tmpRoles
+		Cntnrs.Dac.Discord.Roles["Verified"] = tmpVerifiedUsers
 		_, err := Cntnrs.Wtr.SetConfig()
 		if err != nil {
 			ui.CreateAlertDialog(ErrCouldNotSaveCfg, fmt.Sprintf("Error Could not save config: %s", err), TxtCloseBtn)
@@ -101,7 +119,7 @@ func CreateViewDiscordSettings() {
 }
 
 func SavePendingDiscord() {
-	if pendingDiscord.guildId || pendingDiscord.botUsers == true {
+	if pendingDiscord.guildId || pendingDiscord.botUsers == true || pendingDiscord.verifiedUsers == true {
 		BtnDiscordSettingsSave.SetTitle(TxtSavePendingBtn)
 		ui.PutEvent(ui.Event{Type: ui.EventRedraw})
 	} else {

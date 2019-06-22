@@ -107,7 +107,8 @@ func CreateViewMenu() {
 	BtnQuit.SetShadowType(ui.ShadowHalf)
 	BtnQuit.OnClick(func(ev ui.Event) {
 		if LogRunning {
-			LogChan <- true
+			//LogChan <- true
+			LogRunning = false
 		}
 		go ui.Stop()
 	})

@@ -16,8 +16,14 @@ import (
 var LogRunning = false
 var LogChan chan bool
 
-func CreateViewVerifier() /*(*ui.Frame, *ui.EditField)*/ {
+type ServerStatus struct {
+	VerifierRunning bool
+	RPCRunning      bool
+}
+
+func CreateViewVerifier(status *ServerStatus) /*(*ui.Frame, *ui.EditField)*/ {
 	LogViewer = new(LogDialog)
+	var sts bool
 
 	// --- Verifier Controls Frame ---------------------------------------
 	FrmVerifier = ui.CreateFrame(FrameContent, ui.AutoSize, ui.AutoSize, ui.BorderNone, ui.Fixed)
@@ -43,13 +49,21 @@ func CreateViewVerifier() /*(*ui.Frame, *ui.EditField)*/ {
 	BtnVerifierStart = ui.CreateButton(startFrame, 40, ui.AutoSize, fmt.Sprintf("%s", TxtVerifierStartBtn), ui.Fixed)
 	BtnVerifierStart.SetAlign(ui.AlignLeft)
 	BtnVerifierStart.SetShadowType(ui.ShadowHalf)
+	if status.VerifierRunning {
+		BtnVerifierStart.SetEnabled(false)
+	}
 	BtnVerifierStart.OnClick(func(ev ui.Event) {
-		go rpcclient.StartServer()
-		runtime.Gosched()
 		if !LogRunning {
 			go LoadVerifierLogs()
 			runtime.Gosched()
 		}
+		go func(sts bool) bool { sts = rpcclient.StartServer(); return sts }(sts)
+		runtime.Gosched()
+		if sts {
+			status.VerifierRunning = sts
+			BtnVerifierStart.SetEnabled(false)
+		}
+
 	})
 
 	// --- Restart -------------------------------------------------------
@@ -134,6 +148,8 @@ func LoadVerifierLogs() error {
 	for LogRunning {
 		if !LogRunning {
 			_ = Tails.Stop()
+			fmt.Printf("Stopping log viewer")
+
 			break
 		}
 		for line := range Tails.Lines {

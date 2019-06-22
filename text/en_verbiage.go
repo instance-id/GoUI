@@ -68,6 +68,9 @@ const TxtInstructs3 = "Simply press ok when completed. - Don't forget to save! -
 const TxtGuildId = " Guild Id "
 const TxtGuildIdDesc = "The GuildId (Server Id) number found in Discords server settings."
 
+const TxtVerifiedUsers = " Verified Users "
+const TxtVerifiedUsersDesc = "Id for \"Verified\" users permission group"
+
 const TxtBotUsers = " Bot Users "
 const TxtBotUsersDesc = "The role(s) which have permission to perform administrative bot functions"
 
